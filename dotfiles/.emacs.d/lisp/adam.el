@@ -57,6 +57,12 @@
   (interactive)
   (load-file user-init-file))
 
+(defun adam/linkup ()
+  "Linkup, sneed it or keep it?"
+  (interactive)
+  (start-process-shell-command "stow" nil "stow --no-folding -d ~/puter/dotfiles -t ~")
+  (message "Linked Up!"))
+
 (defun adam/switch-buffer ()
   "Switch to buffer command."
   (interactive)
@@ -122,13 +128,13 @@
   (interactive)
   (delete-other-windows-internal))
 
-(defun adam/switch-window-below ()
+(defun adam/split-window-below ()
   "Split the window below and move cursor to the newly spawned window."
   (interactive)
   (split-window-below)
   (other-window 1))
 
-(defun adam/switch-window-right ()
+(defun adam/split-window-right ()
   "Split the window right and move cursor to the newly spawned window."
   (interactive)
   (split-window-right)

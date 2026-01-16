@@ -27,6 +27,9 @@
             (define-key map (kbd "C-x w k") 'windmove-up)
             (define-key map (kbd "C-x w l") 'windmove-right)
 
+            (define-key map (kbd "C-c r") 'repeat-complex-command)
+            (define-key map (kbd "C-c C-r") 'repeat-complex-command)
+
             (define-key map (kbd "M-<left>") 'windmove-left)
             (define-key map (kbd "M-<down>") 'windmove-down)
             (define-key map (kbd "M-<up>") 'windmove-up)

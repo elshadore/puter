@@ -289,8 +289,13 @@
   (add-hook 'js-mode-hook 'js2-minor-mode)
   (add-hook 'js2-mode-hook 'ac-js2-mode))
 
+(defun adam/org-hook ()
+  "Hook for setting indentation on org-mode."
+  (setq-local evil-shift-width 2))
+
 (use-package org
   :config
+  (add-hook 'org-mode-hook 'adam/org-hook)
   (setq org-edit-src-content-indentation 0)
   (setq org-link-descriptive t))
 
@@ -463,6 +468,10 @@
   (evil-collection-define-key 'normal 'dired-mode-map
     "H" 'dired-hide-dotfiles-mode))
 
+(defun adam/buffer-grep ()
+  "Grep the current buffer."
+  (interactive)
+  (counsel-grep))
 
 (use-package general
   :config
@@ -492,7 +501,8 @@
     "f," '(projectile-find-file :wk "find project file")
     "fz" '(projectile-switch-project :wk "find project")
     "fn" '(find-file :wk "file file new")
-    "fe" '(list-matching-lines :wk "find regex")
+    "fe" '(occur :wk "grep current buffer")
+    "fa" '(projectile-grep :wk "grep current project")
 
     "gg" '(magit :wk "magit")
 
@@ -547,7 +557,6 @@
 
 
 (require 'adam-mode)
-(require 'puter)
 
 (defvar adam/init-theme 'modus-vivendi-tinted)
 ;; (defvar adam/init-theme 'doom-winter-is-coming-dark-blue)

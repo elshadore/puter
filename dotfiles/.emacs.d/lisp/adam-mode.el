@@ -11,8 +11,8 @@
   :group 'adam
   :lighter " adam-mode"
   :keymap (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "M-x") 'execute-extended-command)
-            (define-key map (kbd "C-x SPC") 'execute-extended-command)
+            (define-key map (kbd "M-x") 'adam/M-x)
+            (define-key map (kbd "C-x SPC") 'adam/M-x)
             
             (define-key map (kbd "C-x k") 'kill-buffer)
             (define-key map (kbd "C-x K") 'kill-buffer-and-window)

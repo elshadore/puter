@@ -57,17 +57,10 @@
   (interactive)
   (load-file user-init-file))
 
-(defun adam/linkup ()
-  "Linkup, sneed it or keep it?"
-  (interactive)
-  (start-process-shell-command "stow" nil "stow --no-folding -d ~/puter/dotfiles -t ~")
-  (message "Linked Up!"))
-
 (defun adam/switch-buffer ()
   "Switch to buffer command."
   (interactive)
-  (let ((ivy-use-virtual-buffers nil))
-    (call-interactively #' counsel-switch-buffer)))
+  (call-interactively #'helm-mini))
 
 (defun adam/ibuffer ()
   "Interactive buffer menu."
@@ -77,22 +70,32 @@
 (defun adam/find-file ()
   "Find file."
   (interactive)
-  (call-interactively #'find-file-existing))
+  (call-interactively #'helm-find-files))
 
 (defun adam/find-file-new ()
   "File file new."
   (interactive)
-  (call-interactively #'counsel-find-file))
+  (call-interactively #'helm-find-files))
 
 (defun adam/imenu ()
   "Interactive menu."
   (interactive)
-  (call-interactively #'counsel-imenu))
+  (call-interactively #'helm-semantic-or-imenu))
 
 (defun adam/M-x ()
   "Meta X."
   (interactive)
-  (call-interactively #'counsel-M-x))
+  (call-interactively #'helm-M-x))
+
+(defun adam/occur ()
+  "Occur."
+  (interactive)
+  (call-interactively #'helm-occur))
+
+(defun adam/grep ()
+  "Grep."
+  (interactive)
+  (call-interactively #'helm-ff-run-grep))
 
 (defun adam/lookup-func ()
   "Lookup symbol under cursor."

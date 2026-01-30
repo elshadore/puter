@@ -118,42 +118,9 @@
   :config
   (context-menu-mode t))
 
-;; (use-package counsel
-;;   :config
-;;   (setq counsel-linux-app-format-function #'counsel-linux-app-format-function-name-pretty))
-
-(use-package helm)
-
-;; (defun adam/fuzzy-re-builder (str)
-;;   "Convert STR to custom regex."
-;;   (let ((case-fold-search t))
-;;     (ivy--regex-fuzzy str)))
-
-;; (use-package ivy
-;;   :bind
-;;   (("C-s" . swiper)
-;;          :map ivy-minibuffer-map
-;;          ("TAB" . ivy-alt-done)
-;;          ("C-l" . ivy-alt-done)
-;;          ("C-j" . ivy-next-line)
-;;          ("C-k" . ivy-previous-line)
-;;          :map ivy-switch-buffer-map
-;;          ("C-k" . ivy-previous-line)
-;;          ("C-l" . ivy-done)
-;;          ("C-d" . ivy-switch-buffer-kill)
-;;          :map ivy-reverse-i-search-map
-;;          ("C-k" . ivy-previous-line)
-;;          ("C-d" . ivy-reverse-i-search-kill))
-;;   :config
-;;   (setq ivy-use-virtual-buffers t)
-;;   (setq ivy-count-format "(%d/%d) ")
-;;   (setq enable-recursive-minibuffers t)
-;;   (setq ivy-height 20)
-;;   (setq ivy-re-builders-alist '((t . adam/fuzzy-re-builder)))
-;;   (ivy-mode 1)) 
-
-;; (use-package ivy-rich
-;;   :after ivy)
+(use-package helm
+  :config
+  (helm-mode 1))
 
 (use-package swiper)
 
@@ -253,15 +220,7 @@
 
 (use-package multiple-cursors)
 
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
+(use-package helpful)
 
 (use-package magit)
 

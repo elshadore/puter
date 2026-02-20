@@ -14,6 +14,11 @@
   "Launch sync shell command and return its output throught the string-to-number function."
   (string-to-number (shell-command-to-string command)))
 
+(defun adam/string-match (pattern string &optional match)
+  "Slice a String based on a Given Pattern and Match Predicate, Returns NIL, if not Pattern is Recognized."
+  (when-let ((a (string-match pattern string)))
+    (match-string-no-properties (or match 0) string)))
+
 (defun adam/qoutize-string (str)
   "Surround a string STR in \"\" qoutes."
   (concat "\"" str "\""))
@@ -60,7 +65,8 @@
 (defun adam/switch-buffer ()
   "Switch to buffer command."
   (interactive)
-  (call-interactively #'helm-mini))
+  (let ((ivy-use-virtual-buffers nil))
+    (call-interactively #'counsel-switch-buffer)))
 
 (defun adam/ibuffer ()
   "Interactive buffer menu."
@@ -70,32 +76,32 @@
 (defun adam/find-file ()
   "Find file."
   (interactive)
-  (call-interactively #'helm-find-files))
+  (call-interactively #'find-file-existing))
 
 (defun adam/find-file-new ()
   "File file new."
   (interactive)
-  (call-interactively #'helm-find-files))
+  (call-interactively #'counsel-find-file))
 
 (defun adam/imenu ()
   "Interactive menu."
   (interactive)
-  (call-interactively #'helm-semantic-or-imenu))
+  (call-interactively #'counsel-imenu))
 
 (defun adam/M-x ()
   "Meta X."
   (interactive)
-  (call-interactively #'helm-M-x))
+  (call-interactively #'counsel-M-x))
 
 (defun adam/occur ()
   "Occur."
   (interactive)
-  (call-interactively #'helm-occur))
+  (call-interactively #'occur))
 
 (defun adam/grep ()
   "Grep."
   (interactive)
-  (call-interactively #'helm-ff-run-grep))
+  (call-interactively #'rgrep))
 
 (defun adam/lookup-func ()
   "Lookup symbol under cursor."
@@ -212,6 +218,23 @@
 (defun thousand (x)
   "Take a given number X, and return X thousand."
   (* x 1000))
+
+(defvar kill-all-buffers-last
+  nil
+  "History for the `Kill-All-Buffers' Command.")
+
+(defun kill-all-buffers-match (match-input buffer)
+  "The Matching Function for the `Kill-All-Buffers' Function."
+  (when-let (y (string-match match-input buffer))
+    (when (= y 0) buffer)))
+
+(defun kill-all-buffers (input)
+  "`Kill-All-Buffers' matching the string predicate.
+    Example => `Example' will kill `Example<1>', `Example<2>'..."
+  (interactive "sbuffer: ")
+  (dolist (el (seq-keep #'kill-all-buffers-match (mapcar #'buffer-name (buffer-list))))
+    (kill-buffer input el)
+    (message "Buffer %s Killed!" el)))
 
 (provide 'adam)
 ;;; adam.el ends here

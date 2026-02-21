@@ -231,6 +231,7 @@
 
 (use-package eshell
   :config
+  (setq eshell-banner-message "")
   (mapc (lambda (alias) (defalias (car alias) (cdr alias)))
         '((ll . (lambda () (eshell/ls '-lah)))
           (dir . dired))))
@@ -241,6 +242,10 @@
   :config
   (eshell-syntax-highlighting-global-mode 1))
 
+(use-package eshell-prompt-extras
+  :config
+  (setq eshell-highlight-prompt nil)
+  (setq eshell-prompt-function 'epe-theme-multiline-with-status))
 
 (use-package vterm)
 

@@ -30,7 +30,6 @@
       (setq b (point))
       (buffer-substring-no-properties a b))))
 
-
 (defvar %-assert-result-% nil
   "Special Variable used in ASSERT Macro.")
 
@@ -250,15 +249,17 @@
            gcs-done))
 (add-hook 'emacs-startup-hook #'adam/display-startup-time)
 
-(defun myeshell/clear ()
-  "Clears the current eshell buffer."
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer)))
+;; (defun myeshell/clear ()
+;;   "Clears the current eshell buffer."
+;;   (interactive)
+;;   (let ((inhibit-read-only t))
+;;     (erase-buffer)))
 
 (defun adam/empty-buffer ()
   "Creates a new empty buffer in the current window."
-  (interactive))
+  (interactive)
+  ;; TODO:
+  )
 
 (defun adam/eshell ()
   "Start eshell mode in the current directory."
@@ -271,6 +272,29 @@
         (when kill-buf
           (kill-buffer eshell-buf))))
     (eshell)))
+
+(defun adam/eshell-command (cmd &optional to-current-buffer)
+  "Launch an Eshell Command in a Eshell Buffer."
+  (interactive (list (eshell-read-command)
+                     current-prefix-arg))
+  ;; This is a really good use of the `operate' macro.
+  (let ((v (operate (x (adam/get-buffer-names))
+                    (adam/fap (lambda (y) (adam/string-match "\\*eshell\\*<\\([[:digit:]]+\\)>" y 1)) x)
+                    (mapcar #'string-to-number x)
+                    (sort x #'>)
+                    (car x)
+                    (if x (1+ x) 0))))
+    (eshell v))
+  (insert cmd)
+  (eshell-send-input))
+
+(defun adam/get-buffer-names ()
+  "Return all Currenly open buffers and Strings."
+  (mapcar #'buffer-name (buffer-list)))
+
+(defun adam/fap (function sequence)
+  "Maps then Filters the List for NIL elements."
+  (seq-filter #'identity (seq-map function sequence)))
 
 (defun adam/dump-file (file-path)
   "Dump the contents of a file FILE-PATH as a string."

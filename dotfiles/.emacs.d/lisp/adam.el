@@ -19,6 +19,73 @@
   (when-let ((a (string-match pattern string)))
     (match-string-no-properties (or match 0) string)))
 
+(defun adam/read-current-line ()
+  "Reads the Current Line of a Buffer and Returns it as a String."
+  (interactive)
+  (save-excursion
+    (let (a b)
+      (beginning-of-line)
+      (setq a (point))
+      (end-of-line)
+      (setq b (point))
+      (buffer-substring-no-properties a b))))
+
+
+(defvar %-assert-result-% nil
+  "Special Variable used in ASSERT Macro.")
+
+(defmacro assert! (form &optional message)
+  `(if-let (%-assert-result-% ,form)
+       %-assert-result-%
+     ,(if message
+         `(error "ASSERT! %S, %s\n", form ,message)
+         `(error "ASSERT! %S\n", form))))
+
+(defmacro cadrq (symbol)
+  "Returns the CAR of a LIST bound the SYMBOL, then SETS the SYMBOL to the CDR of the LIST."
+  (assert! (symbolp symbol) "CDRQ form expects a symbol as its argument")
+  `(prog1
+       (if (null ,symbol)
+           (error "CDRQ does not cdr nil => nil.")
+           (car ,symbol))
+     (setq ,symbol (cdr ,symbol))))
+
+
+(defvar %-bind-let-form-% nil
+  "Special Symbol Used in the BIND-LET Macro.")
+(defvar %-bind-let-eval-% nil
+  "Special Symbol Used in the BIND-LET Macro.")
+(defvar %-bind-let-iter-% nil
+  "Special Symbol Used in the BIND-LET Macro.")
+
+(defmacro bind-let (form &rest body)
+  "A Better Destructing Bind Macro."
+  (let ((%-bind-let-form-% (car form))
+        (%-bind-let-eval-% (cadr form)))
+    (assert! (null (cddr form)) "bind-let excepts two forms in FORM (*destructing-bind* eval-form)")
+    `(let ((%-bind-let-iter-% ,%-bind-let-eval-%))
+       (assert! (listp %-bind-let-iter-%))
+       ,(seq-concatenate 'list
+                         (list 'let (mapcar (lambda (x) (list x '(cadrq %-bind-let-iter-%))) %-bind-let-form-%))
+                         (list '(assert! (null %-bind-let-iter-%) "Binding List has too Many Elements."))
+                         body
+                         ))))
+
+(defvar %-operate-symbol-% nil
+  "Special Symbol Used in the OPERATE Macro.")
+(defvar %-operate-init-% nil
+  "Special Symbol Used in the OPERATE Macro.")
+
+(defmacro operate (form &rest body)
+  "TODO: Description."
+  (bind-let ((%-operate-symbol-% %-operate-init-%) form)
+            (assert! (symbolp %-operate-symbol-%) "Expected symbol for Operate First Form.")
+            (seq-concatenate 'list
+                             (list 'let `((,%-operate-symbol-% ,%-operate-init-%)))
+                             (mapcar (lambda (x) (list 'setq %-operate-symbol-% x)) body)
+                             (list %-operate-symbol-%)
+                             )))
+
 (defun adam/qoutize-string (str)
   "Surround a string STR in \"\" qoutes."
   (concat "\"" str "\""))

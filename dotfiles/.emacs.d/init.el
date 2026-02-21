@@ -230,9 +230,6 @@
   (yas-global-mode 1))
 
 (use-package eshell
-  :bind
-  (:map eshell-mode-map
-        ("C-l" . myeshell/clear))
   :config
   (mapc (lambda (alias) (defalias (car alias) (cdr alias)))
         '((ll . (lambda () (eshell/ls '-lah)))
@@ -282,8 +279,7 @@
 
 (defun adam/org-hook ()
   "Hook for setting indentation on org-mode."
-  ;; (setq-local evil-shift-width 2)
-  )
+  (setq-local evil-shift-width 2))
 
 (use-package org
   :config
@@ -299,7 +295,8 @@
 (use-package cider)
 
 (use-package geiser)
-(use-package geiser-guile)
+(use-package geiser-racket)
+;; (use-package geiser-guile)
 
 (use-package haskell-mode)
 
@@ -375,37 +372,37 @@
 
 (use-package lsp-ivy)
 
-;; (use-package evil
-;;   :init
-;;   (setq evil-want-integration t)
-;;   (setq evil-want-keybinding nil)
-;;   (setq evil-want-C-u-scroll t)
-;;   (setq evil-want-C-i-jump nil)
-;;   (setq evil-want-minibuffer nil)
-;;   :config
-;;   (evil-mode 1)
-;;   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-;;   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-;;   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-;;   (evil-set-initial-state 'messages-buffer-mode 'normal)
-;;   (evil-set-initial-state 'dashboard-mode 'normal)
-;;   (setq evil-lookup-func #'adam/lookup-func))
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  (setq evil-want-minibuffer nil)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal)
+  (setq evil-lookup-func #'adam/lookup-func))
 
-;; (use-package evil-lispy
-;;   :after
-;;   evil
-;;   :config
-;;   (add-hook 'adam-mode-hook #'evil-lispy-mode))
+(use-package evil-lispy
+  :after
+  evil
+  :config
+  (add-hook 'adam-mode-hook #'evil-lispy-mode))
 
-;; (use-package evil-collection
-;;   :after
-;;   evil
-;;   :config
-;;   (evil-collection-init))
+(use-package evil-collection
+  :after
+  evil
+  :config
+  (evil-collection-init))
 
-;; (use-package evil-nerd-commenter
-;;   :bind
-;;   ("C-#" . evilnc-comment-or-uncomment-lines))
+(use-package evil-nerd-commenter
+  :bind
+  ("C-#" . evilnc-comment-or-uncomment-lines))
 
 (use-package dired
   :straight nil
@@ -416,12 +413,12 @@
   ((dired-listing-switches "-lah --group-directories-first"))
   :config
   (setq dired-kill-when-opening-new-dired-buffer t)
-  ;; (evil-collection-define-key 'normal 'dired-mode-map
-  ;;   "h" 'dired-up-directory
-  ;;   "l" 'dired-find-file
-  ;;   "R" 'dired-do-rename
-  ;;   "C" 'dired-do-copy
-  ;;   "D" 'dired-do-delete)
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-up-directory
+    "l" 'dired-find-file
+    "R" 'dired-do-rename
+    "C" 'dired-do-copy
+    "D" 'dired-do-delete)
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
 (setq adam/pdf-reader "okular")
@@ -446,7 +443,7 @@
 
 (use-package dired-hide-dotfiles
   :config
-  ;; (evil-collection-define-key 'normal 'dired-mode-map "H" 'dired-hide-dotfiles-mode)
+  (evil-collection-define-key 'normal 'dired-mode-map "H" 'dired-hide-dotfiles-mode)
   )
 
 (defun adam/buffer-grep ()
@@ -454,90 +451,90 @@
   (interactive)
   (counsel-grep))
 
-;; (use-package general
-;;   :config
-;;   ;; (general-evil-setup)
-;;   (general-create-definer adam/leader-keys
-;;     :states
-;;     '(normal insert visual emacs)
-;;     :keymaps 'override
-;;     :prefix "SPC"
-;;     :global-prefix "C-SPC")
-;;   (adam/leader-keys
-;;     "SPC" '(adam/M-x :wk "M-x")
+(use-package general
+  :config
+  (general-evil-setup)
+  (general-create-definer adam/leader-keys
+    :states
+    '(normal insert visual emacs)
+    :keymaps 'override
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+  (adam/leader-keys
+    "SPC" '(adam/M-x :wk "M-x")
 
-;;     "s" '(:ignore t :wk "search")
-;;     "ss" '(swiper :wk "search swiper")
+    "s" '(:ignore t :wk "search")
+    "ss" '(swiper :wk "search swiper")
 
-;;     "a" '(:ignore t :wk "ai")
-;;     "aa" '(gptel :wk "ai start")
+    "a" '(:ignore t :wk "ai")
+    "aa" '(gptel :wk "ai start")
 
-;;     "e" '(:ignore t :wk "eval")
-;;     "ee" '(eval-buffer :wk "eval buffer")
-;;     "f" '(:ignore t :wk "find")
-;;     "fc" '(adam/goto-init-file :wk "find config")
-;;     "fm" '((lambda () (interactive) (find-file "~/adam/music.org")) :wk "find music")
-;;     "fh" '(adam/goto-homepage :wk "find homepage")
-;;     "fp" '(list-processes :wk "find processes")
-;;     "ff" '(adam/fuzzy-find :wk "find fuzzy-contextual")
-;;     "f." '(find-file-existing :wk "find file")
-;;     "f," '(projectile-find-file :wk "find project file")
-;;     "fz" '(projectile-switch-project :wk "find project")
-;;     "fn" '(find-file :wk "file file new")
-;;     "fe" '(adam/occur :wk "grep current buffer")
-;;     "fa" '(adam/grep :wk "grep current project")
+    "e" '(:ignore t :wk "eval")
+    "ee" '(eval-buffer :wk "eval buffer")
+    "f" '(:ignore t :wk "find")
+    "fc" '(adam/goto-init-file :wk "find config")
+    "fm" '((lambda () (interactive) (find-file "~/adam/music.org")) :wk "find music")
+    "fh" '(adam/goto-homepage :wk "find homepage")
+    "fp" '(list-processes :wk "find processes")
+    "ff" '(adam/fuzzy-find :wk "find fuzzy-contextual")
+    "f." '(find-file-existing :wk "find file")
+    "f," '(projectile-find-file :wk "find project file")
+    "fz" '(projectile-switch-project :wk "find project")
+    "fn" '(find-file :wk "file file new")
+    "fe" '(adam/occur :wk "grep current buffer")
+    "fa" '(adam/grep :wk "grep current project")
 
-;;     "gg" '(magit :wk "magit")
+    "gg" '(magit :wk "magit")
 
-;;     "b" '(:ignore t :wk "buffer")
-;;     "bb" '(adam/switch-buffer :wk "buffer switch")
-;;     "bm" '(ibuffer :wk "buffer menu")
-;;     "bx" '(kill-buffer :wk "buffer kill")
+    "b" '(:ignore t :wk "buffer")
+    "bb" '(adam/switch-buffer :wk "buffer switch")
+    "bm" '(ibuffer :wk "buffer menu")
+    "bx" '(kill-buffer :wk "buffer kill")
 
-;;     "l" '(:ignore t :wk "lsp")
-;;     "lr" '(lsp-rename :wk "lsp rename")
-;;     "ld" '(flycheck-list-errors :wk "lsp errors")
-;;     "la" '(lsp-code-actions-at-point :wk "lsp code action")
+    "l" '(:ignore t :wk "lsp")
+    "lr" '(lsp-rename :wk "lsp rename")
+    "ld" '(flycheck-list-errors :wk "lsp errors")
+    "la" '(lsp-code-actions-at-point :wk "lsp code action")
 
-;;     "w" '(:ignore t :wk "window")
-;;     "wm" '(delete-other-windows-internal :wk "window solo")
-;;     ;; "wn" '(evil-window-split :wk "window split horizontal")
-;;     ;; "wv" '(evil-window-vsplit :wk "window split vertical")
-;;     ;; "ww" '(evil-window-next :wk "window next")
-;;     ;; "wc" '(evil-window-delete :wk "window close")
-;;     ;; "wx" '(kill-buffer-and-window :wk "window kill and close")
-;;     ;; "wh" '(evil-window-left :wk "window left")
-;;     ;; "wj" '(evil-window-down :wk "window down")
-;;     ;; "wk" '(evil-window-up :wk "window up")
-;;     ;; "wl" '(evil-window-right :wk "window right")
+    "w" '(:ignore t :wk "window")
+    "wm" '(delete-other-windows-internal :wk "window solo")
 
-;;     "c" '(:ignore t :wk "command")
-;;     "ce" '(adam/eshell :wk "command eshell")
-;;     "cc" '((lambda ()
-;;                (interactive)
-;;                (call-interactively #'compile))
-;;            :wk "command current")
-;;     "cp" '((lambda ()
-;;                (interactive)
-;;                (when (projectile-project-p)
-;;                    (call-interactively #'projectile-compile-project)))
-;;                :wk "command project")
-;;     "cn" '((lambda ()
-;;                (interactive)
-;;                (setq compile-command "")
-;;                (call-interactively #'compile))
-;;            :wk "command new")
+    "wn" '(evil-window-split :wk "window split horizontal")
+    "wv" '(evil-window-vsplit :wk "window split vertical")
+    "ww" '(evil-window-next :wk "window next")
+    "wc" '(evil-window-delete :wk "window close")
+    "wx" '(kill-buffer-and-window :wk "window kill and close")
+    "wh" '(evil-window-left :wk "window left")
+    "wj" '(evil-window-down :wk "window down")
+    "wk" '(evil-window-up :wk "window up")
+    "wl" '(evil-window-right :wk "window right")
 
-;;     "x" '(:ignore t :wk "puter")
-;;     "xx" '(adam/xsettings :wk "puter xsettings")
-;;     "xl" '(adam/puter-linkup :wk "puter linkup")
+    "c" '(:ignore t :wk "command")
+    "ce" '(adam/eshell :wk "command eshell")
+    "cc" '((lambda ()
+               (interactive)
+               (call-interactively #'compile))
+           :wk "command current")
+    "cp" '((lambda ()
+               (interactive)
+               (when (projectile-project-p)
+                   (call-interactively #'projectile-compile-project)))
+               :wk "command project")
+    "cn" '((lambda ()
+               (interactive)
+               (setq compile-command "")
+               (call-interactively #'compile))
+           :wk "command new")
 
-;;     "r" '(:ignore t :wk "reload")
-;;     "rc" '(adam/reload-init-file :wk "reload config")
+    "x" '(:ignore t :wk "puter")
+    "xx" '(adam/xsettings :wk "puter xsettings")
+    "xl" '(adam/puter-linkup :wk "puter linkup")
 
-;;     "q" '(:ignore t :wk "quick tool")
-;;     "qq" '(quick-calc :wk "quick tool calculator")))
+    "r" '(:ignore t :wk "reload")
+    "rc" '(adam/reload-init-file :wk "reload config")
 
+    "q" '(:ignore t :wk "quick tool")
+    "qq" '(quick-calc :wk "quick tool calculator")))
 
 (require 'adam-mode)
 

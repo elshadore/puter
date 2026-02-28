@@ -4,13 +4,38 @@
 
 (require 'json)
 
+(defun adam/quitter ()
+  "A Better C-g Quit that works in the Minibuffer.
+I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-quit-smarter"
+  (interactive)
+  (cond
+   ((region-active-p)
+    (keyboard-quit))
+   ((derived-mode-p 'completion-list-mode)
+    (delete-completion-window))
+   ((> (minibuffer-depth) 0)
+    (abort-recursive-edit))
+   (t (keyboard-quit))))
+
+(defun adam/disable-all-themes ()
+  "Disable all currently active themes."
+  (interactive)
+  (dolist (el custom-enabled-themes)
+    (disable-theme el)))
+
+(defun adam/load-theme (theme)
+  "Cleanly load the theme THEME disabling all currently enabled theming."
+  (interactive (list (intern (completing-read "Load custom theme: " (mapcar #'symbol-name (custom-available-themes))))))
+  (adam/disable-all-themes)
+  (load-theme theme t))
+
 (defun symbol-value-or (symbol &optional value)
   "Get the value of a symbol or return the optional value, default nil."
   (if (boundp symbol)
       (symbol-value symbol)
     value))
 
-(defun shell-command-to-number (command)
+(defun adam/shell-command-to-number (command)
   "Launch sync shell command and return its output throught the string-to-number function."
   (string-to-number (shell-command-to-string command)))
 
@@ -84,6 +109,12 @@
                              (mapcar (lambda (x) (list 'setq %-operate-symbol-% x)) body)
                              (list %-operate-symbol-%)
                              )))
+
+(defun adam/move-to-top ()
+  (interactive)
+  (if (eq major-mode 'eshell-mode)
+      (recenter 1)
+    (recenter 0)))
 
 (defun adam/qoutize-string (str)
   "Surround a string STR in \"\" qoutes."
@@ -193,28 +224,6 @@
         (call-interactively (cdr b))
       (error "no fallback value found"))))
 
-(defun adam/kill-window ()
-  "Kill the current window."
-  (interactive)
-  (evil-window-delete))
-
-(defun adam/kill-other-windows ()
-  "Kill the other windows making the current window the main one."
-  (interactive)
-  (delete-other-windows-internal))
-
-(defun adam/split-window-below ()
-  "Split the window below and move cursor to the newly spawned window."
-  (interactive)
-  (split-window-below)
-  (other-window 1))
-
-(defun adam/split-window-right ()
-  "Split the window right and move cursor to the newly spawned window."
-  (interactive)
-  (split-window-right)
-  (other-window 1))
-
 (defun adam/tar-file (file-path &optional output-path)
   "Use linux tar util to tar a file FILE-PATH and output to OUTPUT-PATH."
   (interactive "Ftar: ")
@@ -248,12 +257,6 @@
                     (time-subtract after-init-time before-init-time)))
            gcs-done))
 (add-hook 'emacs-startup-hook #'adam/display-startup-time)
-
-;; (defun myeshell/clear ()
-;;   "Clears the current eshell buffer."
-;;   (interactive)
-;;   (let ((inhibit-read-only t))
-;;     (erase-buffer)))
 
 (defun adam/empty-buffer ()
   "Creates a new empty buffer in the current window."
@@ -289,7 +292,7 @@
   (eshell-send-input))
 
 (defun adam/get-buffer-names ()
-  "Return all Currenly open buffers and Strings."
+  "Return all Currently open buffers and Strings."
   (mapcar #'buffer-name (buffer-list)))
 
 (defun adam/fap (function sequence)
@@ -302,6 +305,18 @@
     (insert-file-contents file-path)
     (buffer-string)))
 
+(defun adam/strip-ending-newline (str)
+  "Strip the Ending Newline from a String."
+  (replace-regexp-in-string "\n\\'" "" str))
+
+(defun adam/shell-command (cmd)
+  "Launch a Synchronous Shell Command, return the output as a STRING on SUCCESS, return NIL on FAILURE."
+  (with-temp-buffer
+    (let ((exit-status (call-process-shell-command cmd nil t)))
+      (if (zerop exit-status)
+          (buffer-string)
+        nil))))
+
 (defun million (x)
   "Take a given number X, and return X million."
   (* x 1000000))
@@ -310,16 +325,20 @@
   "Take a given number X, and return X thousand."
   (* x 1000))
 
+(defun true? (value)
+  "If the VALUE is not NIL return T, else NIL."
+  (if value t nil))
+
 (defvar kill-all-buffers-last
   nil
   "History for the `Kill-All-Buffers' Command.")
 
-(defun kill-all-buffers-match (match-input buffer)
+(defun adam/kill-all-buffers-match (match-input buffer)
   "The Matching Function for the `Kill-All-Buffers' Function."
   (when-let (y (string-match match-input buffer))
     (when (= y 0) buffer)))
 
-(defun kill-all-buffers (input)
+(defun adam/kill-all-buffers (input)
   "`Kill-All-Buffers' matching the string predicate.
     Example => `Example' will kill `Example<1>', `Example<2>'..."
   (interactive "sbuffer: ")

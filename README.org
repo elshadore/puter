@@ -1,24 +1,24 @@
 * PORTABLE PUTER
-contains config contents and a collection of other computer conservables to cache.
+Emacs is my Operating System :).
 
 ** CONFIGS
-- alacritty
-- bash
-- emac
-- gdb
-- git
-- i3 config
-- i3 status
-- kitty
-- picom
-- rofi
+- Alacritty
+- Bash
+- Emacs
+- Gdb
+- Git
+- i3 Config
+- i3 Status
+- Kitty
+- Picom
+- Rofi
 - xinitrc
 
 ** ADDITIONAL ITEMS
-- wallpapers
+- Wallpapers
 
 ** FONTS USED
-- nerd fonts
+- Nerd Fonts
  - iosevka-nerd-font
  - terminess-nerd-font
  - jetbrains-nerd-font

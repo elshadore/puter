@@ -38,8 +38,9 @@
 (setq-default display-line-numbers-type 'relative)
 (setq browse-url-browser-function #'browse-url-firefox)
 
-(setq debug-on-error t)
-(setq edebug-all-forms t)
+(setq debug-on-error nil)
+(setq edebug-all-forms nil)
+
 (setq message-log-max 16384)
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
@@ -52,6 +53,9 @@
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
 
 (push "/home/adam/.emacs.d/lisp/" load-path)
+
+(push "/home/adam/.emacs.d/themes/" custom-theme-load-path)
+(setq custom-theme-directory "/home/adam/.emacs.d/themes/")
 
 (electric-pair-mode 1)
 (setq compile-command "")
@@ -80,6 +84,11 @@
 (setq straight-use-package-by-default t)
 
 (require 'adam)
+(require 'adam-window)
+
+;; Quitting is always an option...
+(global-set-key (kbd "<escape>") #'adam/quitter)
+(global-set-key [remap keyboard-quit] #'adam/quitter)
 
 (defun adam/set-frame-default-params ()
   "Set all frame params."
@@ -93,13 +102,12 @@
                     (adam/set-frame-default-params))))
   (adam/set-frame-default-params))
 
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
 (defvar adam/emacs-symbol-regex "\\(?:\\sw\\|\\s_\\|\\\\.\\)+\\(?:\\sw\\|\\s_\\|\\\\.\\|[0-9]\\)*")
 
 (defun adam/elisp-regex-generate (matches)
     (mapcar (lambda (m)
-              (list (car m) (concat "^\\s-*(" (cdr m) (concat "\\s-+\\(" adam/emacs-symbol-regex "\\)")) 1)) matches))
+              (list (car m) (concat "^\\s-*(" (cdr m) (concat "\\s-+\\(" adam/emacs-symbol-regex "\\)")) 1))
+            matches))
 
 (defvar adam/elisp-regex (adam/elisp-regex-generate
                           '(("function" . "defun")
@@ -542,11 +550,9 @@
     "qq" '(quick-calc :wk "quick tool calculator")))
 
 (require 'adam-mode)
+(require 'puter)
 
-(defvar adam/init-theme 'modus-vivendi-tinted)
-;; (defvar adam/init-theme 'doom-winter-is-coming-dark-blue)
-;; (defvar adam/init-theme 'doom-homage-black)
-(load-theme adam/init-theme t)
+(adam/load-theme 'adam)
 
 ;; (set-frame-parameter nil 'alpha-background 90)
 

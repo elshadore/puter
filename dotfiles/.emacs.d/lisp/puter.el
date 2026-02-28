@@ -1,4 +1,5 @@
 (defun puter/quiet-kill-process (process)
+  "Kill a Process PROCESS, but if it's already dead, ignore."
   (when (process-live-p process)
     (kill-process process)
     t))
@@ -23,14 +24,14 @@
 (defun puter/service-status (define-symbol)
   (assert! (symbolp define-symbol) "service-status DEFINE-SYMBOL is supposed to be of type SYMBOL.")
   (if-let ((a (gethash define-symbol puter/services)))
-      (process-status a)
+      (if a
+          (process-status a)
+        (quote not-started))
     (quote not-registered)))
 
 (defmacro puter/defservice (define-symbol shell-command)
   "Define and Run a Managed Service by Emacs."
   (list 'puter/register-service (list 'quote define-symbol) shell-command))
-
-;; (puter/defservice keyboard-daemon "sxhkd")
 
 (defun puter/xgfxtablet ()
   "Setup XGFXtablet."
@@ -72,13 +73,60 @@
   "Detects if Emacs is being used as a Desktop Window Manager or not."
   (and (display-graphic-p)
        (eq system-type 'gnu/linux)
-       (getenv "ADAM/EXWM-ENABLE")))
+       (getenv "ADAM_EXWM_ENABLE")))
+
+(defun puter/notify-send (message)
+  (let ((final (adam/stringify message)))
+    (start-process-shell-command final nil (format "dunstify %S" final))))
+
+(defun puter/colour-picker ()
+  "Start XCOLOR as a colour picker."
+  (interactive)
+  (start-process-shell-command "xcolor" nil "xcolor"))
+
+(defun puter/copy-to-clipboard (string)
+  "Push STRING to the kill ring and copy to clipboard."
+  (interactive "sClip: ")
+  (kill-new string))
+
+;; TODO: This.
+
+;; (defun puter/clipboard-command (command)
+;;   "Run the Command COMMAND, Asynchronosly and Copy the Result the EMACS Clipboard."
+;;   (start-process-shell-command command
+;;                                nil
+;;                                (format "emacsclient -e $(%S)"
+;;                                        (format "emacsclient -e %S"
+;;                                                (format "(puter/clipboard %S)" command))))
+;;   t)
+
+;; (puter/clipboard-command "echo \"henlo\"")
+
+(defun puter/screen-shot ()
+  "Screen Shot using the SCROT Utility."
+  (interactive)
+  (start-process-shell-command "scrot" nil "$(scrot -s)"))
+
+(defun puter/emacsclient (command)
+  "Use the EMACS SERVER to run the command COMMAND."
+  (let ((fmt (format "%S" command)))
+    (start-process-shell-command fmt nil (format "emacsclient -e %S" fmt)))
+  t)
+
+(defmacro puter/emacsclientq (command)
+  "A Macro version of the puter/emacsclient function that QUOTES the COMMAND."
+  (list 'puter/emacsclient (list 'quote command)))
+
+(puter/emacsclientq (message "henlo"))
 
 (when (puter/can-load-exwm?)
   (use-package exwm
     :config
+
     (defun puter/exwm-update-class ()
       (exwm-workspace-rename-buffer exwm-class-name))
+
+    (add-hook 'exwm-update-class-hook #'puter/exwm-update-class)
 
     (setq exwm-workspace-number 10)
 
@@ -91,12 +139,15 @@
             ?\M-&
             ?\M-:
             ?\C-\M-j
-            ?\C-\ ))
+            ;; ?\C-\
+            ))
 
     (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
     (setq exwm-input-global-keys
           `(
+            ;; ([?\s-Q] . save-buffers-kill-emacs)
+
             ([?\s-r] . exwm-reset)
 
             ([s-left] . awin/move-left)
@@ -104,32 +155,62 @@
             ([s-up] . awin/move-up)
             ([s-right] . awin/move-right)
 
-            ([?\s-p] . puter/spawn-app)
+            ([?\s-\;] . puter/spawn-app)
 
             ([?\s-h] . awin/move-left)
             ([?\s-j] . awin/move-down)
             ([?\s-k] . awin/move-up)
             ([?\s-l] . awin/move-right)
 
-            ([?\s-&] . (lambda (command)
-                         (interactive (list (read-shell-command "$ ")))
-                         (start-process-shell-command command nil command)))
+            ([?\s-H] . awin/swap-left)
+            ([?\s-J] . awin/swap-down)
+            ([?\s-K] . awin/swap-up)
+            ([?\s-L] . awin/swap-right)
 
-            ([?\s-w] . exwm-workspace-switch)
+            ([?\C-s-h] . awin/split-left)
+            ([?\C-s-j] . awin/split-down)
+            ([?\C-s-k] . awin/split-up)
+            ([?\C-s-l] . awin/split-right)
+
+            ([?\s-w] . awin/kill-window)
+            ([?\s-W] . awin/kill-window-and-buffer)
+
+            ([?\s-m] . awin/maximize)
+
+            ([?\s-¬] . (lambda () (interactive) (exwm-workspace-move-window 0)))
+            ([?\s-!] . (lambda () (interactive) (exwm-workspace-move-window 1)))
+            ([?\s-\"] . (lambda () (interactive) (exwm-workspace-move-window 2)))
+            ([?\s-£] . (lambda () (interactive) (exwm-workspace-move-window 3)))
+            ([?\s-$] . (lambda () (interactive) (exwm-workspace-move-window 4)))
+            ([?\s-%] . (lambda () (interactive) (exwm-workspace-move-window 5)))
+            ([?\s-^] . (lambda () (interactive) (exwm-workspace-move-window 6)))
+            ([?\s-&] . (lambda () (interactive) (exwm-workspace-move-window 7)))
+            ([?\s-*] . (lambda () (interactive) (exwm-workspace-move-window 8)))
+            ([?\s-\(] . (lambda () (interactive) (exwm-workspace-move-window 9)))
+            ([?\s-\)] . (lambda () (interactive) (exwm-workspace-move-window 0)))
+
             ([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
             ,@(mapcar (lambda (i)
                         `(,(kbd (format "s-%d" i)) .
                           (lambda ()
                             (interactive)
                             (exwm-workspace-switch-create ,i))))
-                      (number-sequence 0 9))))
+                      (number-sequence 0 9))
+            ))
 
     (require 'exwm-randr)
     (setq exwm-randr-workspace-monitor-plist '(0 "HDMI-1" 9 "HDMI-2"))
     (add-hook 'exwm-randr-screen-change-hook 'puter/xsettings)
     (exwm-randr-mode 1)
 
-    (exwm-enable)))
+    (exwm-enable))
 
+  ;; Desktop Services
+  (puter/defservice network-manager "nm-applet")
+  (puter/defservice dunst "dunst")
+  (puter/defservice picom "picom")
+  (puter/defservice polybar "polybar")
+  (puter/defservice keyboard-daemon "sxhkd")
+  )
 
 (provide 'puter)

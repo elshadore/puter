@@ -3,6 +3,8 @@
 ;;: note: on first install call M-x all-the-icons-install-fonts
 ;;; Code:
 
+(server-start)
+
 (setq custom-file "~/.emacs.d/custom.el")
 (scroll-bar-mode -1)
 (tool-bar-mode -1)

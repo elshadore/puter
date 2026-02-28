@@ -44,6 +44,12 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (when-let ((a (string-match pattern string)))
     (match-string-no-properties (or match 0) string)))
 
+(defun adam/stringify (any)
+  "Turn ANY Lisp Data into a string, if already a string, return."
+  (if (stringp any)
+      any
+    (format "%S" any)))
+
 (defun adam/read-current-line ()
   "Reads the Current Line of a Buffer and Returns it as a String."
   (interactive)

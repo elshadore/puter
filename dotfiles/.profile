@@ -26,3 +26,8 @@ alias ls='ls --color=auto'
 alias ll="ls -lah"
 alias grep='grep --color=auto'
 alias tmux="tmux -2"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/adam/.lmstudio/bin"
+# End of LM Studio CLI section
+

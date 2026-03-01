@@ -76,36 +76,29 @@
        (getenv "ADAM_EXWM_ENABLE")))
 
 (defun puter/notify-send (message)
+  "Send Notification to Desktop."
   (let ((final (adam/stringify message)))
     (start-process-shell-command final nil (format "dunstify %S" final))))
+
+;; TODO: this doesn't work in EXWM due to not having the correct shell ENV for xclip.
+(defun puter/clipboard-command (command)
+  "Run the Command COMMAND, Asynchronosly and Copy the Result the EMACS Clipboard."
+  (start-process-shell-command command nil (concat command " | xclip -selection clipboard")))
 
 (defun puter/colour-picker ()
   "Start XCOLOR as a colour picker."
   (interactive)
-  (start-process-shell-command "xcolor" nil "xcolor"))
+  (puter/clipboard-command "xcolor"))
 
 (defun puter/copy-to-clipboard (string)
   "Push STRING to the kill ring and copy to clipboard."
   (interactive "sClip: ")
   (kill-new string))
 
-;; TODO: This.
-
-;; (defun puter/clipboard-command (command)
-;;   "Run the Command COMMAND, Asynchronosly and Copy the Result the EMACS Clipboard."
-;;   (start-process-shell-command command
-;;                                nil
-;;                                (format "emacsclient -e $(%S)"
-;;                                        (format "emacsclient -e %S"
-;;                                                (format "(puter/clipboard %S)" command))))
-;;   t)
-
-;; (puter/clipboard-command "echo \"henlo\"")
-
 (defun puter/screen-shot ()
   "Screen Shot using the SCROT Utility."
   (interactive)
-  (start-process-shell-command "scrot" nil "$(scrot -s)"))
+  (start-process-shell-command "scrot" nil "scrot -s"))
 
 (defun puter/emacsclient (command)
   "Use the EMACS SERVER to run the command COMMAND."
@@ -116,8 +109,6 @@
 (defmacro puter/emacsclientq (command)
   "A Macro version of the puter/emacsclient function that QUOTES the COMMAND."
   (list 'puter/emacsclient (list 'quote command)))
-
-(puter/emacsclientq (message "henlo"))
 
 (when (puter/can-load-exwm?)
   (use-package exwm
@@ -167,10 +158,10 @@
             ([?\s-K] . awin/swap-up)
             ([?\s-L] . awin/swap-right)
 
-            ([?\C-s-h] . awin/split-left)
-            ([?\C-s-j] . awin/split-down)
-            ([?\C-s-k] . awin/split-up)
-            ([?\C-s-l] . awin/split-right)
+            ([?\C-\s-h] . awin/split-left)
+            ([?\C-\s-j] . awin/split-down)
+            ([?\C-\s-k] . awin/split-up)
+            ([?\C-\s-l] . awin/split-right)
 
             ([?\s-w] . awin/kill-window)
             ([?\s-W] . awin/kill-window-and-buffer)
@@ -200,10 +191,12 @@
 
     (require 'exwm-randr)
     (setq exwm-randr-workspace-monitor-plist '(0 "HDMI-1" 9 "HDMI-2"))
-    (add-hook 'exwm-randr-screen-change-hook 'puter/xsettings)
+    ;; (add-hook 'exwm-randr-screen-change-hook 'puter/xsettings)
     (exwm-randr-mode 1)
 
     (exwm-enable))
+
+  (puter/xsettings)
 
   ;; Desktop Services
   (puter/defservice network-manager "nm-applet")

@@ -1,2 +1,5 @@
 super + i
-      xcolor
+      xcolor | xclip -selection clipboard
+
+super + Print
+      scrot -s -e 'mv $f ~/Pictures/screenshots/'

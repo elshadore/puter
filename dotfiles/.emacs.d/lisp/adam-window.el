@@ -39,7 +39,7 @@
   (interactive)
   (if (one-window-p)
       (scratch-buffer)
-    (window-delete)))
+    (delete-window)))
 
 (defun awin/kill-window-and-buffer ()
   "Kill the current window it's buffer."

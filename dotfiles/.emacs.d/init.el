@@ -261,7 +261,10 @@
 
 (use-package sudo-edit)
 
-(use-package multiple-cursors)
+(use-package multiple-cursors
+  :config
+  (define-key mc/keymap (kbd "<return>") nil)
+  (setq mc/always-run-for-all t))
 
 (use-package helpful)
 
@@ -387,6 +390,13 @@
 
 (use-package lsp-ivy)
 
+(evil-define-command adam/evil-normal-mc-escape ()
+  "Hack for Escaping Multiple Cursors. Make Multiple Cursors Behave almost like a VIM Mode."
+  :repeat abort
+  :suppress-operator t
+  (mc/keyboard-quit)
+  (evil-normal-state))
+
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -399,6 +409,12 @@
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (define-key evil-normal-state-map (kbd "M-n") 'mc/mark-next-like-this)
+  (define-key evil-normal-state-map (kbd "M-p") 'mc/mark-previous-like-this)
+  (define-key evil-normal-state-map (kbd "M-a") 'mc/mark-all-like-this)
+  (define-key evil-normal-state-map (kbd "<escape>") 'adam/evil-normal-mc-escape)
+
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal)
   (setq evil-lookup-func #'adam/lookup-func))

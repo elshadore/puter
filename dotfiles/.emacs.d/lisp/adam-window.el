@@ -60,8 +60,7 @@
 (defun awin/split-left ()
   "Split the window left and move cursor to the newly spawned window."
   (interactive)
-  (split-window-right)
-  (other-window 1))
+  (split-window-right))
 
 (defun awin/split-down ()
   "Split the window down and move cursor to the newly spawned window."
@@ -72,8 +71,7 @@
 (defun awin/split-up ()
   "Split the window up and move cursor to the newly spawned window."
   (interactive)
-  (split-window-below)
-  (other-window 1))
+  (split-window-below))
 
 (defun awin/split-right ()
   "Split the window right and move cursor to the newly spawned window."

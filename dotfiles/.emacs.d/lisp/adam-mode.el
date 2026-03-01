@@ -14,7 +14,7 @@
             (define-key map (kbd "M-x") 'adam/M-x)
             (define-key map (kbd "C-,") 'adam/move-to-top)
             (define-key map (kbd "C-x SPC") 'adam/M-x)
-            
+
             (define-key map (kbd "C-x k") 'kill-buffer)
             (define-key map (kbd "C-x K") 'kill-buffer-and-window)
 

@@ -198,12 +198,22 @@
 
   (puter/xsettings)
 
+  (defun puter/polybar-exwm-workspace ()
+    "Returns the Current Workspace ID."
+    exwm-workspace-current-index)
+
+  (defun puter/polybar-workspace-hook ()
+    (start-process-shell-command "polybar-msg" nil "polybar-msg action \"#exwm-workspace.hook.0\""))
+
+  (add-hook 'exwm-workspace-switch-hook #'puter/polybar-workspace-hook)
+
   ;; Desktop Services
   (puter/defservice network-manager "nm-applet")
   (puter/defservice dunst "dunst")
   (puter/defservice picom "picom")
   (puter/defservice polybar "polybar")
   (puter/defservice keyboard-daemon "sxhkd")
+
   )
 
 (provide 'puter)

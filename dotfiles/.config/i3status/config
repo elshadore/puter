@@ -18,7 +18,6 @@ cpu_usage {
     format = "CPU: %usage"
 }
 
-
 cpu_temperature 0 {
     format = "TEMP: %degrees °C"
 }

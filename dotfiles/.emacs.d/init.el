@@ -290,6 +290,11 @@
   (add-hook 'js-mode-hook 'js2-minor-mode)
   (add-hook 'js2-mode-hook 'ac-js2-mode))
 
+(use-package markdown-mode
+  :straight t
+  :config
+  (add-hook 'markdown-mode-hook 'visual-line-mode))
+
 (defun adam/org-hook ()
   "Hook for setting indentation on org-mode."
   (setq-local evil-shift-width 2))

@@ -1,4 +1,39 @@
-export PS1='\[\e[32m\]\u@\h:\w\$\[\e[0m\] '
+git_prompt_status() {
+    local branch
+    branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+    if [ -z "$branch" ]; then
+        return
+    fi
+
+    local status=""
+    # Check for unstaged changes (*)
+    if ! git diff --quiet 2>/dev/null; then
+        status="${status}*"
+    fi
+    # Check for untracked files (?)
+    if [ -n "$(git ls-files --others --exclude-standard 2>/dev/null)" ]; then
+        status="${status}?"
+    fi
+
+    echo "$branch${status}"
+}
+
+prompt_status() {
+    local prompt='[\[\e[36m\]λ\[\e[0m\]:\[\e[34m\]\w'
+    local gitout=$(git_prompt_status)
+
+    if [ -z "$gitout" ]; then
+        prompt="${prompt}\[\e[0m\]]\n"
+    else
+        prompt="${prompt}\[\e[0m\]@\[\e[32m\]${gitout}\[\e[0m\]]\n"
+    fi
+
+    PS1=${prompt}
+}
+
+# Lambda:Directory@GitBranch
+# export PS1='[\[\e[36m\]λ\[\e[0m\]:\[\e[34m\]\w\[\e[0m\]@\[\e[32m\]$(git_prompt_status)\[\e[0m\]]\n'
+export PROMPT_COMMAND=prompt_status
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 

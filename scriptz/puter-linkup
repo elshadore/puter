@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -xve
+
+cd ~/puter
+
+stow --no-folding dotfiles
+ln -sf ./dotfiles/.bashrc ~/.profile

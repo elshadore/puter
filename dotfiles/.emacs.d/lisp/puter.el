@@ -33,36 +33,41 @@
   "Define and Run a Managed Service by Emacs."
   (list 'puter/register-service (list 'quote define-symbol) shell-command))
 
-(defun puter/xgfxtablet ()
-  "Setup XGFXtablet."
-  (interactive)
-  (if (when-let ((a (adam/shell-command "xinput list --id-only \"UGTABLET 10 inch PenTablet stylus\"")))
-        (adam/shell-command
-         (format "xinput map-to-output %s HDMI-1"
-                 (adam/strip-ending-newline a))))
-      (message "XGFXTablet Set Up!")
-      (message "XGFXTablet Setup Failed!")))
+;; (defun puter/xgfxtablet ()
+;;   "Setup XGFXtablet."
+;;   (interactive)
+;;   (if (when-let ((a (adam/shell-command "xinput list --id-only \"UGTABLET 10 inch PenTablet stylus\"")))
+;;         (adam/shell-command
+;;          (format "xinput map-to-output %s HDMI-1"
+;;                  (adam/strip-ending-newline a))))
+;;       (message "XGFXTablet Set Up!")
+;;       (message "XGFXTablet Setup Failed!")))
+
+;; (defvar puter/xsettings-commands
+;;   '("setxkbmap gb"
+;;     "xset r rate 200 80"
+;;     "xset s off -dpms"
+;;     "xrandr --output HDMI-1 --primary --output HDMI-2 --right-of HDMI-1"))
+
+;; (defun puter/xsettings ()
+;;   "Apply XSettings."
+;;   (interactive)
+;;   (dolist (el puter/xsettings-commands)
+;;     (shell-command el))
+;;   (message "XSetting Applied!")
+;;   (puter/xgfxtablet))
 
 (defun puter/linkup ()
   "Linked Up! Sneed it or Keep it?"
   (interactive)
-  (let ((default-directory "~/puter/"))
-    (shell-command "stow --no-folding dotfiles"))
+  (shell-command "puter-linkup")
   (message "Linked Up! Sneed it or Keep it?"))
 
-(defvar puter/xsettings-commands
-  '("setxkbmap gb"
-    "xset r rate 200 80"
-    "xset s off -dpms"
-    "xrandr --output HDMI-1 --primary --output HDMI-2 --right-of HDMI-1"))
-
 (defun puter/xsettings ()
-  "Apply XSettings."
+  "Apply XSettings"
   (interactive)
-  (dolist (el puter/xsettings-commands)
-    (shell-command el))
-  (message "XSetting Applied!")
-  (puter/xgfxtablet))
+  (shell-command "puter-xsettings")
+  (message "XSettings Applied!"))
 
 (defun puter/spawn-app ()
   "Spawn a Linux App."

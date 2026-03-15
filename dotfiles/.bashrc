@@ -1,3 +1,5 @@
+export PS1='\[\e[32m\]\u@\h:\w\$\[\e[0m\] '
+
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 export XDG_CONFIG_HOME=${HOME}/.config
@@ -6,6 +8,7 @@ export XDG_DATA_HOME=${HOME}/.local/share
 export XDG_STATE_HOME=${HOME}/.local/state
 
 export PATH=${PATH}:~/bin
+export PATH=${PATH}:~/puter/scriptz
 export PATH=${PATH}:~/.cargo/bin
 export LSP_USE_PLISTS=true
 export EDITOR="emacsclient -c -a emacs"
@@ -27,7 +30,4 @@ alias ll="ls -lah"
 alias grep='grep --color=auto'
 alias tmux="tmux -2"
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/home/adam/.lmstudio/bin"
-# End of LM Studio CLI section
-
+export PATH="$HOME/.npm-global/bin:$PATH"

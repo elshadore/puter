@@ -344,6 +344,11 @@
   :config
   (define-key lua-mode-map (kbd "<normal-state> K") nil))
 
+(use-package python
+  :straight nil
+  :config
+  (setq python-shell-interpreter "python3"))
+
 (use-package gdscript-mode
   :config
   (setq gdscript-godot-executable "/bin/godot/godot")
@@ -355,6 +360,7 @@
 
 (defvar adam/lsp-mode-hooks
   '(lua-mode-hook
+    python-mode-hook
     go-mode-hook
     rust-mode-hook
     zig-mode-hook
@@ -554,9 +560,10 @@
 (require 'adam-mode)
 (require 'puter)
 
-(adam/load-theme 'adam)
-
-;; (set-frame-parameter nil 'alpha-background 90)
+(setq doom-ir-black-brighter-comments t)
+(setq doom-ir-black-padded-modeline nil)
+(adam/load-theme 'doom-ir-black)
+(set-frame-parameter nil 'alpha-background 90)
 
 (load-file custom-file)
 (setq inhibit-startup-screen t)

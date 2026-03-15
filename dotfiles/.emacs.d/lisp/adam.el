@@ -17,6 +17,14 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
     (abort-recursive-edit))
    (t (keyboard-quit))))
 
+
+(defun adam/selection-reverse (beg end)
+  "Reverse characters in the selected region."
+  (interactive "r")
+  (let ((text (buffer-substring beg end)))
+    (delete-region beg end)
+    (insert (reverse text))))
+
 (defun adam/disable-all-themes ()
   "Disable all currently active themes."
   (interactive)

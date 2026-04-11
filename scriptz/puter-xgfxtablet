@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -xve
+
+var=`xinput list --id-only "UGTABLET 10 inch PenTablet stylus"`
+if [ -n "$var" ]; then
+    xinput map-to-output ${var} HDMI-1
+fi

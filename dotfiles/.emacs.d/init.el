@@ -301,13 +301,14 @@
 
 (use-package org
   :config
+  (add-hook 'org-mode-hook 'visual-line-mode)
   (add-hook 'org-mode-hook 'adam/org-hook)
   (setq org-edit-src-content-indentation 0)
   (setq org-link-descriptive t))
 
 (use-package sly
   :config
-  (setq inferior-lisp-program "/bin/sbcl --dynamic-space-size 4Gb"))
+  (setq inferior-lisp-program "ros -L sbcl -Q -l ~/.sbclrc run"))
 
 (use-package clojure-mode)
 (use-package cider)
@@ -349,6 +350,9 @@
   :config
   (define-key lua-mode-map (kbd "<normal-state> K") nil))
 
+(use-package js
+  :straight t)
+
 (use-package python
   :straight nil
   :config
@@ -364,7 +368,8 @@
 (use-package wgsl-mode)
 
 (defvar adam/lsp-mode-hooks
-  '(lua-mode-hook
+  '(js-mode-hook
+    lua-mode-hook
     python-mode-hook
     go-mode-hook
     rust-mode-hook
@@ -427,6 +432,10 @@
 (use-package evil-nerd-commenter
   :bind
   ("C-#" . evilnc-comment-or-uncomment-lines))
+
+(use-package evil-multiedit
+  :config
+  (evil-multiedit-default-keybinds))
 
 (use-package dired
   :straight nil

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -xve
+
+for arg in "$@"; do
+    mv ${arg} ~/trash/
+done

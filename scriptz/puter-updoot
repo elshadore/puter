@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -xve
+
+yay --noconfirm -Syu

@@ -23,9 +23,9 @@ prompt_status() {
     local gitout=$(git_prompt_status)
 
     if [ -z "$gitout" ]; then
-        prompt="${prompt}\[\e[0m\]]\n"
+        prompt="${prompt}\[\e[0m\]]\n> "
     else
-        prompt="${prompt}\[\e[0m\]@\[\e[32m\]${gitout}\[\e[0m\]]\n"
+        prompt="${prompt}\[\e[0m\]@\[\e[32m\]${gitout}\[\e[0m\]]\n> "
     fi
 
     PS1=${prompt}

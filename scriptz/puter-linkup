@@ -5,4 +5,6 @@ set -xve
 cd ~/puter
 
 stow --no-folding dotfiles
-ln -sf ./dotfiles/.bashrc ~/.profile
+
+cd ~/
+ln -sf ./puter/dotfiles/.bashrc ~/.profile

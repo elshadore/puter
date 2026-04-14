@@ -1,3 +1,5 @@
+# My .bashrc and .profile :)
+
 git_prompt_status() {
     local branch
     branch=$(git symbolic-ref --short HEAD 2>/dev/null)
@@ -31,8 +33,6 @@ prompt_status() {
     PS1=${prompt}
 }
 
-# Lambda:Directory@GitBranch
-# export PS1='[\[\e[36m\]λ\[\e[0m\]:\[\e[34m\]\w\[\e[0m\]@\[\e[32m\]$(git_prompt_status)\[\e[0m\]]\n'
 export PROMPT_COMMAND=prompt_status
 
 export _JAVA_AWT_WM_NONREPARENTING=1

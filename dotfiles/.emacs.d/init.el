@@ -308,14 +308,16 @@
 
 (use-package sly
   :config
-  (setq inferior-lisp-program "ros -L sbcl -Q -l ~/.sbclrc run"))
+  (setq inferior-lisp-program "ros dynamic-space-size=4Gb -L sbcl -Q -l ~/.sbclrc run"))
+
+;; EWW Yuck
+(add-to-list 'auto-mode-alist '("\\.yuck\\'" . lisp-mode))
 
 (use-package clojure-mode)
 (use-package cider)
 
 (use-package geiser)
 (use-package geiser-racket)
-;; (use-package geiser-guile)
 
 (use-package haskell-mode)
 
@@ -336,6 +338,7 @@
       (case-label . +))))
   (setq c-default-style "adam")
   (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode)))
+
 
 (use-package zig-mode
   :config

@@ -85,7 +85,7 @@
   (let ((final (adam/stringify message)))
     (start-process-shell-command final nil (format "dunstify %S" final))))
 
-;; TODO: this doesn't work in EXWM due to not having the correct shell ENV for xclip.
+;;  TODO: this doesn't work in EXWM due to not having the correct shell ENV for xclip.
 (defun puter/clipboard-command (command)
   "Run the Command COMMAND, Asynchronosly and Copy the Result the EMACS Clipboard."
   (start-process-shell-command command nil (concat command " | xclip -selection clipboard")))
@@ -203,20 +203,20 @@
 
   (puter/xsettings)
 
-  (defun puter/polybar-exwm-workspace ()
-    "Returns the Current Workspace ID."
-    exwm-workspace-current-index)
+  ;; (defun puter/polybar-exwm-workspace ()
+  ;;   "Returns the Current Workspace ID."
+  ;;   exwm-workspace-current-index)
 
-  (defun puter/polybar-workspace-hook ()
-    (start-process-shell-command "polybar-msg" nil "polybar-msg action \"#exwm-workspace.hook.0\""))
+  ;; (defun puter/polybar-workspace-hook ()
+  ;;   (start-process-shell-command "polybar-msg" nil "polybar-msg action \"#exwm-workspace.hook.0\""))
 
-  (add-hook 'exwm-workspace-switch-hook #'puter/polybar-workspace-hook)
+  ;; (add-hook 'exwm-workspace-switch-hook #'puter/polybar-workspace-hook)
 
   ;; Desktop Services
   (puter/defservice network-manager "nm-applet")
   (puter/defservice dunst "dunst")
   (puter/defservice picom "picom")
-  (puter/defservice polybar "polybar")
+  ;; (puter/defservice polybar "polybar")
   (puter/defservice keyboard-daemon "sxhkd")
   )
 

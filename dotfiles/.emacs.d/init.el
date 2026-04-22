@@ -94,7 +94,8 @@
 
 (defun adam/set-frame-default-params ()
   "Set all frame params."
-  (adam/set-font "Iosevka Nerd Font Mono" 12))
+  (adam/set-font "Iosevka Nerd Font Mono" 12)
+  (set-frame-parameter nil 'alpha-background 90))
 
 ;; Emacs daemon-mode doesn't load frame params correctly.
 (if (daemonp)
@@ -580,7 +581,6 @@
 (setq doom-ir-black-brighter-comments t)
 (setq doom-ir-black-padded-modeline nil)
 (adam/load-theme 'doom-ir-black)
-(set-frame-parameter nil 'alpha-background 90)
 
 (load-file custom-file)
 (setq inhibit-startup-screen t)

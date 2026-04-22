@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 <message> ..."
+    exit 1
+fi
+
+echo "$@" | nc -N 127.0.0.1 6767

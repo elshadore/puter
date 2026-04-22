@@ -111,6 +111,10 @@
     (start-process-shell-command fmt nil (format "emacsclient -e %S" fmt)))
   t)
 
+(exwm-workspace-switch-create 2)
+
+(puter/emacsclientq (exwm-workspace-switch 3))
+
 (defmacro puter/emacsclientq (command)
   "A Macro version of the puter/emacsclient function that QUOTES the COMMAND."
   (list 'puter/emacsclient (list 'quote command)))
@@ -168,8 +172,8 @@
             ([?\C-\s-k] . awin/split-up)
             ([?\C-\s-l] . awin/split-right)
 
-            ([?\s-w] . awin/kill-window)
-            ([?\s-W] . awin/kill-window-and-buffer)
+            ([?\s-q] . awin/kill-window)
+            ([?\s-w] . awin/kill-window-and-buffer)
 
             ([?\s-m] . awin/maximize)
 
@@ -203,20 +207,20 @@
 
   (puter/xsettings)
 
-  ;; (defun puter/polybar-exwm-workspace ()
-  ;;   "Returns the Current Workspace ID."
-  ;;   exwm-workspace-current-index)
+  (defun puter/polybar-exwm-workspace ()
+    "Returns the Current Workspace ID."
+    exwm-workspace-current-index)
 
-  ;; (defun puter/polybar-workspace-hook ()
-  ;;   (start-process-shell-command "polybar-msg" nil "polybar-msg action \"#exwm-workspace.hook.0\""))
+  (defun puter/polybar-workspace-hook ()
+    (start-process-shell-command "polybar-msg" nil "polybar-msg action \"#exwm-workspace.hook.0\""))
 
-  ;; (add-hook 'exwm-workspace-switch-hook #'puter/polybar-workspace-hook)
+  (add-hook 'exwm-workspace-switch-hook #'puter/polybar-workspace-hook)
 
   ;; Desktop Services
   (puter/defservice network-manager "nm-applet")
   (puter/defservice dunst "dunst")
   (puter/defservice picom "picom")
-  ;; (puter/defservice polybar "polybar")
+  (puter/defservice polybar "polybar")
   (puter/defservice keyboard-daemon "sxhkd")
   )
 

@@ -1,8 +1,11 @@
 #!/bin/sh
 
-if [ "$#" -lt 1 ]; then
-    echo "Usage: $0 <message> ..."
+# set -xve
+
+if [ "$#" -eq 1 ]; then
+    emacsclient -e "(exwm-workspace-switch-create $1)"
+else
+    echo "expected 1 argument"
     exit 1
 fi
 
-echo "$@" | nc -N 127.0.0.1 6767

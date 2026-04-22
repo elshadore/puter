@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -xve
+# set -xve
 
 for arg in "$@"; do
     mv ${arg} ~/trash/

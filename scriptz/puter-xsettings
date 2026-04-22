@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -xve
+# set -xve
 
 setxkbmap gb
 xset r rate 200 80

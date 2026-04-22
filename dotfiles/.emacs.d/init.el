@@ -124,6 +124,13 @@
     "custom elisp setup."
     (setq-local imenu-generic-expression adam/elisp-regex))
 
+(defvar adam/lsp-enabled t)
+
+(defun adam/add-lsp-hook (hook)
+  "Add a hook HOOK to lsp mode, if lsp mode is enabled."
+  (when adam/lsp-enabled
+    (add-hook hook 'lsp-mode)))
+
 (use-package emacs
   :hook (emacs-lisp-mode . adam/elisp-setup)
   :config
@@ -289,7 +296,8 @@
 (use-package js2-mode
   :config
   (add-hook 'js-mode-hook 'js2-minor-mode)
-  (add-hook 'js2-mode-hook 'ac-js2-mode))
+  (add-hook 'js2-mode-hook 'ac-js2-mode)
+  (adam/add-lsp-hook 'js-mode-hook))
 
 (use-package markdown-mode
   :straight t
@@ -338,21 +346,32 @@
       (brace-list-open . +)
       (case-label . +))))
   (setq c-default-style "adam")
-  (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode)))
-
+  (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))
+  (adam/add-lsp-hook 'c-mode-hook)
+  (adam/add-lsp-hook 'c++-mode-hook)
+  (adam/add-lsp-hook 'simpc-mode-hook)
+  (when adam/lsp-enabled
+    (setq lsp-clients-clangd-args '("--fallback-style=none" "--clang-tidy=0" "--header-insertion=never"))
+    (add-to-list 'lsp-language-id-configuration '(simpc-mode . "c"))))
 
 (use-package zig-mode
   :config
   (add-hook 'zig-mode-hook
-            #'(lambda ()(interactive)(zig-format-on-save-mode -1))))
+            #'(lambda ()(interactive)(zig-format-on-save-mode -1)))
+  (adam/add-lsp-hook 'zig-mode-hook))
 
-(use-package rust-mode)
+(use-package rust-mode
+  :config
+  (adam/add-lsp-hook 'rust-mode-hook))
 
-(use-package go-mode)
+(use-package go-mode
+  :config
+  (adam/add-lsp-hook 'go-mode-hook))
 
 (use-package lua-mode
   :config
-  (define-key lua-mode-map (kbd "<normal-state> K") nil))
+  (define-key lua-mode-map (kbd "<normal-state> K") nil)
+  (adam/add-lsp-hook 'lua-mode-hook))
 
 (use-package js
   :straight t)
@@ -360,28 +379,18 @@
 (use-package python
   :straight nil
   :config
-  (setq python-shell-interpreter "python3"))
+  (setq python-shell-interpreter "python3")
+  (adam/add-lsp-hook 'python-mode-hook))
 
 (use-package gdscript-mode
   :config
   (setq gdscript-godot-executable "/bin/godot/godot")
   (setq gdscript-use-tab-indents t)
-  (setq gdscript-gdformat-save-and-format nil))
+  (setq gdscript-gdformat-save-and-format nil)
+  (adam/add-lsp-hook 'gdscript-mode-hook))
 
 (use-package glsl-mode)
 (use-package wgsl-mode)
-
-(defvar adam/lsp-mode-hooks
-  '(js-mode-hook
-    lua-mode-hook
-    python-mode-hook
-    go-mode-hook
-    rust-mode-hook
-    zig-mode-hook
-    gdscript-mode-hook
-    c-mode-hook
-    c++-mode-hook
-    simpc-mode-hook))
 
 (use-package lsp-mode
   :init
@@ -391,11 +400,7 @@
   (setq lsp-enable-which-key-integration t)
   :config
   (setq lsp-enable-on-type-formatting nil)
-  (setq lsp-enable-indentation nil)
-  (setq lsp-clients-clangd-args '("--fallback-style=none" "--clang-tidy=0" "--header-insertion=never"))
-  (dolist (el adam/lsp-mode-hooks)
-    (add-hook el 'lsp-mode))
-  (add-to-list 'lsp-language-id-configuration '(simpc-mode . "c")))
+  (setq lsp-enable-indentation nil))
 
 (use-package lsp-ui
   :config

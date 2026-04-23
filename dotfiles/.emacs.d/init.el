@@ -332,6 +332,7 @@
 
 (use-package simpc-mode
   :straight (simpc-mode :type git :host github :repo "rexim/simpc-mode")
+  :after lsp-mode
   :config
   (c-add-style
    "adam"

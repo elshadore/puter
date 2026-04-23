@@ -111,10 +111,6 @@
     (start-process-shell-command fmt nil (format "emacsclient -e %S" fmt)))
   t)
 
-(exwm-workspace-switch-create 2)
-
-(puter/emacsclientq (exwm-workspace-switch 3))
-
 (defmacro puter/emacsclientq (command)
   "A Macro version of the puter/emacsclient function that QUOTES the COMMAND."
   (list 'puter/emacsclient (list 'quote command)))

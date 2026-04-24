@@ -43,6 +43,7 @@ export XDG_DATA_HOME=${HOME}/.local/share
 export XDG_STATE_HOME=${HOME}/.local/state
 
 export PATH=${PATH}:~/bin
+export PATH=${PATH}:~/.local/bin
 export PATH=${PATH}:~/puter/scriptz
 export PATH=${PATH}:~/.cargo/bin
 export LSP_USE_PLISTS=true

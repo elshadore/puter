@@ -1,0 +1,32 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top",
+    "height": 30,
+    "spacing": 4,
+    "output": "HDMI-A-1",
+    "reload_style_on_change": true,
+    "modules-left": ["hyprland/workspaces", "sway/mode"],
+    "modules-center": ["hyprland/window"],
+    "modules-right": ["cpu", "memory", "clock", "tray"],
+    "hyprland/workspaces": {
+        "all-outputs": true,
+    },
+    "hyprland/window": {
+        "max-length": 64
+    },
+    "cpu": {
+        "interval": 1,
+        "format": "CPU: {usage}%"
+    },
+    "memory": {
+        "interval": 1,
+        "format": "RAM: {percentage}%"
+    },
+    "clock": {
+        "interval": 1,
+        "format": "{:%A %d-%m-%Y %H:%M:%S}",
+        "tooltip": false
+    },
+    "tray": {
+    }
+}

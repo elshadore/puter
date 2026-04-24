@@ -1,0 +1,30 @@
+* {
+    font-family: IosevkaNerdFontMono;
+    font-size: 16px;
+}
+
+window#waybar {
+    background-color: #151726;
+    border-top: 2px solid #0b0c15;
+    border-bottom: 2px solid #0b0c15;
+    color: #efece2;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+
+#cpu,
+#memory,
+#clock,
+#tray {
+    padding: 0 6px;
+}
+
+#cpu,
+#memory {
+    color: #96cbfe
+}
+
+#clock {
+    color: #a8ff60
+}

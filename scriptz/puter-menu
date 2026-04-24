@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ "$#" -eq 1 ]; then
+    case "$1" in
+        window) rofi -show window ;;
+        clipboard) cliphist list | rofi -dmenu | cliphist decode | wl-copy ;;
+        emoji) rofi -modi emoji -show emoji ;;
+        *) echo "incorrect commanline argument"
+           exit 1;;
+    esac
+else
+    rofi -show drun
+fi

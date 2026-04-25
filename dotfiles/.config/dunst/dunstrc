@@ -1,0 +1,46 @@
+[global]
+    font = IosevkaNerdFontMono 10
+
+    width = (300, 300)
+    height = (0, 800)
+
+    offset = (2, 8)
+
+    follow = mouse
+    monitor = 1
+
+    padding = 8
+    horizontal_padding = 8
+
+    frame_width = 1
+
+    gap_size = 8
+
+    markup = full
+    format = "<b>%s</b>\n%b"
+
+    alignment = left
+    vertical_alignment = center
+
+[urgency_low]
+    background = "#151726"
+    foreground = "#efece2"
+    frame_color = "#f870f6"
+    timeout = 10
+    default_icon = dialog-information
+
+[urgency_normal]
+    background = "#151726"
+    foreground = "#efece2"
+    frame_color = "#f870f6"
+    timeout = 10
+    override_pause_level = 30
+    default_icon = dialog-information
+
+[urgency_critical]
+    background = "#151726"
+    foreground = "#c83232"
+    frame_color = "#f870f6"
+    timeout = 0
+    override_pause_level = 60
+    default_icon = dialog-warning

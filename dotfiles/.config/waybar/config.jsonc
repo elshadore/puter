@@ -7,7 +7,7 @@
     "reload_style_on_change": true,
     "modules-left": ["hyprland/workspaces", "sway/mode"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["cpu", "memory", "clock", "tray"],
+    "modules-right": ["cpu", "memory", "pulseaudio", "clock", "tray"],
     "hyprland/workspaces": {
         "all-outputs": true,
     },
@@ -21,6 +21,12 @@
     "memory": {
         "interval": 1,
         "format": "RAM: {percentage}%"
+    },
+    "pulseaudio": {
+        "format": "VOL: {volume}%",
+        "format-muted": "🔇",
+        "format-source": "VOL: {volume}%",
+        "format-source-muted": "🔇"
     },
     "clock": {
         "interval": 1,

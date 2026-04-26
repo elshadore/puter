@@ -153,13 +153,16 @@
          ("C-l" . ivy-alt-done)
          ("C-j" . ivy-next-line)
          ("C-k" . ivy-previous-line)
+         ("M-RET" . ivy-immediate-done)
          :map ivy-switch-buffer-map
          ("C-k" . ivy-previous-line)
          ("C-l" . ivy-done)
          ("C-d" . ivy-switch-buffer-kill)
+         ("M-RET" . ivy-immediate-done)
          :map ivy-reverse-i-search-map
          ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
+         ("C-d" . ivy-reverse-i-search-kill)
+         ("M-RET" . ivy-immediate-done))
   :config
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
@@ -272,6 +275,10 @@
 (use-package helpful)
 
 (use-package magit)
+
+(use-package magit-todos
+  :after magit
+  :config (magit-todos-mode 1))
 
 (use-package git-gutter
   :config
@@ -456,6 +463,7 @@
   ((dired-listing-switches "-lah --group-directories-first"))
   :config
   (setq dired-kill-when-opening-new-dired-buffer t)
+  (setq dired-dwim-target t)
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" 'dired-up-directory
     "l" 'dired-find-file

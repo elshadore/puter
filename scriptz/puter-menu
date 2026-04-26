@@ -3,7 +3,7 @@
 if [ "$#" -eq 1 ]; then
     case "$1" in
         window) rofi -show window ;;
-        clipboard) cliphist list | rofi -dmenu | cliphist decode | wl-copy ;;
+        clipboard) cliphist list | rofi -dmenu -p "clip" | cliphist decode | wl-copy ;;
         emoji) rofi -modi emoji -show emoji ;;
         *) echo "incorrect commandline arguments"
            exit 1;;

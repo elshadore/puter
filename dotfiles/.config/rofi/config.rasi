@@ -2,3 +2,11 @@ configuration {
     font: "IosevkaNerdFont 14";
     show-icons: true;
 }
+
+/*
+* {
+    background: rgba ( 12, 11, 24, 100 % );
+    foreground: rgba ( 248, 221, 58, 100 % );
+    alternate-active-background: rgba ( 8, 10, 15, 100 % );
+}
+*/

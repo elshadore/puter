@@ -1,12 +1,58 @@
-configuration {
+* {
     font: "IosevkaNerdFont 14";
-    show-icons: true;
+    background-color:   transparent;
+    adam-bg: #151726;
+    adam-fg: #efece2;
+    adam-highlight: #f870f6;
+    adam-green: #a8ff60;
+    adam-blue: #96cbfe;
 }
 
-/*
-* {
-    background: rgba ( 12, 11, 24, 100 % );
-    foreground: rgba ( 248, 221, 58, 100 % );
-    alternate-active-background: rgba ( 8, 10, 15, 100 % );
+window {
+    background-color: @adam-bg;
+    border-color: @adam-highlight;
+    location: center;
+    border: 1px;
 }
-*/
+
+scrollbar {
+    handle-color: @adam-green;
+}
+
+inputbar,
+prompt,
+entry,
+element-text,
+element-icon,
+textbox {
+    text-color: @adam-fg;
+    background-color: @adam-bg;
+    border-colour: @adam-bg;
+}
+
+textbox {
+    blink: true;
+}
+
+element-text {
+    highlight: @adam-highlight;
+}
+
+listview {
+    lines: 24;
+    columns: 1;
+    border-color: @adam-green;
+}
+
+element normal.normal,
+element normal.urgent,
+element normal.active,
+element selected.normal,
+element selected.urgent,
+element selected.active,
+element alternate.normal,
+element alternate.urgent,
+element alternate.active {
+    background-color: @adam-bg;
+    text-color: @adam-fg;
+}

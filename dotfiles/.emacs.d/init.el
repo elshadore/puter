@@ -153,16 +153,17 @@
          ("C-l" . ivy-alt-done)
          ("C-j" . ivy-next-line)
          ("C-k" . ivy-previous-line)
-         ("M-RET" . ivy-immediate-done)
+         ;; ("M-RET" . ivy-immediate-done)
          :map ivy-switch-buffer-map
          ("C-k" . ivy-previous-line)
          ("C-l" . ivy-done)
          ("C-d" . ivy-switch-buffer-kill)
-         ("M-RET" . ivy-immediate-done)
+         ;; ("M-RET" . ivy-immediate-done)
          :map ivy-reverse-i-search-map
          ("C-k" . ivy-previous-line)
          ("C-d" . ivy-reverse-i-search-kill)
-         ("M-RET" . ivy-immediate-done))
+         ;; ("M-RET" . ivy-immediate-done)
+         )
   :config
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
@@ -306,21 +307,58 @@
   (add-hook 'js2-mode-hook 'ac-js2-mode)
   (adam/add-lsp-hook 'js-mode-hook))
 
+(use-package flyspell
+  :straight t
+  )
+
+(defun adam/markdown-hook ()
+  (visual-line-mode)
+  (flyspell-mode))
+
 (use-package markdown-mode
   :straight t
   :config
-  (add-hook 'markdown-mode-hook 'visual-line-mode))
+  (add-hook 'markdown-mode-hook 'adam/markdown-hook))
 
 (defun adam/org-hook ()
   "Hook for setting indentation on org-mode."
-  (setq-local evil-shift-width 2))
+  (setq-local evil-shift-width 2)
+  (org-indent-mode)
+  (visual-line-mode)
+  (flyspell-mode))
 
 (use-package org
   :config
-  (add-hook 'org-mode-hook 'visual-line-mode)
   (add-hook 'org-mode-hook 'adam/org-hook)
   (setq org-edit-src-content-indentation 0)
-  (setq org-link-descriptive t))
+  (setq org-link-descriptive t)
+  (require 'org-habit)
+  (add-to-list 'org-modules 'org-habit)
+  (setq org-habit-graph-column 60)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  (setq org-imenu-depth 67)
+  (setq org-agenda-files '("~/adam/homepage.org"
+                           "~/adam/todo.org"
+                           "~/adam/projects.org"
+                           "~/adam/game.org"
+                           "~/adam/book.org"
+                           "~/adam/buy.org"
+                           "~/adam/dailies.org"
+                           )))
+
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :config
+  (setq org-bullets-bullet-list '("*"))
+  )
+
+;; (use-package org-roam
+;;   :after org
+;;   :config
+;;   (setq org-roam-directory "~/roam/")
+;;   (org-roam-db-autosync-mode))
 
 (use-package sly
   :config
@@ -536,6 +574,13 @@
     "fn" '(find-file :wk "file file new")
     "fe" '(adam/occur :wk "grep current buffer")
     "fa" '(adam/grep :wk "grep current project")
+
+    "o" '(:ignore t :wk "org")
+    "oo" '(org-agenda :wk "org agenda")
+    "oa" '(org-agenda-list :wk "org agenda list")
+    "oh" '(adam/goto-homepage :wk "org homepage")
+    "ot" '((lambda () (interactive) (find-file "~/adam/todo.org")) :wk "org todos")
+    "op" '((lambda () (interactive) (find-file "~/adam/projects.org")) :wk "org projects")
 
     "gg" '(magit :wk "magit")
 

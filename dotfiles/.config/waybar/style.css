@@ -24,11 +24,11 @@ window#waybar {
 #memory,
 #pulseaudio
 {
-    color: #96cbfe
+    color: #96cbfe;
 }
 
 #clock {
-    color: #a8ff60
+    color: #a8ff60;
 }
 
 button {

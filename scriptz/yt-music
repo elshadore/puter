@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ "$#" -eq 1 ]; then
+    yt-dlp -f bestaudio -x --audio-format mp3 --audio-quality 330k "$1"
+else
+    echo "usage: $0 <youtube-url>"
+    exit 1
+fi
+

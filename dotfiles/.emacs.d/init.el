@@ -26,6 +26,7 @@
 (setq global-visual-wrap-prefix-mode t)
 
 (global-prettify-symbols-mode 1)
+(global-auto-revert-mode 1)
 
 (setq blink-cursor-interval 0.15)
 (setq blink-cursor-blinks -1)
@@ -84,6 +85,7 @@
 (straight-use-package 'use-package)
 
 (setq straight-use-package-by-default t)
+
 
 (require 'adam)
 (require 'adam-window)
@@ -245,7 +247,8 @@
     (setq projectile-project-search-path '("~/work")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package flycheck)
+(use-package flycheck
+  )
 
 (use-package yasnippet
   :config
@@ -287,6 +290,24 @@
 
 (use-package forge)
 
+;; (use-package minuet
+;;   :bind (("M-y" . #'minuet-complete-with-minibuffer)
+;;          ("M-i" . #'minuet-show-suggestion)
+;;          ("C-c m" . #'minuet-configure-provider)
+;;          :map minuet-active-mode-map
+;;          ("C-c C-p" . #'minuet-previous-suggestion)
+;;          ("C-c C-n" . #'minuet-next-suggestion)
+;;          ("C-c C-c" . #'minuet-accept-suggestion)
+;;          ("C-l" . #'minuet-accept-suggestion-line)
+;;          ("C-g" . #'minuet-dismiss-suggestion))
+;;   :init
+;;   (add-hook 'prog-mode-hook #'minuet-auto-suggestion-mode)
+;;   :config
+;;   (setq minuet-provider 'openai-compatible)
+;;   (plist-put minuet-openai-fim-compatible-options :end-point "https://api.deepseek.com/beta/completions")
+;;   (plist-put minuet-openai-fim-compatible-options :api-key (adam/lookup-auth 'deepseek))
+;;   (plist-put minuet-openai-fim-compatible-options :model "deepseek-v4-flash"))
+
 (use-package gptel
   :config
   (setq gptel-model 'deepseek-chat)
@@ -309,7 +330,9 @@
 
 (use-package flyspell
   :straight t
-  )
+  :config
+  (setq ispell-program-name "hunspell")
+  (setq ispell-dictionary "en_GB"))
 
 (defun adam/markdown-hook ()
   (visual-line-mode)
@@ -332,9 +355,9 @@
   (add-hook 'org-mode-hook 'adam/org-hook)
   (setq org-edit-src-content-indentation 0)
   (setq org-link-descriptive t)
-  (require 'org-habit)
-  (add-to-list 'org-modules 'org-habit)
-  (setq org-habit-graph-column 60)
+  ;; (require 'org-habit)
+  ;; (add-to-list 'org-modules 'org-habit)
+  ;; (setq org-habit-graph-column 60)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-imenu-depth 67)
@@ -371,7 +394,7 @@
 (use-package cider)
 
 (use-package geiser)
-(use-package geiser-racket)
+(use-package geiser-guile)
 
 (use-package haskell-mode)
 
@@ -486,7 +509,7 @@
 
 (use-package evil-nerd-commenter
   :bind
-  ("C-#" . evilnc-comment-or-uncomment-lines))
+  ("M-#" . evilnc-comment-or-uncomment-lines))
 
 (use-package evil-multiedit
   :config
@@ -577,7 +600,7 @@
 
     "o" '(:ignore t :wk "org")
     "oo" '(org-agenda :wk "org agenda")
-    "oa" '(org-agenda-list :wk "org agenda list")
+    "oa" '(org-todo-list :wk "org agenda list")
     "oh" '(adam/goto-homepage :wk "org homepage")
     "ot" '((lambda () (interactive) (find-file "~/adam/todo.org")) :wk "org todos")
     "op" '((lambda () (interactive) (find-file "~/adam/projects.org")) :wk "org projects")

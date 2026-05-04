@@ -7,6 +7,10 @@
  '(custom-safe-themes
    '("9fce49fd3c1966aeb3de44d228fa41bdeb0525e059dfef26f3c21ec9135c25a4"
      default))
+ '(org-agenda-files
+   '("/home/adam/adam/homepage.org" "/home/adam/adam/todo.org"
+     "/home/adam/adam/projects.org" "/home/adam/adam/game.org"
+     "/home/adam/adam/book.org" "/home/adam/adam/buy.org"))
  '(warning-suppress-types '((use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

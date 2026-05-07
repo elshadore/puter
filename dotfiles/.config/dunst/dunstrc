@@ -23,24 +23,24 @@
     vertical_alignment = center
 
 [urgency_low]
-    background = "#151726"
-    foreground = "#efece2"
-    frame_color = "#f870f6"
+    background = "#262142"
+    foreground = "#f6f6f6"
+    frame_color = "#f43fb6"
     timeout = 10
     default_icon = dialog-information
 
 [urgency_normal]
-    background = "#151726"
-    foreground = "#efece2"
-    frame_color = "#f870f6"
+    background = "#262142"
+    foreground = "#f6f6f6"
+    frame_color = "#f43fb6"
     timeout = 10
     override_pause_level = 30
     default_icon = dialog-information
 
 [urgency_critical]
-    background = "#151726"
-    foreground = "#c83232"
-    frame_color = "#f870f6"
+    background = "#262142"
+    foreground = "#f12125"
+    frame_color = "#f43fb6"
     timeout = 0
     override_pause_level = 60
     default_icon = dialog-warning

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+  echo "Usage: puter-cmd <command> [args...]"
+  exit 1
+fi
+
+CMD="$*"
+
+# Run command asynchronously in background
+(
+  eval "$CMD"
+  EXIT_CODE=$?
+  if [ $EXIT_CODE -eq 0 ]; then
+    notify-send "Command Finished" "$CMD" -i emblem-default
+  else
+    notify-send "Command Failed (exit: $EXIT_CODE)" "$CMD" -i emblem-error
+  fi
+) &
+
+echo "Running: $CMD"

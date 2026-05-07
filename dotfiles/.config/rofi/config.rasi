@@ -3,16 +3,20 @@
 * {
     font: "IosevkaNerdFont 14";
     background-color:   transparent;
-    adam-bg: #151726;
-    adam-fg: #efece2;
-    adam-highlight: #f870f6;
-    adam-green: #a8ff60;
-    adam-blue: #96cbfe;
+    adam-bg: #231f3c;
+    adam-bg-alt: #1a1729;
+    adam-fg: #f6f6f6;
+    adam-fg-select: #1a1729;
+    adam-border: #f43fb6;
+    adam-green: #2ee43e;
+    adam-highlight: #f12125;
+    adam-highlight-select: #f12125;
+    adam-bg-select: #f6f6f6;
 }
 
 window {
     background-color: @adam-bg;
-    border-color: @adam-highlight;
+    border-color: @adam-border;
     location: center;
     border: 1px;
 }
@@ -24,9 +28,8 @@ scrollbar {
 inputbar,
 prompt,
 entry,
-element-text,
-element-icon,
-textbox {
+textbox
+{
     text-color: @adam-fg;
     background-color: @adam-bg;
     border-colour: @adam-bg;
@@ -36,33 +39,50 @@ textbox {
     blink: true;
 }
 
-element-text {
-    highlight: @adam-highlight;
-}
-
 listview {
     lines: 24;
     columns: 1;
     border-color: @adam-green;
 }
 
+element-icon selected.normal,
+element-icon selected.urgent,
+element-icon selected.active,
 element selected.normal,
 element selected.urgent,
 element selected.active,
-element-text selected.normal {
-    highlight: @adam-highlight;
-    background-color: @adam-fg;
-    text-color: @adam-bg;
+element-text selected.normal,
+element-text selected.urgent,
+element-text selected.active {
+    highlight: @adam-highlight-select;
+    background-color: @adam-bg-select;
+    text-color: @adam-fg-select;
 }
 
+element-icon normal.normal,
+element-icon normal.urgent,
+element-icon normal.active,
 element normal.normal,
 element normal.urgent,
 element normal.active,
-element alternate.normal,
-element alternate.urgent,
-element alternate.active {
+element-text normal.normal,
+element-text normal.urgent,
+element-text normal.active {
+    highlight: @adam-highlight;
     background-color: @adam-bg;
     text-color: @adam-fg;
-    background-color: @adam-bg;
+}
+
+element-icon alternate.normal,
+element-icon alternate.urgent,
+element-icon alternate.active,
+element alternate.normal,
+element alternate.urgent,
+element alternate.active,
+element-text alternate.normal,
+element-text alternate.urgent,
+element-text alternate.active {
+    highlight: @adam-highlight;
+    background-color: @adam-bg-alt;
     text-color: @adam-fg;
 }

@@ -54,6 +54,8 @@ export BROWSER="firefox"
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export LESSHISTFILE=".history"
 
+export MPD_PORT=6600
+
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 

@@ -4,10 +4,10 @@
 }
 
 window#waybar {
-    background-color: #151726;
-    border-top: 2px solid #0b0c15;
-    border-bottom: 2px solid #0b0c15;
-    color: #efece2;
+    background-color: #262142;
+    border-top: 2px solid #1d1932;
+    border-bottom: 2px solid #1d1932;
+    color: #f6f6f6;
     transition-property: background-color;
     transition-duration: .5s;
 }
@@ -24,11 +24,11 @@ window#waybar {
 #memory,
 #pulseaudio
 {
-    color: #96cbfe;
+    color: #fff812;
 }
 
 #clock {
-    color: #a8ff60;
+    color: #6ce121;
 }
 
 button {
@@ -39,15 +39,15 @@ button {
 
 button:hover {
     background: inherit;
-    box-shadow: inset 0 -2px #a8ff60;
+    box-shadow: inset 0 -2px #6ce121;
 }
 
 #workspaces button.focused, #workspaces button.active {
-    box-shadow: inset 0 -2px #f870f6;
+    box-shadow: inset 0 -2px #f43fb6;
 }
 
 #workspaces button.urgent {
-    box-shadow: inset 0 -2px #c83232;
+    box-shadow: inset 0 -2px #f12125
 }
 
 .modules-left > widget:first-child > #workspaces {

@@ -5,6 +5,22 @@
 
 (server-start)
 
+;; Wayland clipboard support
+(when (getenv "WAYLAND_DISPLAY")
+  (setq gui-select-enable-clipboard t)
+  (setq interprogram-cut-function
+        (lambda (text)
+          (with-temp-buffer
+            (insert text)
+            (call-process-region (point-min) (point-max) "wl-copy" nil 0 nil "--primary")
+            (call-process-region (point-min) (point-max) "wl-copy" nil 0 nil))))
+  (setq interprogram-paste-function
+        (lambda ()
+          (let ((result (shell-command-to-string "wl-paste --primary 2>/dev/null")))
+            (if (string= result "")
+                (shell-command-to-string "wl-paste")
+              result)))))
+
 (setq custom-file "~/.emacs.d/custom.el")
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -361,14 +377,8 @@
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-imenu-depth 67)
-  (setq org-agenda-files '("~/adam/homepage.org"
-                           "~/adam/todo.org"
-                           "~/adam/projects.org"
-                           "~/adam/game.org"
-                           "~/adam/book.org"
-                           "~/adam/buy.org"
-                           "~/adam/dailies.org"
-                           )))
+  (setq org-agenda-files '("~/adam/homepage.org"))
+  )
 
 (use-package org-bullets
   :after org
@@ -509,7 +519,9 @@
 
 (use-package evil-nerd-commenter
   :bind
-  ("M-#" . evilnc-comment-or-uncomment-lines))
+  ("M-#" . evilnc-comment-or-uncomment-lines)
+  ("C-#" . evilnc-comment-or-uncomment-lines)
+  )
 
 (use-package evil-multiedit
   :config
@@ -587,7 +599,7 @@
     "ee" '(eval-buffer :wk "eval buffer")
     "f" '(:ignore t :wk "find")
     "fc" '(adam/goto-init-file :wk "find config")
-    "fm" '((lambda () (interactive) (find-file "~/adam/music.org")) :wk "find music")
+    ;; "fm" '((lambda () (interactive) (find-file "~/adam/music.org")) :wk "find music")
     "fh" '(adam/goto-homepage :wk "find homepage")
     "fp" '(list-processes :wk "find processes")
     "ff" '(adam/fuzzy-find :wk "find fuzzy-contextual")
@@ -599,11 +611,7 @@
     "fa" '(adam/grep :wk "grep current project")
 
     "o" '(:ignore t :wk "org")
-    "oo" '(org-agenda :wk "org agenda")
-    "oa" '(org-todo-list :wk "org agenda list")
-    "oh" '(adam/goto-homepage :wk "org homepage")
-    "ot" '((lambda () (interactive) (find-file "~/adam/todo.org")) :wk "org todos")
-    "op" '((lambda () (interactive) (find-file "~/adam/projects.org")) :wk "org projects")
+    "oo" '(org-agenda :wk "find agenda")
 
     "gg" '(magit :wk "magit")
 

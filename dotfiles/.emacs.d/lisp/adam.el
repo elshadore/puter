@@ -4,6 +4,10 @@
 
 (require 'json)
 
+(defun adam/is-wayland? ()
+  "Is the current desktop a Wayland session?"
+  (when (getenv "WAYLAND_DISPLAY") t))
+
 (defun adam/quitter ()
   "A Better C-g Quit that works in the Minibuffer.
 I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-quit-smarter"

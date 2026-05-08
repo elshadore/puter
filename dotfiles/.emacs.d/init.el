@@ -6,20 +6,6 @@
 (server-start)
 
 ;; Wayland clipboard support
-(when (getenv "WAYLAND_DISPLAY")
-  (setq gui-select-enable-clipboard t)
-  (setq interprogram-cut-function
-        (lambda (text)
-          (with-temp-buffer
-            (insert text)
-            (call-process-region (point-min) (point-max) "wl-copy" nil 0 nil "--primary")
-            (call-process-region (point-min) (point-max) "wl-copy" nil 0 nil))))
-  (setq interprogram-paste-function
-        (lambda ()
-          (let ((result (shell-command-to-string "wl-paste --primary 2>/dev/null")))
-            (if (string= result "")
-                (shell-command-to-string "wl-paste")
-              result)))))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (scroll-bar-mode -1)
@@ -562,7 +548,7 @@
           ("kra" . "krita")
           ("pdf" . ,adam/pdf-reader)
           ("cbr" . ,adam/pdf-reader)
-          ("epub" . ,adam/pdf-reader)
+          ("epub" . "epub-reader")
           ("blend" . "blender"))))
 
 (use-package dired-hide-dotfiles
@@ -576,6 +562,22 @@
   (counsel-grep))
 
 (use-package emms)
+
+;; Wayland clipboard support
+(when (adam/is-wayland?)
+
+  (setq select-enable-primary nil)
+  (setq select-enable-clipboard t)
+  (setq x-select-enable-primary nil)
+  (setq x-select-enable-clipboard t)
+
+  (use-package xclip
+    :config
+    (setq xclip-program "wl-copy")
+    (setq xclip-select-enable-clipboard t)
+    (setq xclip-mode t)
+    (setq xclip-method 'wl-copy)
+    (setq xclip-select-enable-clipboard t)))
 
 (use-package general
   :config

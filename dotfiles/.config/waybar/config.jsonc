@@ -10,6 +10,7 @@
     "modules-right": ["cpu", "memory", "pulseaudio", "clock", "tray"],
     "hyprland/workspaces": {
         "all-outputs": true,
+        "format": "{name}"
     },
     "hyprland/window": {
         "max-length": 64

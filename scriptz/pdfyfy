@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <input.epub>"
+    exit 1
+fi
+
+input="$1"
+
+if [ ! -f "$input" ]; then
+    echo "Error: File '$input' not found"
+    exit 1
+fi
+
+if [[ ! "$input" =~ \.epub$ ]]; then
+    echo "Error: Input file must be an EPUB file (.epub)"
+    exit 1
+fi
+
+output="${input%.epub}.pdf"
+
+ebook-convert "$input" "$output"
+
+if [ $? -eq 0 ]; then
+    echo "Converted: $input -> $output"
+else
+    echo "Error: Conversion failed"
+    exit 1
+fi

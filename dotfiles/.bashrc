@@ -54,13 +54,11 @@ export BROWSER="firefox"
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export LESSHISTFILE=".history"
 
-export MPD_PORT=6600
-
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 export MPD_HOST="localhost"
-export MPD_PORT="6669"
+export MPD_PORT="6969"
 
 alias cls="tput reset"
 alias ls='ls --color=auto'

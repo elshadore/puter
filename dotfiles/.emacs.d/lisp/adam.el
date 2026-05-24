@@ -63,7 +63,7 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
     (format "%S" any)))
 
 (defun adam/read-current-line ()
-  "Reads the Current Line of a Buffer and Returns it as a String."
+  "Reads the current line of a buffer and returns it as a string."
   (interactive)
   (save-excursion
     (let (a b)
@@ -73,15 +73,16 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
       (setq b (point))
       (buffer-substring-no-properties a b))))
 
-(defvar %-assert-result-% nil
-  "Special Variable used in ASSERT Macro.")
-
-(defmacro assert! (form &optional message)
-  `(if-let (%-assert-result-% ,form)
-       %-assert-result-%
-     ,(if message
-         `(error "ASSERT! %S, %s\n", form ,message)
-         `(error "ASSERT! %S\n", form))))
+(defmacro assert! (form &optional message &rest format-args)
+  "Assert that the result of the value FORM is not NIL, otherwise throw an error for MESSAGE with FORMAT-ARGS."
+  (cl-with-gensyms (result)
+    `(if-let (,result ,form)
+         ,result
+       ,(if message
+            (if format-args
+                `(error ,message ,@format-args)
+                `(error ,message))
+          `(error "assert triggered!")))))
 
 (defmacro cadrq (symbol)
   "Returns the CAR of a LIST bound the SYMBOL, then SETS the SYMBOL to the CDR of the LIST."
@@ -91,42 +92,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
            (error "CDRQ does not cdr nil => nil.")
            (car ,symbol))
      (setq ,symbol (cdr ,symbol))))
-
-
-(defvar %-bind-let-form-% nil
-  "Special Symbol Used in the BIND-LET Macro.")
-(defvar %-bind-let-eval-% nil
-  "Special Symbol Used in the BIND-LET Macro.")
-(defvar %-bind-let-iter-% nil
-  "Special Symbol Used in the BIND-LET Macro.")
-
-(defmacro bind-let (form &rest body)
-  "A Better Destructing Bind Macro."
-  (let ((%-bind-let-form-% (car form))
-        (%-bind-let-eval-% (cadr form)))
-    (assert! (null (cddr form)) "bind-let excepts two forms in FORM (*destructing-bind* eval-form)")
-    `(let ((%-bind-let-iter-% ,%-bind-let-eval-%))
-       (assert! (listp %-bind-let-iter-%))
-       ,(seq-concatenate 'list
-                         (list 'let (mapcar (lambda (x) (list x '(cadrq %-bind-let-iter-%))) %-bind-let-form-%))
-                         (list '(assert! (null %-bind-let-iter-%) "Binding List has too Many Elements."))
-                         body
-                         ))))
-
-(defvar %-operate-symbol-% nil
-  "Special Symbol Used in the OPERATE Macro.")
-(defvar %-operate-init-% nil
-  "Special Symbol Used in the OPERATE Macro.")
-
-(defmacro operate (form &rest body)
-  "TODO: Description."
-  (bind-let ((%-operate-symbol-% %-operate-init-%) form)
-            (assert! (symbolp %-operate-symbol-%) "Expected symbol for Operate First Form.")
-            (seq-concatenate 'list
-                             (list 'let `((,%-operate-symbol-% ,%-operate-init-%)))
-                             (mapcar (lambda (x) (list 'setq %-operate-symbol-% x)) body)
-                             (list %-operate-symbol-%)
-                             )))
 
 (defun adam/move-to-top ()
   (interactive)
@@ -170,7 +135,7 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun adam/goto-homepage ()
   "Find main EMACS page."
   (interactive)
-  (find-file "~/adam/homepage.org"))
+  (find-file "~/adam/HOMEPAGE.org"))
 
 (defun adam/reload-init-file ()
   "Reload EMACS config."
@@ -361,8 +326,30 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
     Example => `Example' will kill `Example<1>', `Example<2>'..."
   (interactive "sbuffer: ")
   (dolist (el (seq-keep #'kill-all-buffers-match (mapcar #'buffer-name (buffer-list))))
-    (kill-buffer input el)
+    (adam/kill-all-buffers input el)
     (message "Buffer %s Killed!" el)))
+
+(defun adam/C-c-C-c ()
+  "Evaluate current top-level form and flash it, like Sly's C-c C-c."
+  (interactive)
+  (save-excursion
+    (beginning-of-defun)
+    (let ((start (point)))
+      (end-of-defun)
+      (require 'sly-messages)
+      (sly-flash-region start end)
+      (eval-defun nil))))
+
+(defun adam/C-x-C-e ()
+  "Evaluate expression before point and flash it, like C-x C-e with flash."
+  (interactive)
+  (let ((end (point)))
+    (save-excursion
+      (backward-sexp)
+      (let ((start (point)))
+        (require 'sly-messages)
+        (sly-flash-region start end)
+        (eval-last-sexp nil)))))
 
 (provide 'adam)
 ;;; adam.el ends here

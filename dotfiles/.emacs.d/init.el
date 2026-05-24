@@ -5,8 +5,6 @@
 
 (server-start)
 
-;; Wayland clipboard support
-
 (setq custom-file "~/.emacs.d/custom.el")
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -135,19 +133,47 @@
   (when adam/lsp-enabled
     (add-hook hook 'lsp-mode)))
 
+(defun adam/prog-hook ()
+  "Hook for running basic PROG-MODE."
+  ;; (flyspell-prog-mode)
+  ;; (whitespace-mode)
+  )
+
+(add-hook 'prog-mode-hook 'adam/prog-hook)
+
 (use-package emacs
   :hook (emacs-lisp-mode . adam/elisp-setup)
   :config
-  (context-menu-mode t))
+  (context-menu-mode t)
+  (define-key emacs-lisp-mode-map (kbd "C-c C-c") #'adam/C-c-C-c)
+  (define-key emacs-lisp-mode-map (kbd "C-x C-e") #'adam/C-x-C-e))
 
 (use-package counsel
   :config
   (setq counsel-linux-app-format-function #'counsel-linux-app-format-function-name-pretty))
 
+(defun adam/fuzzy--regex-from-string (str)
+  "Convert STR to a FZF-style fuzzy regex pattern."
+  (if (string-empty-p str)
+      ""
+    (let* ((chars (string-to-list str))
+           (first (regexp-quote (char-to-string (car chars))))
+           (rest (mapcar (lambda (c)
+                          (concat ".*" (regexp-quote (char-to-string c))))
+                        (cdr chars))))
+      (concat first (mapconcat #'identity rest "")))))
+
 (defun adam/fuzzy-re-builder (str)
-  "Convert STR to custom regex."
+  "FZF-style fuzzy regex builder for ivy.
+Converts query string STR into a fuzzy matching regex where each
+character must appear in order but not necessarily consecutively."
   (let ((case-fold-search t))
-    (ivy--regex-plus str)))
+    (if (string-empty-p str)
+        ""
+      (let ((terms (split-string str " +" t)))
+        (if (= (length terms) 1)
+            (adam/fuzzy--regex-from-string (car terms))
+          (mapconcat #'adam/fuzzy--regex-from-string terms ".*"))))))
 
 (use-package ivy
   :bind
@@ -174,7 +200,10 @@
   (setq enable-recursive-minibuffers t)
   (setq ivy-height 20)
   (setq ivy-re-builders-alist '((t . adam/fuzzy-re-builder)))
-  (ivy-mode 1))
+  ;; Disableing the regex inserts at the start of the prompt => ("^" "^+") ect..
+  (setq ivy-initial-inputs-alist nil)
+  (ivy-mode 1)
+  )
 
 (use-package ivy-rich
   :after ivy)
@@ -292,24 +321,6 @@
 
 (use-package forge)
 
-;; (use-package minuet
-;;   :bind (("M-y" . #'minuet-complete-with-minibuffer)
-;;          ("M-i" . #'minuet-show-suggestion)
-;;          ("C-c m" . #'minuet-configure-provider)
-;;          :map minuet-active-mode-map
-;;          ("C-c C-p" . #'minuet-previous-suggestion)
-;;          ("C-c C-n" . #'minuet-next-suggestion)
-;;          ("C-c C-c" . #'minuet-accept-suggestion)
-;;          ("C-l" . #'minuet-accept-suggestion-line)
-;;          ("C-g" . #'minuet-dismiss-suggestion))
-;;   :init
-;;   (add-hook 'prog-mode-hook #'minuet-auto-suggestion-mode)
-;;   :config
-;;   (setq minuet-provider 'openai-compatible)
-;;   (plist-put minuet-openai-fim-compatible-options :end-point "https://api.deepseek.com/beta/completions")
-;;   (plist-put minuet-openai-fim-compatible-options :api-key (adam/lookup-auth 'deepseek))
-;;   (plist-put minuet-openai-fim-compatible-options :model "deepseek-v4-flash"))
-
 (use-package gptel
   :config
   (setq gptel-model 'deepseek-chat)
@@ -320,6 +331,8 @@
           :stream t
           :key (adam/lookup-auth 'deepseek)
           :models '(deepseek-chat deepseek-coder))))
+
+(use-package agent-shell)
 
 (use-package i3wm-config-mode)
 (use-package css-mode)
@@ -532,7 +545,7 @@
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
 (setq adam/pdf-reader "okular")
-(setq adam/image-viewer "feh")
+(setq adam/image-viewer "ristretto")
 (setq adam/video-player "mpv")
 
 (use-package dired-open
@@ -593,9 +606,11 @@
 
     "s" '(:ignore t :wk "search")
     "ss" '(swiper :wk "search swiper")
+    "sr" '(rgrep :wk "search grep")
 
     "a" '(:ignore t :wk "ai")
-    "aa" '(gptel :wk "ai start")
+    "aa" '(agent-shell :wk "ai start agent shell")
+    "al" '(gptel :wk "ai start gptel chat")
 
     "e" '(:ignore t :wk "eval")
     "ee" '(eval-buffer :wk "eval buffer")
@@ -673,6 +688,7 @@
 (setq doom-ir-black-brighter-comments t)
 (setq doom-ir-black-padded-modeline nil)
 (adam/load-theme 'doom-ir-black)
+;; (adam/load-theme 'modus-vivendi-tinted)
 
 (load-file custom-file)
 (setq inhibit-startup-screen t)

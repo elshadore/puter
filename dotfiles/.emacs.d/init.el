@@ -153,20 +153,18 @@
   (setq counsel-linux-app-format-function #'counsel-linux-app-format-function-name-pretty))
 
 (defun adam/fuzzy--regex-from-string (str)
-  "Convert STR to a FZF-style fuzzy regex pattern."
+  "Convert STR to a FZF-style fuzzy regex with capture groups for highlighting."
   (if (string-empty-p str)
       ""
     (let* ((chars (string-to-list str))
            (first (regexp-quote (char-to-string (car chars))))
            (rest (mapcar (lambda (c)
-                          (concat ".*" (regexp-quote (char-to-string c))))
-                        (cdr chars))))
+                           (concat ".*" (regexp-quote (char-to-string c))))
+                         (cdr chars))))
       (concat first (mapconcat #'identity rest "")))))
 
 (defun adam/fuzzy-re-builder (str)
-  "FZF-style fuzzy regex builder for ivy.
-Converts query string STR into a fuzzy matching regex where each
-character must appear in order but not necessarily consecutively."
+  "Fuzzy finding ivy-rebuilder."
   (let ((case-fold-search t))
     (if (string-empty-p str)
         ""
@@ -519,8 +517,7 @@ character must appear in order but not necessarily consecutively."
 (use-package evil-nerd-commenter
   :bind
   ("M-#" . evilnc-comment-or-uncomment-lines)
-  ("C-#" . evilnc-comment-or-uncomment-lines)
-  )
+  ("C-#" . evilnc-comment-or-uncomment-lines))
 
 (use-package evil-multiedit
   :config
@@ -644,7 +641,7 @@ character must appear in order but not necessarily consecutively."
 
     "w" '(:ignore t :wk "window")
     "wm" '(delete-other-windows-internal :wk "window solo")
-
+    "wp" '(window-swap-states :wk "window swap")
     "wn" '(evil-window-split :wk "window split horizontal")
     "wv" '(evil-window-vsplit :wk "window split vertical")
     "ww" '(evil-window-next :wk "window next")

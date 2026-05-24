@@ -329,27 +329,41 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
     (adam/kill-all-buffers input el)
     (message "Buffer %s Killed!" el)))
 
-(defun adam/C-c-C-c ()
-  "Evaluate current top-level form and flash it, like Sly's C-c C-c."
+(defun adam/flash-eval-region (start end)
+  "Flash eval a region of elisp code."
   (interactive)
-  (save-excursion
-    (beginning-of-defun)
-    (let ((start (point)))
+  (require 'sly-messages)
+  (sly-flash-region start end)
+  (eval-region start end t))
+
+(defun adam/C-c-C-c ()
+  "Evaluate current top-level form and flash it, like Sly's C-c C-c, but for elisp mode."
+  (interactive)
+  (let (start end)
+    (save-excursion
+      (beginning-of-defun)
+      (setq start (point))
       (end-of-defun)
-      (require 'sly-messages)
-      (sly-flash-region start end)
-      (eval-defun nil))))
+      (setq end (point)))
+    (when (and start end)
+      (adam/flash-eval-region start end))))
 
 (defun adam/C-x-C-e ()
   "Evaluate expression before point and flash it, like C-x C-e with flash."
   (interactive)
-  (let ((end (point)))
+  (let (start end)
     (save-excursion
+      (forward-char)
+      (setq end (point))
       (backward-sexp)
-      (let ((start (point)))
-        (require 'sly-messages)
-        (sly-flash-region start end)
-        (eval-last-sexp nil)))))
+      (setq start (point))
+      (let ((start (point)))))
+    (when (and start end)
+      (adam/flash-eval-region start end))))
+
+(defun adam/testicle ()
+  "A simple testicle function."
+  (message "henlo word!"))
 
 (provide 'adam)
 ;;; adam.el ends here

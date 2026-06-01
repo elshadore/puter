@@ -83,9 +83,9 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+(straight-use-package 'org)
 
 (setq straight-use-package-by-default t)
-
 
 (require 'adam)
 (require 'adam-window)
@@ -438,6 +438,7 @@
 
 (use-package rust-mode
   :config
+  (setq rust-rustfmt-switches '("--edition" "2024"))
   (adam/add-lsp-hook 'rust-mode-hook))
 
 (use-package go-mode
@@ -642,6 +643,7 @@
     "w" '(:ignore t :wk "window")
     "wm" '(delete-other-windows-internal :wk "window solo")
     "wp" '(window-swap-states :wk "window swap")
+    "wt" '(awin/toggle-split :wk "window toggle split")
     "wn" '(evil-window-split :wk "window split horizontal")
     "wv" '(evil-window-vsplit :wk "window split vertical")
     "ww" '(evil-window-next :wk "window next")

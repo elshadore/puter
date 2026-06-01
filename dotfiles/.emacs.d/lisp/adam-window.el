@@ -79,5 +79,21 @@
   (split-window-right)
   (other-window 1))
 
+(defun awin/toggle-split ()
+  "Toggle the current window split between horizontal and vertical."
+  (interactive)
+  (let* ((this-window (selected-window))
+         (other-window (next-window this-window 'nomini))
+         (this-buffer (window-buffer this-window))
+         (other-buffer (window-buffer other-window))
+         (is-vertical (window-combined-p this-window)))
+    (when (eq (next-window other-window 'nomini) this-window)
+      (delete-window other-window)
+      (if is-vertical
+          (split-window-right)
+        (split-window-below))
+      (set-window-buffer (selected-window) this-buffer)
+      (set-window-buffer (next-window) other-buffer))))
+
 (provide 'adam-window)
 ;;; adam-window.el ends here

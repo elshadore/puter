@@ -152,26 +152,10 @@
   :config
   (setq counsel-linux-app-format-function #'counsel-linux-app-format-function-name-pretty))
 
-(defun adam/fuzzy--regex-from-string (str)
-  "Convert STR to a FZF-style fuzzy regex with capture groups for highlighting."
-  (if (string-empty-p str)
-      ""
-    (let* ((chars (string-to-list str))
-           (first (regexp-quote (char-to-string (car chars))))
-           (rest (mapcar (lambda (c)
-                           (concat ".*" (regexp-quote (char-to-string c))))
-                         (cdr chars))))
-      (concat first (mapconcat #'identity rest "")))))
-
 (defun adam/fuzzy-re-builder (str)
   "Fuzzy finding ivy-rebuilder."
   (let ((case-fold-search t))
-    (if (string-empty-p str)
-        ""
-      (let ((terms (split-string str " +" t)))
-        (if (= (length terms) 1)
-            (adam/fuzzy--regex-from-string (car terms))
-          (mapconcat #'adam/fuzzy--regex-from-string terms ".*"))))))
+    (ivy--regex-plus str)))
 
 (use-package ivy
   :bind

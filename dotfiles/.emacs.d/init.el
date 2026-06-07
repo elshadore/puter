@@ -291,6 +291,11 @@
    '("d" . meow-clipboard-kill)
    '("g" . meow-cancel-selection)
    '("v" . meow-line)
+   '("j" . next-line)
+   '("k" . (lambda () (interactive) (next-line -1)))
+   '("h" . meow-left)
+   '("l" . meow-right)
+   '("<escape>" . meow-cancel-selection)
    )
   (meow-normal-define-key
    '("i" . meow-insert)

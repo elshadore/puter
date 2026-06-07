@@ -22,10 +22,8 @@
             (define-key map (kbd "C-x K") 'kill-buffer-and-window)
 
             (define-key map (kbd "C-x w 1") 'delete-other-windows)
-            (define-key map (kbd "C-x w n") 'evil-window-split)
-            (define-key map (kbd "C-x w v") 'evil-window-vsplit)
-            (define-key map (kbd "C-x w w") 'evil-window-next)
-            (define-key map (kbd "C-x w k") 'evil-window-delete)
+            (define-key map (kbd "C-x w n") 'awin/split-down)
+            (define-key map (kbd "C-x w v") 'awin/split-left)
             (define-key map (kbd "C-x w h") 'awin/move-left)
             (define-key map (kbd "C-x w j") 'awin/move-down)
             (define-key map (kbd "C-x w k") 'awin/move-up)

@@ -353,7 +353,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (interactive)
   (let (start end)
     (save-excursion
-      (forward-char)
       (setq end (point))
       (backward-sexp)
       (setq start (point))
@@ -364,6 +363,96 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun adam/testicle ()
   "A simple testicle function."
   (message "henlo word!"))
+
+(defun adam/kill-char ()
+  "Kills a character adding it to killring, like x in vim"
+  (interactive)
+  (kill-region (point) (1+ (point))))
+
+(defun adam/paste-below ()
+  "Vim p: paste after cursor (characterwise) or below current line (linewise)."
+  (interactive)
+  (when (null kill-ring)
+    (user-error "Kill ring is empty"))
+  (let ((text (current-kill 0)))
+    (cond
+     ;; Active region: replace selection, old selection → kill-ring
+     ((use-region-p)
+      (let ((beg (region-beginning)))
+        (kill-region (region-beginning) (region-end))
+        (insert text)
+        (goto-char beg)))
+     ;; Linewise: paste below current line, cursor to first non-blank
+     ((string-suffix-p "\n" text)
+      (let* ((content (substring text 0 (1- (length text))))
+             (target nil))
+        (end-of-line)
+        (insert "\n")
+        (setq target (point))
+        (insert content)
+        (goto-char target)
+        (back-to-indentation)))
+     ;; Characterwise: paste after cursor, cursor on last pasted char
+     (t
+      (unless (or (eobp) (eolp))
+        (forward-char 1))
+      (insert text)
+      (backward-char 1)))))
+
+(defun adam/paste-above ()
+  "Vim P: paste before cursor (characterwise) or above current line (linewise)."
+  (interactive)
+  (when (null kill-ring)
+    (user-error "Kill ring is empty"))
+  (let ((text (current-kill 0)))
+    (cond
+     ;; Active region: replace selection, old selection → kill-ring
+     ((use-region-p)
+      (let ((beg (region-beginning)))
+        (kill-region (region-beginning) (region-end))
+        (insert text)
+        (goto-char beg)))
+     ;; Linewise: paste above current line, cursor to first non-blank
+     ((string-suffix-p "\n" text)
+      (let* ((content (substring text 0 (1- (length text))))
+             (target nil))
+        (beginning-of-line)
+        (setq target (point))
+        (insert content "\n")
+        (goto-char target)
+        (back-to-indentation)))
+     ;; Characterwise: paste before cursor, cursor on last pasted char
+     (t
+      (insert text)
+      (backward-char 1)))))
+
+(defun adam/indent-right ()
+  "Indent region or line right."
+  (interactive)
+  (if (use-region-p)
+      (indent-rigidly (region-beginning) (region-end) tab-width)
+    (indent-rigidly (line-beginning-position) (line-end-position) tab-width)))
+
+(defun adam/indent-left ()
+  "Indent region or line left."
+  (interactive)
+  (if (use-region-p)
+      (indent-rigidly (region-beginning) (region-end) (- tab-width))
+    (indent-rigidly (line-beginning-position) (line-end-position) (- tab-width))))
+
+(defun adam/increment-number (arg)
+  "Increment number at point by ARG."
+  (interactive "p")
+  (save-excursion
+    (skip-chars-backward "0-9")
+    (when (looking-at "[0-9]+")
+      (replace-match
+       (number-to-string (+ arg (string-to-number (match-string 0))))))))
+
+(defun adam/decrement-number (arg)
+  "Decrement number at point by ARG."
+  (interactive "p")
+  (studium/increment-number (- arg)))
 
 (provide 'adam)
 ;;; adam.el ends here

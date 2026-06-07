@@ -232,6 +232,101 @@
 
 (global-company-mode 1)
 
+(use-package meow
+  :config
+  (meow-leader-define-key
+   '("1" . meow-digit-argument)
+   '("2" . meow-digit-argument)
+   '("3" . meow-digit-argument)
+   '("4" . meow-digit-argument)
+   '("5" . meow-digit-argument)
+   '("6" . meow-digit-argument)
+   '("7" . meow-digit-argument)
+   '("8" . meow-digit-argument)
+   '("9" . meow-digit-argument)
+   '("0" . meow-digit-argument)
+   '("?" . meow-cheatsheet)
+   '("." . adam/find-file-new)
+   '("," . projectile-find-file)
+   
+   '("/" . adam/fuzzy-find)
+   '("f c" . adam/goto-init-file)
+   '("f h" . adam/goto-homepage)
+   
+   '(";" . (lambda () (interactive) (require 'magit) (magit-status)))
+   '("b b" . adam/switch-buffer)
+   '("b x" . (lambda () (interactive) (kill-buffer (current-buffer))))
+   '("b l" . (lambda () (interactive) (switch-to-buffer nil)))
+   '("w h" . awin/move-left)
+   '("w j" . awin/move-down)
+   '("w k" . awin/move-up)
+   '("w l" . awin/move-right)
+   '("s h" . awin/swap-left)
+   '("s j" . awin/swap-down)
+   '("s k" . awin/swap-up)
+   '("s l" . awin/swap-right)
+   '("q h" . awin/split-left)
+   '("q j" . awin/split-down)
+   '("q k" . awin/split-up)
+   '("q l" . awin/split-right)
+   '("w x" . awin/kill-window)
+   '("w m" . awin/maximize)
+   '("w q" . awin/toggle-split)
+   '("q q" . window-swap-states)
+   '("z e" . adam/eshell)
+   '("z z" . (lambda () (interactive)
+               (call-interactively 'compile)))
+   '("z n" . (lambda () (interactive)
+               (let ((compile-command ""))
+                 (call-interactively 'compile))))
+   '("z p" . (lambda () (interactive)
+               (when (projectile-project-p)
+                 (call-interactively 'projectile-compile-project))))
+
+   '("a" . agent-shell)
+   '("<SPC>" . adam/M-x)
+   )
+  (meow-motion-define-key
+   '("y" . meow-clipboard-save)
+   '("d" . meow-clipboard-kill)
+   '("g" . meow-cancel-selection)
+   '("v" . meow-line)
+   )
+  (meow-normal-define-key
+   '("i" . meow-insert)
+   '("I" . (lambda () (interactive) (beginning-of-line) (meow-insert)))
+   '("q" . meow-quit)
+   '("Q" . kmacro-start-macro-or-insert-counter)
+   '("@" . kmacro-end-or-call-macro)
+   '("w" . meow-next-word)
+   '("W" . meow-next-symbol)
+   '("b" . meow-back-word)
+   '("m" . meow-block)
+   '("d" . meow-clipboard-kill)
+   '("y" . meow-clipboard-save)
+   '("p" . adam/paste-below)
+   '("P" . adam/paste-above)
+   '("c" . meow-change)
+   '("o" . meow-open-below)
+   '("O" . meow-open-above)
+   '("a" . (lambda () (interactive) (meow-append)))
+   '("A" . (lambda () (interactive) (end-of-line) (meow-insert)))
+   '("g" . meow-cancel-selection)
+   '("h" . meow-left)
+   '("j" . next-line)
+   '("V" . meow-line)
+   '("x" . adam/kill-char)
+   '("k" . (lambda () (interactive) (next-line -1)))
+   '("l" . meow-right)
+   '("u" . undo)
+   '("U" . undo-redo)
+   '("v" . meow-search)
+   '("/" . meow-visit)
+   '("y" . meow-clipboard-save)
+   ))
+
+(meow-global-mode 1)
+
 (use-package doom-themes
   :config
   (setq doom-themes-enable-bold t)
@@ -260,8 +355,7 @@
     (setq projectile-project-search-path '("~/work")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package flycheck
-  )
+(use-package flycheck)
 
 (use-package yasnippet
   :config
@@ -342,7 +436,6 @@
 
 (defun adam/org-hook ()
   "Hook for setting indentation on org-mode."
-  (setq-local evil-shift-width 2)
   (org-indent-mode)
   (visual-line-mode)
   (flyspell-mode))
@@ -352,27 +445,16 @@
   (add-hook 'org-mode-hook 'adam/org-hook)
   (setq org-edit-src-content-indentation 0)
   (setq org-link-descriptive t)
-  ;; (require 'org-habit)
-  ;; (add-to-list 'org-modules 'org-habit)
-  ;; (setq org-habit-graph-column 60)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-imenu-depth 67)
-  (setq org-agenda-files '("~/adam/homepage.org"))
-  )
+  (setq org-agenda-files '("~/adam/HOMEPAGE.org")))
 
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode)
   :config
-  (setq org-bullets-bullet-list '("*"))
-  )
-
-;; (use-package org-roam
-;;   :after org
-;;   :config
-;;   (setq org-roam-directory "~/roam/")
-;;   (org-roam-db-autosync-mode))
+  (setq org-bullets-bullet-list '("*")))
 
 (use-package sly
   :config
@@ -471,43 +553,6 @@
 
 (use-package lsp-ivy)
 
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  (setq evil-want-minibuffer nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal)
-  (setq evil-lookup-func #'adam/lookup-func))
-
-(use-package evil-lispy
-  :after
-  evil
-  :config
-  (add-hook 'adam-mode-hook #'evil-lispy-mode))
-
-(use-package evil-collection
-  :after
-  evil
-  :config
-  (evil-collection-init))
-
-(use-package evil-nerd-commenter
-  :bind
-  ("M-#" . evilnc-comment-or-uncomment-lines)
-  ("C-#" . evilnc-comment-or-uncomment-lines))
-
-(use-package evil-multiedit
-  :config
-  (evil-multiedit-default-keybinds))
-
 (use-package dired
   :straight nil
   :commands (dired dired-jump)
@@ -518,12 +563,6 @@
   :config
   (setq dired-kill-when-opening-new-dired-buffer t)
   (setq dired-dwim-target t)
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-up-directory
-    "l" 'dired-find-file
-    "R" 'dired-do-rename
-    "C" 'dired-do-copy
-    "D" 'dired-do-delete)
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
 (setq adam/pdf-reader "okular")
@@ -546,10 +585,7 @@
           ("epub" . "epub-reader")
           ("blend" . "blender"))))
 
-(use-package dired-hide-dotfiles
-  :config
-  (evil-collection-define-key 'normal 'dired-mode-map "H" 'dired-hide-dotfiles-mode)
-  )
+(use-package dired-hide-dotfiles)
 
 (defun adam/buffer-grep ()
   "Grep the current buffer."
@@ -573,97 +609,6 @@
     (setq xclip-mode t)
     (setq xclip-method 'wl-copy)
     (setq xclip-select-enable-clipboard t)))
-
-(use-package general
-  :config
-  (general-evil-setup)
-  (general-create-definer adam/leader-keys
-    :states
-    '(normal insert visual emacs)
-    :keymaps 'override
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-  (adam/leader-keys
-    "SPC" '(adam/M-x :wk "M-x")
-
-    "s" '(:ignore t :wk "search")
-    "ss" '(swiper :wk "search swiper")
-    "sr" '(rgrep :wk "search grep")
-
-    "a" '(:ignore t :wk "ai")
-    "aa" '(agent-shell :wk "ai start agent shell")
-    "al" '(gptel :wk "ai start gptel chat")
-
-    "e" '(:ignore t :wk "eval")
-    "ee" '(eval-buffer :wk "eval buffer")
-    "f" '(:ignore t :wk "find")
-    "fc" '(adam/goto-init-file :wk "find config")
-    ;; "fm" '((lambda () (interactive) (find-file "~/adam/music.org")) :wk "find music")
-    "fh" '(adam/goto-homepage :wk "find homepage")
-    "fp" '(list-processes :wk "find processes")
-    "ff" '(adam/fuzzy-find :wk "find fuzzy-contextual")
-    "f." '(find-file-existing :wk "find file")
-    "f," '(projectile-find-file :wk "find project file")
-    "fz" '(projectile-switch-project :wk "find project")
-    "fn" '(find-file :wk "file file new")
-    "fe" '(adam/occur :wk "grep current buffer")
-    "fa" '(adam/grep :wk "grep current project")
-
-    "o" '(:ignore t :wk "org")
-    "oo" '(org-agenda :wk "find agenda")
-
-    "gg" '(magit :wk "magit")
-
-    "b" '(:ignore t :wk "buffer")
-    "bb" '(adam/switch-buffer :wk "buffer switch")
-    "bm" '(ibuffer :wk "buffer menu")
-    "bx" '(kill-buffer :wk "buffer kill")
-
-    "l" '(:ignore t :wk "lsp")
-    "lr" '(lsp-rename :wk "lsp rename")
-    "ld" '(flycheck-list-errors :wk "lsp errors")
-    "la" '(lsp-code-actions-at-point :wk "lsp code action")
-
-    "w" '(:ignore t :wk "window")
-    "wm" '(delete-other-windows-internal :wk "window solo")
-    "wp" '(window-swap-states :wk "window swap")
-    "wt" '(awin/toggle-split :wk "window toggle split")
-    "wn" '(evil-window-split :wk "window split horizontal")
-    "wv" '(evil-window-vsplit :wk "window split vertical")
-    "ww" '(evil-window-next :wk "window next")
-    "wc" '(evil-window-delete :wk "window close")
-    "wx" '(kill-buffer-and-window :wk "window kill and close")
-    "wh" '(evil-window-left :wk "window left")
-    "wj" '(evil-window-down :wk "window down")
-    "wk" '(evil-window-up :wk "window up")
-    "wl" '(evil-window-right :wk "window right")
-
-    "c" '(:ignore t :wk "command")
-    "ce" '(adam/eshell :wk "command eshell")
-    "cc" '((lambda ()
-               (interactive)
-               (call-interactively #'compile))
-           :wk "command current")
-    "cp" '((lambda ()
-               (interactive)
-               (when (projectile-project-p)
-                   (call-interactively #'projectile-compile-project)))
-               :wk "command project")
-    "cn" '((lambda ()
-               (interactive)
-               (setq compile-command "")
-               (call-interactively #'compile))
-           :wk "command new")
-
-    "x" '(:ignore t :wk "puter")
-    "xx" '(adam/xsettings :wk "puter xsettings")
-    "xl" '(adam/puter-linkup :wk "puter linkup")
-
-    "r" '(:ignore t :wk "reload")
-    "rc" '(adam/reload-init-file :wk "reload config")
-
-    "q" '(:ignore t :wk "quick tool")
-    "qq" '(quick-calc :wk "quick tool calculator")))
 
 (require 'adam-mode)
 (require 'puter)

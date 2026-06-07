@@ -8,7 +8,7 @@
    '("9fce49fd3c1966aeb3de44d228fa41bdeb0525e059dfef26f3c21ec9135c25a4"
      default))
  '(org-agenda-files '("/home/adam/adam/homepage.org"))
- '(warning-suppress-types '((use-package))))
+ '(warning-suppress-types '((use-package) (use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

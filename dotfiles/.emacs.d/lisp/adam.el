@@ -369,62 +369,16 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (interactive)
   (kill-region (point) (1+ (point))))
 
-(defun adam/paste-below ()
-  "Vim p: paste after cursor (characterwise) or below current line (linewise)."
+(defun adam/clipboard-kill-line-or-fold ()
+  "Kill line to clipboard. If the line has a folded region, kill the entire fold."
   (interactive)
-  (when (null kill-ring)
-    (user-error "Kill ring is empty"))
-  (let ((text (current-kill 0)))
-    (cond
-     ;; Active region: replace selection, old selection → kill-ring
-     ((use-region-p)
-      (let ((beg (region-beginning)))
-        (kill-region (region-beginning) (region-end))
-        (insert text)
-        (goto-char beg)))
-     ;; Linewise: paste below current line, cursor to first non-blank
-     ((string-suffix-p "\n" text)
-      (let* ((content (substring text 0 (1- (length text))))
-             (target nil))
-        (end-of-line)
-        (insert "\n")
-        (setq target (point))
-        (insert content)
-        (goto-char target)
-        (back-to-indentation)))
-     ;; Characterwise: paste after cursor, cursor on last pasted char
-     (t
-      (unless (or (eobp) (eolp))
-        (forward-char 1))
-      (insert text)
-      (backward-char 1)))))
-
-(defun adam/paste-above ()
-  "Vim P: paste before cursor (characterwise) or above current line (linewise)."
-  (interactive)
-  (when (null kill-ring)
-    (user-error "Kill ring is empty"))
-  (let ((text (current-kill 0)))
-    (cond
-     ;; Active region: replace selection, old selection → kill-ring
-     ((use-region-p)
-      (let ((beg (region-beginning)))
-        (kill-region (region-beginning) (region-end))
-        (insert text)
-        (goto-char beg)))
-     ;; Linewise: paste above current line, cursor to first non-blank
-     ((string-suffix-p "\n" text)
-      (let* ((content (substring text 0 (1- (length text))))
-             (target nil))
-        (beginning-of-line)
-        (setq target (point))
-        (insert content "\n")
-        (goto-char target)
-        (back-to-indentation)))
-     ;; Characterwise: paste before cursor, cursor on last pasted char
-     (t
-      (insert text)
-      (backward-char 1)))))
+  (let* ((eol (line-end-position))
+         (fold-ov (seq-find (lambda (o) (overlay-get o 'invisible))
+                            (overlays-in eol (1+ eol)))))
+    (if fold-ov
+        (clipboard-kill-region (line-beginning-position)
+                               (1+ (overlay-end fold-ov)))
+      (meow-clipboard-kill))))
 
 (defun adam/indent-right ()
   "Indent region or line right."
@@ -452,7 +406,81 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun adam/decrement-number (arg)
   "Decrement number at point by ARG."
   (interactive "p")
-  (studium/increment-number (- arg)))
+  (adam/increment-number (- arg)))
+
+(defun adam/block-maximum ()
+  "Select the outermost enclosing block by repeatedly expanding."
+  (interactive)
+  (meow-block 1)
+  (when (region-active-p)
+    (let ((last-beg (region-beginning))
+          (last-end (region-end)))
+      (while t
+        (meow-block 1)
+        (unless (region-active-p)
+          (cl-return))
+        (when (and (= (region-beginning) last-beg)
+                   (= (region-end) last-end))
+          (cl-return))
+        (setq last-beg (region-beginning)
+              last-end (region-end))))))
+
+(defun adam/paste-below ()
+  "Vim p: paste after cursor (charwise) or below current line (linewise)."
+  (interactive)
+  (if (null kill-ring)
+      (user-error "Kill ring is empty")
+    (let ((text (current-kill 0)))
+      (cond
+       ((use-region-p)
+        (let ((beg (region-beginning)))
+          (delete-region beg (region-end))
+          (insert text)
+          (goto-char beg)))
+       ((string-suffix-p "\n" text)
+        (let ((content (substring text 0 -1)))
+          (end-of-line)
+          (newline)
+          (insert content)
+          (back-to-indentation)))
+       (t
+        (insert text)
+        (backward-char 1))))))
+
+(defun adam/paste-above ()
+  "Vim P: paste before cursor (charwise) or above current line (linewise)."
+  (interactive)
+  (if (null kill-ring)
+      (user-error "Kill ring is empty")
+    (let ((text (current-kill 0)))
+      (cond
+       ((use-region-p)
+        (let ((beg (region-beginning)))
+          (delete-region beg (region-end))
+          (insert text)
+          (goto-char beg)))
+       ((string-suffix-p "\n" text)
+        (let ((content (substring text 0 -1)))
+          (beginning-of-line)
+          (insert content "\n")
+          (back-to-indentation)))
+       (t
+        (insert text)
+        (backward-char 1))))))
+
+(defun adam/agent-shell ()
+  "Open agent shell: switch to existing or start a new one.
+Unlike `agent-shell', does not capture the active region as context."
+  (interactive)
+  (let* ((existing (or (agent-shell--current-shell)
+                       (agent-shell-shell-buffer :no-create t :no-error t))))
+    (if existing
+        (agent-shell--display-buffer existing)
+      (agent-shell-start
+       :config (or (agent-shell--resolve-preferred-config)
+                   (agent-shell-select-config
+                    :prompt "Start agent: ")
+                   (error "No agent config found"))))))
 
 (provide 'adam)
 ;;; adam.el ends here

@@ -548,9 +548,18 @@ Returns the selected window."
   "Whether turn-complete notification has been set up for this buffer.")
 
 (defun adam/agent-shell-notify-event (_event)
-  "The function called when the agent-shell prompt is finished."
+  "The function called when the agent-shell turn is complete."
   (interactive)
-  (puter/notify-send "agent-shell: prompt finished!"))
+  (let* ((input (when (and (boundp 'comint-input-ring)
+                           (ring-p comint-input-ring)
+                           (> (ring-length comint-input-ring) 0))
+                  (ring-ref comint-input-ring 0)))
+         (display (if (and input (> (length input) 80))
+                      (concat (substring input 0 77) "...")
+                    (or input ""))))
+    (puter/notify-send (if (string-empty-p display)
+                           "agent-shell: prompt finished!"
+                         (format "agent-shell: %s" display)))))
 
 (defun adam/agent-shell-notify-turn-complete ()
   "Send desktop notification when an opencode agent shell turn completes."

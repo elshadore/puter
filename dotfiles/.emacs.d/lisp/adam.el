@@ -329,47 +329,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
     (adam/kill-all-buffers input el)
     (message "Buffer %s Killed!" el)))
 
-(defun adam/flash-eval-region (start end)
-  "Flash eval a region of elisp code."
-  (interactive)
-  (require 'sly-messages)
-  (sly-flash-region start end)
-  (eval-region start end t))
-
-(defun adam/C-c-C-c ()
-  "Evaluate current top-level form and flash it, like Sly's C-c C-c, but for elisp mode."
-  (interactive)
-  (let (start end)
-    (save-excursion
-      (beginning-of-defun)
-      (setq start (point))
-      (end-of-defun)
-      (setq end (point)))
-    (when (and start end)
-      (adam/flash-eval-region start end))))
-
-(defun adam/C-x-C-e ()
-  "Evaluate expression before point and flash it, like C-x C-e with flash."
-  (interactive)
-  (let (start end)
-    (save-excursion
-      (setq end (point))
-      (backward-sexp)
-      (setq start (point))
-      (let ((start (point)))))
-    (when (and start end)
-      (adam/flash-eval-region start end))))
-
-(defun adam/testicle ()
-  "A simple testicle function."
-  (message "henlo word!"))
-
-(defun adam/save-all ()
-  "Save `ALL' the buffers."
-  (interactive)
-  (save-some-buffers t)
-  (message "saved all!"))
-
 (defun adam/kill-char ()
   "Kills a character adding it to killring, like x in vim"
   (interactive)
@@ -396,6 +355,68 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
             (beginning-of-line)
           (end-of-line)))
     (forward-line (- n))))
+
+(defun adam/sticky-forward-char ()
+  "Move forward one character, but not past the end of the line."
+  (interactive)
+  (unless (eolp)
+    (forward-char 1)))
+
+(defun adam/sticky-backward-char ()
+  "Move backward one character, but not past the beginning of the line."
+  (interactive)
+  (unless (bolp)
+    (backward-char 1)))
+
+(defun adam/join-line ()
+  "Join the current line with the next line (Vim's J).
+Moves to the next line and joins it back, trimming whitespace."
+  (interactive)
+  (forward-line 1)
+  (join-line))
+
+(defun adam/testicle ()
+  "A simple testicle function."
+  (message "henlo word!"))
+
+(defun adam/save-all ()
+  "Save `ALL' the buffers."
+  (interactive)
+  (save-some-buffers t)
+  (message "saved all!"))
+
+(defun adam/flash-eval-region (start end)
+  "Flash eval a region of elisp code."
+  (interactive "r")
+  (require 'sly-messages)
+  (sly-flash-region start end)
+  (eval-region start end t))
+
+(defun adam/C-c-C-c ()
+  "Evaluate current top-level form and flash it, like Sly's C-c C-c, but for elisp mode."
+  (interactive)
+  (let (start end)
+    (save-excursion
+      (adam/sticky-forward-char)
+      (beginning-of-defun)
+      (setq start (point))
+      (end-of-defun)
+      (setq end (point)))
+    (when (and start end)
+      (adam/flash-eval-region start end))))
+
+(defun adam/C-x-C-e ()
+  "Evaluate expression before point and flash it, like C-x C-e with flash."
+  (interactive)
+  (let (start end)
+    (save-excursion
+      (adam/sticky-forward-char)
+      (setq end (point))
+      (backward-sexp)
+      (setq start (point))
+      (let ((start (point)))))
+    (when (and start end)
+      (adam/flash-eval-region start end))))
 
 (defun adam/clipboard-kill-line-or-fold ()
   "Kill line to clipboard. If the line has a folded region, kill the entire fold."

@@ -376,17 +376,25 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (kill-region (point) (1+ (point))))
 
 (defun adam/j (&optional n)
-  "Move down, or with line selection extend to end of Nth next line."
+  "Move down, or with line selection extend or contract downward."
   (interactive "p")
   (if (and (region-active-p) (eq 'line (cdr (meow--selection-type))))
-      (progn (forward-line n) (end-of-line))
+      (let ((mark-pos (mark t)))
+        (forward-line n)
+        (if (< (point) mark-pos)
+            (beginning-of-line)
+          (end-of-line)))
     (forward-line n)))
 
 (defun adam/k (&optional n)
-  "Move up, or with line selection extend to start of Nth previous line."
+  "Move up, or with line selection extend or contract upward."
   (interactive "p")
   (if (and (region-active-p) (eq 'line (cdr (meow--selection-type))))
-      (progn (forward-line (- n)) (end-of-line))
+      (let ((mark-pos (mark t)))
+        (forward-line (- n))
+        (if (< (point) mark-pos)
+            (beginning-of-line)
+          (end-of-line)))
     (forward-line (- n))))
 
 (defun adam/clipboard-kill-line-or-fold ()

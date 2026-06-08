@@ -468,19 +468,26 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
         (insert text)
         (backward-char 1))))))
 
+(defvar adam/agent-shell-provider 'opencode
+  "The default provider for agent-shell.")
+
+(defvar adam/agent-shell-model "opencode/deepseek-v4-flash-free"
+  "The default model for agent-shell.")
+
 (defun adam/agent-shell ()
-  "Open agent shell: switch to existing or start a new one.
-Unlike `agent-shell', does not capture the active region as context."
+  "Open or switch to an agent shell with the opencode provider."
   (interactive)
-  (let* ((existing (or (agent-shell--current-shell)
-                       (agent-shell-shell-buffer :no-create t :no-error t))))
+  (let ((existing (or (agent-shell--current-shell)
+                      (agent-shell-shell-buffer :no-create t :no-error t))))
     (if existing
         (agent-shell--display-buffer existing)
-      (agent-shell-start
-       :config (or (agent-shell--resolve-preferred-config)
-                   (agent-shell-select-config
-                    :prompt "Start agent: ")
-                   (error "No agent config found"))))))
+      (let ((config (or (seq-find (lambda (c)
+                                    (eq (map-elt c :identifier) adam/agent-shell-provider))
+                                  agent-shell-agent-configs)
+                        (error "No opencode agent config found"))))
+        (setq config (copy-alist config))
+        (map-put! config :default-model-id (lambda () adam/agent-shell-model))
+        (agent-shell-start :config config)))))
 
 (provide 'adam)
 ;;; adam.el ends here

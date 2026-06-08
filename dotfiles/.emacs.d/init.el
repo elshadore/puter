@@ -289,7 +289,8 @@
                (when (projectile-project-p)
                  (call-interactively 'projectile-compile-project))))
 
-   '("a" . adam/agent-shell)
+   '("a a" . adam/agent-shell)
+   '("a n" . agent-shell)
    '("<SPC>" . adam/M-x)
    )
   (meow-motion-define-key

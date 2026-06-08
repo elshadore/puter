@@ -239,6 +239,7 @@
 (use-package meow
   :config
   (setq meow-use-clipboard t)
+  (setq meow-select-on-change nil)
   (meow-leader-define-key
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -295,6 +296,7 @@
    '("a n" . agent-shell)
    '("<SPC>" . adam/M-x)
    '("e" . adam/flash-eval-region)
+   '("p" . adam/toggle-file-diff)
    )
   (meow-motion-define-key
    '("y" . meow-clipboard-save)
@@ -330,6 +332,8 @@
    '("W" . meow-mark-word)
    '("b" . backward-word)
    '("B" . beginning-of-line)
+   '("e" . end-of-line)
+   '("E" . end-of-line)
    '("m" . meow-block)
    '("M" . adam/block-maximum)
    '("d" . meow-kill)

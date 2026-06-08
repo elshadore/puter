@@ -567,5 +567,15 @@ Returns the selected window."
          :on-event 'adam/agent-shell-notify-event)
         (setq-local adam/agent-shell--notify-subscribed t)))))
 
+(defun adam/toggle-file-diff ()
+  "Toggle git diff for the current file using magit."
+  (interactive)
+  (if-let ((win (seq-find (lambda (w)
+                            (with-current-buffer (window-buffer w)
+                              (derived-mode-p 'magit-diff-mode)))
+                          (window-list))))
+      (delete-window win)
+    (magit-diff-buffer-file)))
+
 (provide 'adam)
 ;;; adam.el ends here

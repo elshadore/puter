@@ -93,6 +93,7 @@
 ;; Quitting is always an option...
 (global-set-key (kbd "<escape>") #'adam/quitter)
 (global-set-key [remap keyboard-quit] #'adam/quitter)
+(global-set-key (kbd "C-s") #'adam/save-all)
 
 (defun adam/set-frame-default-params ()
   "Set all frame params."
@@ -159,8 +160,7 @@
 
 (use-package ivy
   :bind
-  (("C-s" . swiper)
-         :map ivy-minibuffer-map
+  (:map ivy-minibuffer-map
          ("TAB" . ivy-alt-done)
          ("C-l" . ivy-alt-done)
          ("C-j" . ivy-next-line)
@@ -238,6 +238,7 @@
 
 (use-package meow
   :config
+  (setq meow-use-clipboard t)
   (meow-leader-define-key
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -252,6 +253,7 @@
    '("?" . meow-cheatsheet)
    '("." . adam/find-file-new)
    '("," . projectile-find-file)
+   '(":" . goto-line)
    
    '("/" . adam/fuzzy-find)
    '("f c" . adam/goto-init-file)
@@ -295,13 +297,13 @@
    )
   (meow-motion-define-key
    '("y" . meow-clipboard-save)
-   '("d" . meow-clipboard-kill)
+   '("d" . meow-kill)
    '("g" . meow-cancel-selection)
    '("v" . meow-line)
-   '("j" . next-line)
-   '("k" . (lambda () (interactive) (next-line -1)))
-   '("J" . (lambda () (interactive) (next-line 10)))
-   '("K" . (lambda () (interactive) (next-line -10)))
+   '("j" . adam/j)
+   '("k" . adam/k)
+   '("J" . (lambda () (interactive) (adam/j 10)))
+   '("K" . (lambda () (interactive) (adam/k 10)))
    '("h" . meow-left)
    '("l" . meow-right)
    '("<escape>" . meow-cancel-selection)
@@ -329,7 +331,7 @@
    '("B" . beginning-of-line)
    '("m" . meow-block)
    '("M" . adam/block-maximum)
-   '("d" . meow-clipboard-kill)
+   '("d" . meow-kill)
    '("y" . meow-clipboard-save)
    '("f" . flash-jump)
    '("p" . adam/paste-below)
@@ -344,12 +346,12 @@
    '("A" . (lambda () (interactive) (end-of-line) (meow-append)))
    '("g" . meow-cancel-selection)
    '("h" . meow-left)
-   '("j" . next-line)
+   '("j" . adam/j)
    '("V" . meow-line)
    '("x" . adam/kill-char)
-   '("k" . (lambda () (interactive) (next-line -1)))
-   '("J" . (lambda () (interactive) (next-line 10)))
-   '("K" . (lambda () (interactive) (next-line -10)))
+   '("k" . adam/k)
+   '("J" . (lambda () (interactive) (adam/j 10)))
+   '("K" . (lambda () (interactive) (adam/k 10)))
    '("C-j" . meow-join)
    '("l" . meow-right)
    '("u" . undo)
@@ -449,7 +451,9 @@
           :key (adam/lookup-auth 'deepseek)
           :models '(deepseek-chat deepseek-coder))))
 
-(use-package agent-shell)
+(use-package agent-shell
+  :config
+  (add-hook 'agent-shell-mode-hook #'adam/agent-shell-notify-turn-complete))
 
 (use-package i3wm-config-mode)
 (use-package css-mode)

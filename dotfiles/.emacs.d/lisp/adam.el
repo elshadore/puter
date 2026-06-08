@@ -364,10 +364,30 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   "A simple testicle function."
   (message "henlo word!"))
 
+(defun adam/save-all ()
+  "Save `ALL' the buffers."
+  (interactive)
+  (save-some-buffers t)
+  (message "saved all!"))
+
 (defun adam/kill-char ()
   "Kills a character adding it to killring, like x in vim"
   (interactive)
   (kill-region (point) (1+ (point))))
+
+(defun adam/j (&optional n)
+  "Move down, or with line selection extend to end of Nth next line."
+  (interactive "p")
+  (if (and (region-active-p) (eq 'line (cdr (meow--selection-type))))
+      (progn (forward-line n) (end-of-line))
+    (forward-line n)))
+
+(defun adam/k (&optional n)
+  "Move up, or with line selection extend to start of Nth previous line."
+  (interactive "p")
+  (if (and (region-active-p) (eq 'line (cdr (meow--selection-type))))
+      (progn (forward-line (- n)) (end-of-line))
+    (forward-line (- n))))
 
 (defun adam/clipboard-kill-line-or-fold ()
   "Kill line to clipboard. If the line has a folded region, kill the entire fold."
@@ -468,6 +488,13 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
         (insert text)
         (backward-char 1))))))
 
+(defun adam/display-buffer-other-window (buffer)
+  "Display BUFFER in another window, Magit-style.
+If only one window exists, split it using `split-window-sensibly'.
+If multiple windows exist, reuse another window.
+Returns the selected window."
+  (select-window (display-buffer buffer nil)))
+
 (defvar adam/agent-shell-provider 'opencode
   "The default provider for agent-shell.")
 
@@ -478,9 +505,11 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   "Open or switch to an agent shell with the opencode provider."
   (interactive)
   (let ((existing (or (agent-shell--current-shell)
-                      (agent-shell-shell-buffer :no-create t :no-error t))))
+                      (agent-shell-shell-buffer :no-create t :no-error t)))
+        (agent-shell-session-strategy 'new)
+        (agent-shell-display-action nil))
     (if existing
-        (agent-shell--display-buffer existing)
+        (adam/display-buffer-other-window existing)
       (let ((config (or (seq-find (lambda (c)
                                     (eq (map-elt c :identifier) adam/agent-shell-provider))
                                   agent-shell-agent-configs)
@@ -488,6 +517,26 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
         (setq config (copy-alist config))
         (map-put! config :default-model-id (lambda () adam/agent-shell-model))
         (agent-shell-start :config config)))))
+
+(defvar-local adam/agent-shell--notify-subscribed nil
+  "Whether turn-complete notification has been set up for this buffer.")
+
+(defun adam/agent-shell-notify-event (_event)
+  "The function called when the agent-shell prompt is finished."
+  (interactive)
+  (puter/notify-send "agent-shell: prompt finished!"))
+
+(defun adam/agent-shell-notify-turn-complete ()
+  "Send desktop notification when an opencode agent shell turn completes."
+  (when (and (derived-mode-p 'agent-shell-mode)
+             (not adam/agent-shell--notify-subscribed))
+    (let ((config (agent-shell-get-config (current-buffer))))
+      (when (eq (map-elt config :identifier) adam/agent-shell-provider)
+        (agent-shell-subscribe-to
+         :shell-buffer (current-buffer)
+         :event 'turn-complete
+         :on-event 'adam/agent-shell-notify-event)
+        (setq-local adam/agent-shell--notify-subscribed t)))))
 
 (provide 'adam)
 ;;; adam.el ends here

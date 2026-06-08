@@ -533,12 +533,9 @@ Returns the selected window."
 (defun adam/agent-shell ()
   "Open or switch to an agent shell with the opencode provider."
   (interactive)
-  (let ((existing (or (agent-shell--current-shell)
-                      (agent-shell-shell-buffer :no-create t :no-error t)))
-        (agent-shell-session-strategy 'new)
-        (agent-shell-display-action nil))
-    (if existing
-        (adam/display-buffer-other-window existing)
+  (let ((buffers (agent-shell-buffers)))
+    (if buffers
+        (adam/display-buffer-other-window (car buffers))
       (let ((config (or (seq-find (lambda (c)
                                     (eq (map-elt c :identifier) adam/agent-shell-provider))
                                   agent-shell-agent-configs)

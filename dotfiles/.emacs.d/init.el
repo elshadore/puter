@@ -234,10 +234,7 @@
 
 (use-package better-jumper
   :config
-  (global-set-key (kbd "C-o") 'better-jumper-jump-forward)
-  (global-set-key (kbd "C-i") 'better-jumper-jump-backward))
-
-(better-jumper-mode 1)
+  (better-jumper-mode 1))
 
 (use-package meow
   :config
@@ -301,6 +298,8 @@
    '("e" . adam/flash-eval-region)
    '("p" . adam/toggle-file-diff))
   (meow-motion-define-key
+   '("C-o" . better-jumper-jump-backward)
+   '("C-i" . better-jumper-jump-forward)
    '("y" . meow-clipboard-save)
    '("d" . meow-kill)
    '("g" . meow-cancel-selection)
@@ -311,6 +310,7 @@
    '("K" . (lambda () (interactive) (adam/k 10)))
    '("h" . meow-left)
    '("l" . meow-right)
+   '("\\" . swiper)
    '("<escape>" . meow-cancel-selection))
   (meow-normal-define-key
    '("0" . meow-expand-0)
@@ -369,9 +369,27 @@
    '(">" . adam/indent-right)
    '("<" . adam/indent-left)
    '("=" . indent-region)
+   '("\\" . swiper)
+   '("C-o" . better-jumper-jump-backward)
+   '("C-i" . better-jumper-jump-forward)
    '("G" . end-of-buffer)))
 
 (meow-global-mode 1)
+
+(defun adam/better-jumper-record-jump-advice (&rest _)
+  (when (bound-and-true-p better-jumper-mode)
+    (better-jumper-set-jump)))
+
+(defvar adam/jump-functions '(xref-find-definitions
+                              xref-find-references
+                              flash-jump
+                              better-jumper-jump-backward
+                              better-jumper-jump-forward
+                              meow-visit)
+  "Function that jump for `better-jumper' mode.")
+
+(dolist (cmd adam/jump-functions)
+  (advice-add cmd :before #'adam/better-jumper-record-jump-advice))
 
 (use-package flash)
 
@@ -607,7 +625,10 @@
   :straight nil
   :commands (dired dired-jump)
   :bind
-  (("C-x C-j" . dired-jump))
+  (("C-x C-j" . dired-jump)
+   :map dired-mode-map
+   ("r" . revert-buffer)
+   ("DEL" . dired-up-directory))
   :custom
   ((dired-listing-switches "-lah --group-directories-first"))
   :config

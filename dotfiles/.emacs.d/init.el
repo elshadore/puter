@@ -232,7 +232,10 @@
 
 (global-company-mode 1)
 
-(use-package better-jumper)
+(use-package better-jumper
+  :config
+  (global-set-key (kbd "C-o") 'better-jumper-jump-forward)
+  (global-set-key (kbd "C-i") 'better-jumper-jump-backward))
 
 (better-jumper-mode 1)
 
@@ -296,8 +299,7 @@
    '("a n" . agent-shell)
    '("<SPC>" . adam/M-x)
    '("e" . adam/flash-eval-region)
-   '("p" . adam/toggle-file-diff)
-   )
+   '("p" . adam/toggle-file-diff))
   (meow-motion-define-key
    '("y" . meow-clipboard-save)
    '("d" . meow-kill)
@@ -309,8 +311,7 @@
    '("K" . (lambda () (interactive) (adam/k 10)))
    '("h" . meow-left)
    '("l" . meow-right)
-   '("<escape>" . meow-cancel-selection)
-   )
+   '("<escape>" . meow-cancel-selection))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("1" . meow-expand-1)
@@ -345,7 +346,8 @@
    '("o" . meow-open-below)
    '("O" . meow-open-above)
    '("." . xref-find-definitions)
-   '("?" . xref-find-references)
+   '("," . xref-find-references)
+   '("?" . adam/lookup)
    '("r" . meow-reverse)
    '("a" . (lambda () (interactive) (adam/sticky-forward-char) (meow-append)))
    '("A" . (lambda () (interactive) (end-of-line) (meow-append)))
@@ -367,9 +369,7 @@
    '(">" . adam/indent-right)
    '("<" . adam/indent-left)
    '("=" . indent-region)
-   '("G" . end-of-buffer)
-   '("C-o" . better-jumper-jump-backward)
-   ))
+   '("G" . end-of-buffer)))
 
 (meow-global-mode 1)
 

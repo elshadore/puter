@@ -83,7 +83,13 @@
 (defun puter/notify-send (message)
   "Send Notification to Desktop."
   (let ((final (adam/stringify message)))
-    (start-process-shell-command final nil (format "dunstify %S" final))))
+    (start-process "dunst-notify" nil "dunstify" final)))
+
+(defmacro puter/notify-sendf (message &rest format-args)
+  "Send a formatted message using `puter/notify-send'."
+  (if format-args
+      `(puter/notify-send (format ,message ,@format-args))
+    `(puter/notify-send ,message)))
 
 ;;  TODO: this doesn't work in EXWM due to not having the correct shell ENV for xclip.
 (defun puter/clipboard-command (command)

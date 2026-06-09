@@ -183,7 +183,7 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (interactive)
   (call-interactively #'rgrep))
 
-(defun adam/lookup-func ()
+(defun adam/lookup ()
   "Lookup symbol under cursor."
   (interactive)
   (cond ((eq major-mode 'emacs-lisp-mode)
@@ -567,11 +567,8 @@ Returns the selected window."
 (defun adam/agent-shell-notify-event (_event)
   "The function called when the agent-shell turn is complete."
   (interactive)
-  (let* ((input (or (bound-and-true-p adam/agent-shell--last-prompt) ""))
-         (display (if (> (length input) 80)
-                      (concat (substring input 0 77) "...")
-                    input)))
-    (puter/notify-send (format "agent-shell: %s" display))))
+  (let ((input (or (bound-and-true-p adam/agent-shell--last-prompt) "")))
+    (puter/notify-sendf "agent-shell finished!\n> %s" input)))
 
 (defun adam/agent-shell-notify-turn-complete ()
   "Send desktop notification when an opencode agent shell turn completes."

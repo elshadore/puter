@@ -254,7 +254,7 @@
    '("?" . meow-cheatsheet)
    '("." . adam/find-file-new)
    '("," . projectile-find-file)
-   '(":" . goto-line)
+   '("'" . goto-line)
    
    '("/" . adam/fuzzy-find)
    '("f c" . adam/goto-init-file)
@@ -296,7 +296,7 @@
    '("a n" . agent-shell)
    '("<SPC>" . adam/M-x)
    '("e" . adam/flash-eval-region)
-   '("p" . adam/toggle-file-diff))
+   '(":" . adam/toggle-file-diff))
   (meow-motion-define-key
    '("C-o" . better-jumper-jump-backward)
    '("C-i" . better-jumper-jump-forward)
@@ -372,6 +372,7 @@
    '("\\" . swiper)
    '("C-o" . better-jumper-jump-backward)
    '("C-i" . better-jumper-jump-forward)
+   '("C-#" . comment-dwim)
    '("G" . end-of-buffer)))
 
 (meow-global-mode 1)
@@ -581,7 +582,6 @@
 
 (use-package lua-mode
   :config
-  (define-key lua-mode-map (kbd "<normal-state> K") nil)
   (adam/add-lsp-hook 'lua-mode-hook))
 
 (use-package js

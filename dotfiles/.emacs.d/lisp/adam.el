@@ -343,7 +343,7 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
         (if (< (point) mark-pos)
             (beginning-of-line)
           (end-of-line)))
-    (forward-line n)))
+    (next-line n)))
 
 (defun adam/k (&optional n)
   "Move up, or with line selection extend or contract upward."
@@ -354,7 +354,7 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
         (if (< (point) mark-pos)
             (beginning-of-line)
           (end-of-line)))
-    (forward-line (- n))))
+    (next-line (- n))))
 
 (defun adam/sticky-forward-char ()
   "Move forward one character, but not past the end of the line."
@@ -519,10 +519,14 @@ Moves to the next line and joins it back, trimming whitespace."
 
 (defun adam/display-buffer-other-window (buffer)
   "Display BUFFER in another window, Magit-style.
-If only one window exists, split it using `split-window-sensibly'.
+If only one window exists, split it using `split-window-right'.
 If multiple windows exist, reuse another window.
 Returns the selected window."
-  (select-window (display-buffer buffer nil)))
+  (when (one-window-p)
+    (split-window-right))
+  (select-window (display-buffer buffer '(display-buffer-reuse-window
+                                           display-buffer-use-some-window)
+                                 '((inhibit-same-window . t)))))
 
 (defvar adam/agent-shell-provider 'opencode
   "The default provider for agent-shell.")
@@ -542,24 +546,32 @@ Returns the selected window."
                         (error "No opencode agent config found"))))
         (setq config (copy-alist config))
         (map-put! config :default-model-id (lambda () adam/agent-shell-model))
-        (agent-shell-start :config config)))))
+        (let ((shell (agent-shell--start :config config
+                                        :session-strategy 'new
+                                        :no-focus t)))
+          (adam/display-buffer-other-window shell))))))
 
 (defvar-local adam/agent-shell--notify-subscribed nil
   "Whether turn-complete notification has been set up for this buffer.")
 
+(defvar-local adam/agent-shell--last-prompt nil
+  "Last prompt sent to the agent, stored buffer-locally.")
+
+(defun adam/agent-shell--capture-prompt (oldfun &rest args)
+  "Capture the :prompt argument before agent-shell sends it."
+  (let ((prompt (car (cdr (memq :prompt args)))))
+    (when prompt
+      (setq-local adam/agent-shell--last-prompt prompt))
+    (apply oldfun args)))
+
 (defun adam/agent-shell-notify-event (_event)
   "The function called when the agent-shell turn is complete."
   (interactive)
-  (let* ((input (when (and (boundp 'comint-input-ring)
-                           (ring-p comint-input-ring)
-                           (> (ring-length comint-input-ring) 0))
-                  (ring-ref comint-input-ring 0)))
-         (display (if (and input (> (length input) 80))
+  (let* ((input (or (bound-and-true-p adam/agent-shell--last-prompt) ""))
+         (display (if (> (length input) 80)
                       (concat (substring input 0 77) "...")
-                    (or input ""))))
-    (puter/notify-send (if (string-empty-p display)
-                           "agent-shell: prompt finished!"
-                         (format "agent-shell: %s" display)))))
+                    input)))
+    (puter/notify-send (format "agent-shell: %s" display))))
 
 (defun adam/agent-shell-notify-turn-complete ()
   "Send desktop notification when an opencode agent shell turn completes."
@@ -572,6 +584,9 @@ Returns the selected window."
          :event 'turn-complete
          :on-event 'adam/agent-shell-notify-event)
         (setq-local adam/agent-shell--notify-subscribed t)))))
+
+(advice-add 'agent-shell--send-command :around
+            #'adam/agent-shell--capture-prompt)
 
 (defun adam/toggle-file-diff ()
   "Toggle git diff for the current file using magit."

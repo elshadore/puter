@@ -1,5 +1,5 @@
 set $mod Mod4
-font pango:TerminessNerdFontMono 12
+font pango:TerminessNerdFontMono 11
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork

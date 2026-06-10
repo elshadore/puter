@@ -236,6 +236,11 @@
   :config
   (better-jumper-mode 1))
 
+(defun adam/meow-motion/normal-define-key (&rest args)
+  "Defines both `motion' and `normal' keybinds for `meow.el'."
+  (meow-motion-define-key args)
+  (meow-normal-define-key args))
+
 (use-package meow
   :config
   (setq meow-use-clipboard t)
@@ -259,6 +264,7 @@
    '("/" . adam/fuzzy-find)
    '("f c" . adam/goto-init-file)
    '("f h" . adam/goto-homepage)
+   '("f p" . list-processes)
    '("r" . rgrep)
    
    '(";" . (lambda () (interactive) (require 'magit) (magit-status)))
@@ -296,7 +302,8 @@
    '("a n" . agent-shell)
    '("<SPC>" . adam/M-x)
    '("e" . adam/flash-eval-region)
-   '(":" . adam/toggle-file-diff))
+   '("m" . emms-browser)
+   '(":" . adam/toggle-file-diff))  
   (meow-motion-define-key
    '("C-o" . better-jumper-jump-backward)
    '("C-i" . better-jumper-jump-forward)
@@ -674,7 +681,9 @@
   (setq emms-player-mpd-server-name "localhost")
   (setq emms-player-mpd-server-port 6969)
   (setq emms-player-mpd-music-directory "~/Music/")
-  )
+  (require 'emms-browser)
+  (puter/defservice mpd "mpd")
+  (emms-player-mpd-connect))
 
 ;; Wayland clipboard support
 (when (adam/is-wayland?)

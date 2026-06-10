@@ -1,7 +1,7 @@
 /* use command: rofi -dump-theme, to see all the variables */
 
 * {
-    font: "IosevkaNerdFont 14";
+    font: "IosevkaNerdFont 11";
     background-color:   transparent;
     adam-bg: #231f3c;
     adam-bg-alt: #1a1729;

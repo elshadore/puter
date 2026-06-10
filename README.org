@@ -1,7 +1,7 @@
-* PORTABLE PUTER
+* Portable Puter
 Emacs is my Operating System :).
 
-** CONFIGS
+** Configs
 - Alacritty
 - Bash
 - Emacs
@@ -14,10 +14,11 @@ Emacs is my Operating System :).
 - Rofi
 - xinitrc
 
-** ADDITIONAL ITEMS
+** Additional Items
 - Wallpapers
+- Game Saves
 
-** FONTS USED
+** Fonts Used
 - Nerd Fonts
  - iosevka-nerd-font
  - terminess-nerd-font

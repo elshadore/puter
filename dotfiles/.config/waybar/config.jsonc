@@ -1,7 +1,7 @@
 // -*- mode: jsonc -*-
 {
     "layer": "top",
-    "height": 30,
+    "height": 29,
     "spacing": 4,
     "output": "HDMI-A-1",
     "reload_style_on_change": true,

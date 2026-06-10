@@ -89,6 +89,7 @@
 
 (require 'adam)
 (require 'adam-window)
+(require 'puter)
 
 ;; Quitting is always an option...
 (global-set-key (kbd "<escape>") #'adam/quitter)
@@ -331,8 +332,8 @@
    '("k" . adam/k)
    '("J" . (lambda () (interactive) (adam/j 10)))
    '("K" . (lambda () (interactive) (adam/k 10)))
-   '("h" . meow-left)
-   '("l" . meow-right)
+   '("h" . backward-char)
+   '("l" . forward-char)
    '("C-f" . adam/meow-right-select)
    '("C-b" . adam/meow-left-select)
    '("\\" . swiper)
@@ -341,7 +342,8 @@
    '("M--" . emms-volume-lower)
    '("M-+" . emms-volume-raise)
    '("M-=" . emms-volume-raise)
-   '("<escape>" . meow-cancel-selection))
+   '("M-d" . mc/mark-next-lines)
+   '("<escape>" . adam/meow-cancel-or-mc-quit))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("1" . meow-expand-1)
@@ -405,6 +407,12 @@
   (advice-add cmd :before #'adam/better-jumper-record-jump-advice))
 
 (use-package flash)
+
+(use-package multiple-cursors
+  :config
+  (setq mc/always-run-for-all t))
+
+(use-package paredit)
 
 (use-package doom-themes
   :config

@@ -608,6 +608,14 @@ Returns the selected window."
   (let ((agent-shell-context-sources '()))
     (agent-shell arg)))
 
+(defun adam/meow-cancel-or-mc-quit ()
+  "Cancel selection or exit multiple-cursors if active."
+  (interactive)
+  (if (and (bound-and-true-p multiple-cursors-mode)
+           (not (meow-insert-mode-p)))
+      (mc/keyboard-quit)
+    (meow-cancel-selection)))
+
 (defun adam/meow-left-select ()
   "Move left one char, extending selection."
   (interactive)

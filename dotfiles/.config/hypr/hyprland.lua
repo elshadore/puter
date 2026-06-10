@@ -9,12 +9,42 @@ local terminal    = "kitty"
 local fileManager = "nemo"
 local menu        = "puter-menu"
 
+hl.workspace_rule({workspace = "1", default_name = "0", persistent = true, monitor = "HDMI-A-1"})
+hl.workspace_rule({workspace = "2", default_name = "1", persistent = true, monitor = "HDMI-A-1"})
+hl.workspace_rule({workspace = "3", default_name = "2", persistent = true, monitor = "HDMI-A-1"})
+hl.workspace_rule({workspace = "4", default_name = "3", persistent = true, monitor = "HDMI-A-1"})
+hl.workspace_rule({workspace = "5", default_name = "4", persistent = true, monitor = "HDMI-A-1"})
+hl.workspace_rule({workspace = "6", default_name = "5", persistent = true, monitor = "HDMI-A-1"})
+hl.workspace_rule({workspace = "7", default_name = "6", persistent = true, monitor = "HDMI-A-1"})
+hl.workspace_rule({workspace = "8", default_name = "7", persistent = true, monitor = "HDMI-A-1"})
+hl.workspace_rule({workspace = "9", default_name = "8", persistent = true, monitor = "HDMI-A-1"})
+hl.workspace_rule({workspace = "10", default_name = "9", persistent = true, monitor = "HDMI-A-2"})
+
+
 hl.on("hyprland.start", function ()
         hl.exec_cmd("nm-applet")
         hl.exec_cmd("dunst")
         hl.exec_cmd("hyprpaper")
         hl.exec_cmd("waybar")
         hl.exec_cmd("wl-paste --watch cliphist store")
+
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 1,  name = "0"}))
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 2,  name = "1"}))
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 3,  name = "2"}))
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 4,  name = "3"}))
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 5,  name = "4"}))
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 6,  name = "5"}))
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 7,  name = "6"}))
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 8,  name = "7"}))
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 9,  name = "8"}))
+        -- hl.dispatch(hl.dsp.workspace.rename({workspace = 10, name = "9"}))
+
+        -- hl.dispatch(hl.dsp.workspace.move({workspace = 1,  monitor = "HDMI-A-1"}))
+        -- hl.dispatch(hl.dsp.workspace.move({workspace = 10, monitor = "HDMI-A-2"}))
+
+        hl.exec_cmd("emacs",             { workspace = 1  })
+        hl.exec_cmd("firefox",           { workspace = 2  })
+        hl.exec_cmd("kitty -e btop",     { workspace = 10 })
 end)
 
 hl.env("XCURSOR_SIZE", "32")
@@ -157,7 +187,7 @@ local mainMod = "SUPER"
 
 hl.bind(mainMod .. "+ Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + W", hl.dsp.window.close())
-hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
+hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + Space", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + SemiColon", hl.dsp.exec_cmd(menu))

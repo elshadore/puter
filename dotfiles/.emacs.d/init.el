@@ -299,9 +299,11 @@
                (when (projectile-project-p)
                  (call-interactively 'projectile-compile-project))))
 
-   '("a a" . adam/agent-shell)
-   '("a n" . agent-shell)
+   '("a a" . adam/agent-shell-default)
+   '("a n" . adam/agent-shell)
    '("<SPC>" . adam/M-x)
+   '("d d" . kill-whole-line)
+   '("y y" . adam/yank-line)
    '("e r" . adam/emms-mpd-repeat)
    '("e z" . adam/emms-mpd-random)
    '("e e" . emms-browser)
@@ -315,6 +317,7 @@
    '("e C" . emms-play-playlist)
    '("e E" . emms-play-url)
    '("e u" . emms-player-mpd-update-all-reset-cache)
+   '("A" . mark-whole-buffer)
    '("_" . query-replace-regexp)
    '(":" . adam/toggle-file-diff))  
   (adam/meow-motion/normal-define-key

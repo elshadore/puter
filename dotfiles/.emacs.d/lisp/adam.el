@@ -398,11 +398,15 @@ Moves to the next line and joins it back, trimming whitespace."
                               (string-join saved "\n"))
         (puter/notify-sendf "No files needed saving")))))
 
+(defun adam/flash-region (start end)
+  "Flash the region between START and END."
+  (require 'sly-messages)
+  (sly-flash-region start end))
+
 (defun adam/flash-eval-region (start end)
   "Flash eval a region of elisp code."
   (interactive "r")
-  (require 'sly-messages)
-  (sly-flash-region start end)
+  (adam/flash-region start end)
   (eval-region start end t))
 
 (defun adam/C-c-C-c ()
@@ -547,7 +551,7 @@ Returns the selected window."
 (defvar adam/agent-shell-model "opencode/deepseek-v4-flash-free"
   "The default model for agent-shell.")
 
-(defun adam/agent-shell ()
+(defun adam/agent-shell-default ()
   "Open or switch to an agent shell with the opencode provider."
   (interactive)
   (let ((buffers (agent-shell-buffers)))
@@ -598,6 +602,12 @@ Returns the selected window."
 (advice-add 'agent-shell--send-command :around
             #'adam/agent-shell--capture-prompt)
 
+(defun adam/agent-shell (&optional arg)
+  "Like `agent-shell', but does not copy any context to the prompt."
+  (interactive "P")
+  (let ((agent-shell-context-sources '()))
+    (agent-shell arg)))
+
 (defun adam/meow-left-select ()
   "Move left one char, extending selection."
   (interactive)
@@ -611,6 +621,14 @@ Returns the selected window."
   (unless (region-active-p)
     (push-mark (point) nil t))
   (forward-char 1))
+
+(defun adam/yank-line ()
+  "Yank the current line and flash the copied region."
+  (interactive)
+  (let ((beg (line-beginning-position))
+        (end (line-end-position)))
+    (kill-ring-save beg end)
+    (adam/flash-region beg end)))
 
 (defun adam/toggle-file-diff ()
   "Toggle git diff for the current file using magit."

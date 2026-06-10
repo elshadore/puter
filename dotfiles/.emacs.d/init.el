@@ -238,13 +238,14 @@
 
 (defun adam/meow-motion/normal-define-key (&rest args)
   "Defines both `motion' and `normal' keybinds for `meow.el'."
-  (meow-motion-define-key args)
-  (meow-normal-define-key args))
+  (apply 'meow-motion-define-key args)
+  (apply 'meow-normal-define-key args))
 
 (use-package meow
   :config
   (setq meow-use-clipboard t)
   (setq meow-select-on-change nil)
+  (add-to-list 'meow-mode-state-list '(emms-browser-mode . motion))
   (meow-leader-define-key
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -301,10 +302,22 @@
    '("a a" . adam/agent-shell)
    '("a n" . agent-shell)
    '("<SPC>" . adam/M-x)
-   '("e" . adam/flash-eval-region)
-   '("m" . emms-browser)
+   '("e r" . adam/emms-mpd-repeat)
+   '("e z" . adam/emms-mpd-random)
+   '("e e" . emms-browser)
+   '("e n" . emms-next)
+   '("e p" . emms-previous)
+   '("e c" . emms-pause)
+   '("e s" . emms-start)
+   '("e ." . emms-stop)
+   '("e d" . emms-play-directory)
+   '("e f" . emms-play-file)
+   '("e C" . emms-play-playlist)
+   '("e E" . emms-play-url)
+   '("e u" . emms-player-mpd-update-all-reset-cache)
+   '("_" . query-replace-regexp)
    '(":" . adam/toggle-file-diff))  
-  (meow-motion-define-key
+  (adam/meow-motion/normal-define-key
    '("C-o" . better-jumper-jump-backward)
    '("C-i" . better-jumper-jump-forward)
    '("y" . meow-clipboard-save)
@@ -317,7 +330,14 @@
    '("K" . (lambda () (interactive) (adam/k 10)))
    '("h" . meow-left)
    '("l" . meow-right)
+   '("C-f" . adam/meow-right-select)
+   '("C-b" . adam/meow-left-select)
    '("\\" . swiper)
+   '("w" . forward-word)
+   '("b" . backward-word)
+   '("M--" . emms-volume-lower)
+   '("M-+" . emms-volume-raise)
+   '("M-=" . emms-volume-raise)
    '("<escape>" . meow-cancel-selection))
   (meow-normal-define-key
    '("0" . meow-expand-0)
@@ -335,17 +355,10 @@
    '("q" . meow-quit)
    '("Q" . kmacro-start-macro-or-insert-counter)
    '("@" . kmacro-end-or-call-macro)
-   '("w" . forward-word)
-   '("s" . meow-mark-symbol)
-   '("W" . meow-mark-word)
-   '("b" . backward-word)
-   '("B" . beginning-of-line)
-   '("e" . end-of-line)
-   '("E" . end-of-line)
+   '("s" . meow-mark-word)
+   '("S" . meow-mark-symbol)
    '("m" . meow-block)
    '("M" . adam/block-maximum)
-   '("d" . meow-kill)
-   '("y" . meow-clipboard-save)
    '("f" . flash-jump)
    '("p" . adam/paste-below)
    '("P" . adam/paste-above)
@@ -358,27 +371,16 @@
    '("r" . meow-reverse)
    '("a" . (lambda () (interactive) (adam/sticky-forward-char) (meow-append)))
    '("A" . (lambda () (interactive) (end-of-line) (meow-append)))
-   '("g" . meow-cancel-selection)
-   '("h" . meow-left)
-   '("j" . adam/j)
-   '("V" . meow-line)
    '("x" . adam/kill-char)
-   '("k" . adam/k)
-   '("J" . (lambda () (interactive) (adam/j 10)))
-   '("K" . (lambda () (interactive) (adam/k 10)))
    '("C-j" . adam/join-line)
-   '("l" . meow-right)
    '("u" . undo)
    '("U" . undo-redo)
-   '("v" . meow-search)
+   '("M-n" . meow-search)
+   '("M-p" . (lambda () (interactive) (meow-search -1)))
    '("/" . meow-visit)
-   '("y" . meow-clipboard-save)
    '(">" . adam/indent-right)
    '("<" . adam/indent-left)
    '("=" . indent-region)
-   '("\\" . swiper)
-   '("C-o" . better-jumper-jump-backward)
-   '("C-i" . better-jumper-jump-forward)
    '("C-#" . comment-dwim)
    '("G" . end-of-buffer)))
 
@@ -669,8 +671,41 @@
 
 (defun adam/buffer-grep ()
   "Grep the current buffer."
+   (interactive)
+   (counsel-grep))
+
+(defun adam/emms-volume-mpd-change (amount)
+  "Change MPD volume by AMOUNT and display new level."
+  (emms-player-mpd-get-volume
+   amount
+   (lambda (change volume)
+     (let ((new (max 0 (min 100 (+ (string-to-number (or volume "100")) change)))))
+       (emms-player-mpd-send
+        (concat "setvol \"" (number-to-string new) "\"")
+        nil #'ignore)
+       (message "Volume: %d%%" new)))))
+
+(defun adam/emms-mpd-repeat ()
+  "Toggle MPD repeat mode."
   (interactive)
-  (counsel-grep))
+  (emms-player-mpd-get-status-part
+   nil
+   (lambda (_closure repeat)
+     (let ((new (if (string= repeat "1") "0" "1")))
+       (emms-player-mpd-send (concat "repeat " new) nil #'ignore)
+       (message "Repeat: %s" (if (string= new "1") "on" "off"))))
+   "repeat"))
+
+(defun adam/emms-mpd-random ()
+  "Toggle MPD random mode."
+  (interactive)
+  (emms-player-mpd-get-status-part
+   nil
+   (lambda (_closure random)
+     (let ((new (if (string= random "1") "0" "1")))
+       (emms-player-mpd-send (concat "random " new) nil #'ignore)
+       (message "Random: %s" (if (string= new "1") "on" "off"))))
+   "random"))
 
 (use-package emms
   :config
@@ -681,9 +716,16 @@
   (setq emms-player-mpd-server-name "localhost")
   (setq emms-player-mpd-server-port 6969)
   (setq emms-player-mpd-music-directory "~/Music/")
+  (setq emms-volume-change-amount 1)
+  (setq emms-volume-change-function #'adam/emms-volume-mpd-change)
   (require 'emms-browser)
   (puter/defservice mpd "mpd")
-  (emms-player-mpd-connect))
+  (emms-cache 1)
+  (emms-player-mpd-connect)
+  (emms-player-mpd-update-all-reset-cache)
+  (emms-mode-line-mode 1)
+  (require 'emms-playing-time)
+  (emms-playing-time-mode 1))
 
 ;; Wayland clipboard support
 (when (adam/is-wayland?)

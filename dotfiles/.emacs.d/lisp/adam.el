@@ -380,10 +380,23 @@ Moves to the next line and joins it back, trimming whitespace."
   (message "henlo word!"))
 
 (defun adam/save-all ()
-  "Save `ALL' the buffers."
+  "Save `ALL' the buffers and display a desktop notification of the buffers saved."
   (interactive)
-  (save-some-buffers t)
-  (message "saved all!"))
+  (let ((modified (cl-loop for b in (buffer-list)
+                           when (and (buffer-file-name b)
+                                     (buffer-modified-p b))
+                           collect (abbreviate-file-name (buffer-file-name b)))))
+    (save-some-buffers t)
+    (let ((saved (cl-set-difference modified
+                                    (cl-loop for b in (buffer-list)
+                                             when (and (buffer-file-name b)
+                                                       (buffer-modified-p b))
+                                             collect (abbreviate-file-name (buffer-file-name b)))
+                                    :test #'string=)))
+      (if saved
+          (puter/notify-sendf "Saved %d file(s):\n%s" (length saved)
+                              (string-join saved "\n"))
+        (puter/notify-sendf "No files needed saving")))))
 
 (defun adam/flash-eval-region (start end)
   "Flash eval a region of elisp code."
@@ -584,6 +597,20 @@ Returns the selected window."
 
 (advice-add 'agent-shell--send-command :around
             #'adam/agent-shell--capture-prompt)
+
+(defun adam/meow-left-select ()
+  "Move left one char, extending selection."
+  (interactive)
+  (unless (region-active-p)
+    (push-mark (point) nil t))
+  (backward-char 1))
+
+(defun adam/meow-right-select ()
+  "Move right one char, extending selection."
+  (interactive)
+  (unless (region-active-p)
+    (push-mark (point) nil t))
+  (forward-char 1))
 
 (defun adam/toggle-file-diff ()
   "Toggle git diff for the current file using magit."

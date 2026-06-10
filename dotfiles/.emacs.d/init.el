@@ -97,7 +97,7 @@
 
 (defun adam/set-frame-default-params ()
   "Set all frame params."
-  (adam/set-font "Iosevka Nerd Font Mono" 12)
+  (adam/set-font "Iosevka Nerd Font Mono" 11)
   (set-frame-parameter nil 'alpha-background 90))
 
 ;; Emacs daemon-mode doesn't load frame params correctly.
@@ -582,7 +582,9 @@
 
 (use-package lua-mode
   :config
-  (adam/add-lsp-hook 'lua-mode-hook))
+  (adam/add-lsp-hook 'lua-mode-hook)
+  (setq lua-indent-level 4)
+  (setq lua-indent-nested-block-content-align nil))
 
 (use-package js
   :straight t)
@@ -663,7 +665,16 @@
   (interactive)
   (counsel-grep))
 
-(use-package emms)
+(use-package emms
+  :config
+  (require 'emms-player-mpd)
+  (setq emms-player-list '(emms-player-mpd))
+  (setq emms-info-functions '(emms-info-mpd))
+  (setq emms-source-file-default-directory "~/Music/")
+  (setq emms-player-mpd-server-name "localhost")
+  (setq emms-player-mpd-server-port 6969)
+  (setq emms-player-mpd-music-directory "~/Music/")
+  )
 
 ;; Wayland clipboard support
 (when (adam/is-wayland?)

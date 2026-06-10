@@ -7,14 +7,14 @@ hl.monitor({
 
 local terminal    = "kitty"
 local fileManager = "nemo"
-local menu        = "rofi"
+local menu        = "puter-menu"
 
 hl.on("hyprland.start", function ()
-         hl.exec_cmd("nm-applet")
-         hl.exec_cmd("dunst")
-         hl.exec_cmd("hyprpaper")
-         hl.exec_cmd("waybar")
-         hl.exec_cmd("wl-paste --watch cliphist store")
+        hl.exec_cmd("nm-applet")
+        hl.exec_cmd("dunst")
+        hl.exec_cmd("hyprpaper")
+        hl.exec_cmd("waybar")
+        hl.exec_cmd("wl-paste --watch cliphist store")
 end)
 
 hl.env("XCURSOR_SIZE", "32")
@@ -94,7 +94,7 @@ hl.animation({ leaf = "zoomFactor",    enabled = true,  speed = 7,    bezier = "
 
 hl.config({
     dwindle = {
-        preserve_split = true, -- You probably want this
+        preserve_split = true,
     },
 })
 
@@ -165,7 +165,7 @@ hl.bind(mainMod .. " + Apostrophe", hl.dsp.exec_cmd(menu .. " emoji"))
 hl.bind(mainMod .. " + Period", hl.dsp.exec_cmd(menu .. " clipboard"))
 hl.bind(mainMod .. " + Comma", hl.dsp.exec_cmd(menu .. " window"))
 hl.bind(mainMod .. " + Slash", hl.dsp.exec_cmd("dunstctl close"))
-hl.bind(mainMod .. " + Comma", hl.dsp.exec_cmd("dunstctl close-all"))
+hl.bind(mainMod .. " + SHIFT + Slash", hl.dsp.exec_cmd("dunstctl close-all"))
 hl.bind(mainMod .. " + I", hl.dsp.exec_cmd("puter-eyedropper"))
 hl.bind(mainMod .. " + print", hl.dsp.exec_cmd("puter-screenshot"))
 hl.bind(mainMod .. " + SHIFT + print", hl.dsp.exec_cmd("puter-screenshot -full"))
@@ -178,18 +178,19 @@ hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. " + N", hl.dsp.window.cycle_next())
 hl.bind(mainMod .. " + P", hl.dsp.window.cycle_next({ false }))
 
-hl.bind(mainMod .. " + M", hl.dsp.window.fullscreen({ "maximized", "toggle" }))
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ "fullscreen", "toggle" }))
+hl.bind(mainMod .. " + M", hl.dsp.window.fullscreen_state({ internal = 1, client = 0, "toggle" }))
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen_state({ internal = 2, client = 0, "toggle" }))
+hl.bind(mainMod .. " + G", hl.dsp.window.fullscreen_state({ internal = 0, client = 0, "toggle" }))
 
 hl.bind(mainMod .. " + h", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + j", hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. " + k", hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
 
-hl.bind(mainMod .. " + SHIFT + h", hl.window.move({ direction = "left" }))
-hl.bind(mainMod .. " + SHIFT + j", hl.window.move({ direction = "down" }))
-hl.bind(mainMod .. " + SHIFT + k", hl.window.move({ direction = "up" }))
-hl.bind(mainMod .. " + SHIFT + l", hl.window.move({ direction = "right" }))
+hl.bind(mainMod .. " + SHIFT + h", hl.dsp.window.move({ direction = "left" }))
+hl.bind(mainMod .. " + SHIFT + j", hl.dsp.window.move({ direction = "down" }))
+hl.bind(mainMod .. " + SHIFT + k", hl.dsp.window.move({ direction = "up" }))
+hl.bind(mainMod .. " + SHIFT + l", hl.dsp.window.move({ direction = "right" }))
 
 hl.bind(mainMod .. " + Grave", hl.dsp.focus({ workspace =  1}))
 hl.bind(mainMod .. " + 1", hl.dsp.focus({ workspace =  2}))
@@ -219,10 +220,10 @@ hl.bind(mainMod .. " + SHIFT + 9", hl.dsp.window.move({ workspace =  10}))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
-hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
-hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ +1%"), { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ -1%"),      { locked = true, repeating = true })
+hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("pactl set-sink-mute @DEFAULT_SINK@ toggle"),     { locked = true, repeating = true })
+hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("pactl set-source-mute @DEFAULT_SOURCE@ toggle"),   { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
 
@@ -273,4 +274,3 @@ hl.layer_rule({
       },
       no_anim = true
 })
-

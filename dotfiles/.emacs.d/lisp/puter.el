@@ -80,16 +80,23 @@
        (eq system-type 'gnu/linux)
        (getenv "ADAM_EXWM_ENABLE")))
 
-(defun puter/notify-send (message)
-  "Send Notification to Desktop."
-  (let ((final (adam/stringify message)))
-    (start-process "dunst-notify" nil "dunstify" final)))
+(defun puter/notify-severity (severity)
+  "Validate SEVERITY symbol and return the dunstify urgency string.
+Must be :low, :normal, or :critical."
+  (pcase severity
+    (:low "low")
+    (:normal "normal")
+    (:critical "critical")
+    (_ (error "Invalid severity: %s. Must be :low, :normal, or :critical"
+              severity))))
 
-(defmacro puter/notify-sendf (message &rest format-args)
-  "Send a formatted message using `puter/notify-send'."
-  (if format-args
-      `(puter/notify-send (format ,message ,@format-args))
-    `(puter/notify-send ,message)))
+(defun puter/notify-send (message &optional severity)
+  "Send Notification to Desktop with optional SEVERITY (:low, :normal, :critical)."
+  (let ((final (adam/stringify message)))
+    (if severity
+        (start-process "dunst-notify" nil "dunstify"
+                       "-u" (puter/notify-severity severity) final)
+      (start-process "dunst-notify" nil "dunstify" final))))
 
 ;;  TODO: this doesn't work in EXWM due to not having the correct shell ENV for xclip.
 (defun puter/clipboard-command (command)

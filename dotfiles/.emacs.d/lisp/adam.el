@@ -394,9 +394,9 @@ Moves to the next line and joins it back, trimming whitespace."
                                              collect (abbreviate-file-name (buffer-file-name b)))
                                     :test #'string=)))
       (if saved
-          (puter/notify-sendf "Saved %d file(s):\n%s" (length saved)
-                              (string-join saved "\n"))
-        (puter/notify-sendf "No files needed saving")))))
+          (puter/notify-send (format "Saved %d file(s):\n%s" (length saved) (string-join saved "\n"))
+                             :normal)
+        (puter/notify-send "No files needed saving" :low)))))
 
 (defun adam/flash-region (start end)
   "Flash the region between START and END."
@@ -585,7 +585,7 @@ Returns the selected window."
   "The function called when the agent-shell turn is complete."
   (interactive)
   (let ((input (or (bound-and-true-p adam/agent-shell--last-prompt) "")))
-    (puter/notify-sendf "agent-shell finished!\n> %s" input)))
+    (puter/notify-send (format "agent-shell finished!\n> %s" input) :critical)))
 
 (defun adam/agent-shell-notify-turn-complete ()
   "Send desktop notification when an opencode agent shell turn completes."

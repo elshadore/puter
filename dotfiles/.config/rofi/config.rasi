@@ -5,13 +5,13 @@
     background-color:   transparent;
     adam-bg: #030613;
     adam-bg-alt: #050c26;    
-    adam-bg-select: #211393;
+    adam-bg-select: #fefefe;
     adam-fg: #fefefe;
-    adam-fg-select: #fefefe;
+    adam-fg-select: #050c26;
     adam-border: #f734c0;
     adam-green: #e8366d;
     adam-highlight: #f734c0;
-    adam-highlight-select: #de0c6b;
+    adam-highlight-select: #f734c0;
 }
 
 window {

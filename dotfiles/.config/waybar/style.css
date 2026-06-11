@@ -5,11 +5,15 @@
 
 window#waybar {
     background-color: #050c26;
-    border-top: 2px solid #030613;
-    border-bottom: 2px solid #030613;
     color: #fefefe;
     transition-property: background-color;
     transition-duration: .5s;
+    margin: 8px;
+    border-radius: 12px;
+}
+
+box.horizontal {
+    padding: 0 4px;
 }
 
 #cpu,
@@ -18,6 +22,7 @@ window#waybar {
 #clock,
 #tray {
     padding: 0 6px;
+    border-radius: 8px;
 }
 
 #cpu,

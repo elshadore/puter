@@ -3,15 +3,15 @@
 * {
     font: "IosevkaNerdFont 11";
     background-color:   transparent;
-    adam-bg: #08113c;
-    adam-bg-alt: #050c26;
+    adam-bg: #030613;
+    adam-bg-alt: #050c26;    
+    adam-bg-select: #211393;
     adam-fg: #fefefe;
-    adam-fg-select: #1a1729;
+    adam-fg-select: #fefefe;
     adam-border: #f734c0;
     adam-green: #e8366d;
-    adam-highlight-select: #f734c0;
     adam-highlight: #f734c0;
-    adam-bg-select: #91f4fe;
+    adam-highlight-select: #de0c6b;
 }
 
 window {

@@ -4,9 +4,9 @@
 }
 
 window#waybar {
-    background-color: #08113c;
-    border-top: 2px solid #050c26;
-    border-bottom: 2px solid #050c26;
+    background-color: #050c26;
+    border-top: 2px solid #030613;
+    border-bottom: 2px solid #030613;
     color: #fefefe;
     transition-property: background-color;
     transition-duration: .5s;

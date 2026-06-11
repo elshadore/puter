@@ -23,24 +23,24 @@
     vertical_alignment = center
 
 [urgency_low]
-    background = "#08113c"
+    background = "#050c26"
     foreground = "#fefefe"
-    frame_color = "#f734c0"
+    frame_color = "#efc8f4"
     timeout = 10
     default_icon = dialog-information
 
 [urgency_normal]
-    background = "#08113c"
+    background = "#050c26"
     foreground = "#fefefe"
-    frame_color = "#f734c0"
+    frame_color = "#efc8f4"
     timeout = 10
     override_pause_level = 30
     default_icon = dialog-information
 
 [urgency_critical]
-    background = "#08113c"
+    background = "#050c26"
     foreground = "#fefefe"
-    frame_color = "#f734c0"
+    frame_color = "#e8366d"
     timeout = 0
     override_pause_level = 60
     default_icon = dialog-warning

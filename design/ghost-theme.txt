@@ -1,8 +1,11 @@
 Ghost Theme Hex Codes.
 
-Main Blue: #08113c
-Alt Dark Blue: #050c26
+Main Dark Blue: #050c26
+Alt Jet Blue: #030613
+Brighter Blue: #08113c
+Purple: #2c2181
 Vibrant Pink: #f734c0
+Vibrant Purple: #de0c6b
 Ice: #91f4fe
 Slush: #424e68
 Crimson: #e8366d

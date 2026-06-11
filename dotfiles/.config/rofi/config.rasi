@@ -40,7 +40,7 @@ textbox {
 }
 
 listview {
-    lines: 24;
+    lines: 32;
     columns: 1;
     border-color: @adam-green;
 }

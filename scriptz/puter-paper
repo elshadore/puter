@@ -5,8 +5,8 @@ set -e
 IMAGE="$1"
 
 if [ -z "$IMAGE" ]; then
-    echo "Usage: $0 <image-path>"
-    exit 1
+    hyprctl hyprpaper listactive
+    exit 0
 fi
 
 if [ ! -f "$IMAGE" ]; then

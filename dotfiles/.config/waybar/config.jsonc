@@ -1,7 +1,7 @@
 // -*- mode: jsonc -*-
 {
     "layer": "top",
-    "height": 29,
+    "height": 33,
     "spacing": 4,
     "margin-top": 4,
     "margin-bottom": 4,
@@ -22,22 +22,39 @@
     },
     "cpu": {
         "interval": 1,
-        "format": "CPU: {usage}%"
+        "format": "🔥 {usage}%"
     },
     "memory": {
         "interval": 1,
-        "format": "RAM: {percentage}%"
+        "format": "💾 {percentage}%"
     },
     "pulseaudio": {
-        "format": "VOL: {volume}%",
-        "format-muted": "🔇",
-        "format-source": "VOL: {volume}%",
-        "format-source-muted": "🔇"
+        "format": "🔊 {volume}%",
+        "format-muted": "🔈",
+        "format-source": "🔊 {volume}%",
+        "format-source-muted": "🔈"
     },
     "clock": {
         "interval": 1,
         "format": "{:%A %d-%m-%Y %H:%M:%S}",
-        "tooltip": false
+        "tooltip-format": "<small>{calendar}</small>",
+        "calendar": {
+            "mode": "month",
+            "weeks-pos": "right",
+            "format": {
+                "months":     "<span color='#ffead3'><b>{}</b></span>",
+                "days":       "<span color='#ecc6d9'>{}</span>",
+                "weeks":      "<span color='#99ffdd'>W{}</span>",
+                "weekdays":   "<span color='#91f4fe'>{}</span>",
+                "today":      "<span color='#f734c0'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
     },
-    "tray": {},
+    "tray": {
+        "spacing": 8
+    },
 }

@@ -5,7 +5,7 @@
     "spacing": 4,
     "output": "HDMI-A-1",
     "reload_style_on_change": true,
-    "modules-left": ["hyprland/workspaces", "sway/mode"],
+    "modules-left": ["hyprland/workspaces"],
     "modules-center": ["hyprland/window"],
     "modules-right": ["cpu", "memory", "pulseaudio", "clock", "tray"],
     "hyprland/workspaces": {
@@ -35,6 +35,5 @@
         "format": "{:%A %d-%m-%Y %H:%M:%S}",
         "tooltip": false
     },
-    "tray": {
-    }
+    "tray": {},
 }

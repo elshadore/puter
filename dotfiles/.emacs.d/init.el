@@ -30,8 +30,8 @@
 
 (setq blink-cursor-interval 0.15)
 (setq blink-cursor-blinks -1)
-(setq focus-follows-mouse t)
-(setq mouse-autoselect-window t)
+(setq focus-follows-mouse nil)
+(setq mouse-autoselect-window nil)
 (setq scroll-preserve-screen-position t)
 (setq redisplay-skip-fontification-on-input t)
 (global-hl-line-mode)

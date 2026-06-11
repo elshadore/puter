@@ -58,8 +58,8 @@ hl.config({
         border_size =  1,
 
         col = {
-           active_border   = "rgba(f43fb6ff)",
-           inactive_border = "rgba(151726ff)",
+           active_border   = "rgba(f734c0ff)",
+           inactive_border = "rgba(424e68ff)",
         },
 
         resize_on_border = false,
@@ -179,7 +179,7 @@ hl.device({
 
 -- Graphics Tablet
 hl.device({
-      name = "ugtablet-10-inch-pentablet",
+      name = "ugtablet-10-inch-pentablet-pen",
       output = "HDMI-A-1"
 })
 

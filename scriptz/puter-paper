@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+IMAGE="$1"
+
+if [ -z "$IMAGE" ]; then
+    echo "Usage: $0 <image-path>"
+    exit 1
+fi
+
+if [ ! -f "$IMAGE" ]; then
+    echo "Error: file not found: $IMAGE"
+    exit 1
+fi
+
+IMAGE=$(realpath "$IMAGE")
+
+for monitor in $(hyprctl monitors -j | jq -r '.[].name'); do
+    hyprctl hyprpaper wallpaper "$monitor,$IMAGE,cover"
+done

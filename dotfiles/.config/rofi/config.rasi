@@ -3,15 +3,15 @@
 * {
     font: "IosevkaNerdFont 11";
     background-color:   transparent;
-    adam-bg: #231f3c;
-    adam-bg-alt: #1a1729;
-    adam-fg: #f6f6f6;
+    adam-bg: #08113c;
+    adam-bg-alt: #050c26;
+    adam-fg: #fefefe;
     adam-fg-select: #1a1729;
-    adam-border: #f43fb6;
-    adam-green: #2ee43e;
-    adam-highlight: #f12125;
-    adam-highlight-select: #f12125;
-    adam-bg-select: #f6f6f6;
+    adam-border: #f734c0;
+    adam-green: #e8366d;
+    adam-highlight-select: #f734c0;
+    adam-highlight: #f734c0;
+    adam-bg-select: #91f4fe;
 }
 
 window {

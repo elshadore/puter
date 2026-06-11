@@ -233,10 +233,6 @@
 
 (global-company-mode 1)
 
-(use-package better-jumper
-  :config
-  (better-jumper-mode 1))
-
 (defun adam/meow-motion/normal-define-key (&rest args)
   "Defines both `motion' and `normal' keybinds for `meow.el'."
   (apply 'meow-motion-define-key args)
@@ -322,8 +318,6 @@
    '("_" . query-replace-regexp)
    '(":" . adam/toggle-file-diff))  
   (adam/meow-motion/normal-define-key
-   '("C-o" . better-jumper-jump-backward)
-   '("C-i" . better-jumper-jump-forward)
    '("y" . meow-clipboard-save)
    '("d" . meow-kill)
    '("g" . meow-cancel-selection)
@@ -391,21 +385,6 @@
 
 (meow-global-mode 1)
 
-(defun adam/better-jumper-record-jump-advice (&rest _)
-  (when (bound-and-true-p better-jumper-mode)
-    (better-jumper-set-jump)))
-
-(defvar adam/jump-functions '(xref-find-definitions
-                              xref-find-references
-                              flash-jump
-                              better-jumper-jump-backward
-                              better-jumper-jump-forward
-                              meow-visit)
-  "Function that jump for `better-jumper' mode.")
-
-(dolist (cmd adam/jump-functions)
-  (advice-add cmd :before #'adam/better-jumper-record-jump-advice))
-
 (use-package flash)
 
 (use-package multiple-cursors
@@ -472,7 +451,9 @@
 
 (use-package helpful)
 
-(use-package magit)
+(use-package magit
+  :bind (:map magit-mode-map
+              ("L" . magit-log)))
 
 (use-package magit-todos
   :after magit
@@ -730,7 +711,7 @@
   (setq emms-volume-change-amount 1)
   (setq emms-volume-change-function #'adam/emms-volume-mpd-change)
   (require 'emms-browser)
-  (puter/defservice mpd "mpd")
+  ;; (puter/defservice mpd "mpd")
   (emms-cache 1)
   (emms-player-mpd-connect)
   (emms-player-mpd-update-all-reset-cache)

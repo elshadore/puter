@@ -27,6 +27,8 @@ hl.on("hyprland.start", function ()
         hl.exec_cmd("hyprpaper")
         hl.exec_cmd("waybar")
         hl.exec_cmd("wl-paste --watch cliphist store")
+        hl.exec_cmd("mpd")
+        hl.exec_cmd("mpd-notify")
 
         -- hl.dispatch(hl.dsp.workspace.rename({workspace = 1,  name = "0"}))
         -- hl.dispatch(hl.dsp.workspace.rename({workspace = 2,  name = "1"}))
@@ -42,9 +44,9 @@ hl.on("hyprland.start", function ()
         -- hl.dispatch(hl.dsp.workspace.move({workspace = 1,  monitor = "HDMI-A-1"}))
         -- hl.dispatch(hl.dsp.workspace.move({workspace = 10, monitor = "HDMI-A-2"}))
 
-        hl.exec_cmd("emacs",             { workspace = 1  })
-        hl.exec_cmd("firefox",           { workspace = 2  })
-        hl.exec_cmd("kitty -e btop",     { workspace = 10 })
+        hl.exec_cmd("emacs",             { workspace = "1 silent" })
+        hl.exec_cmd("firefox",           { workspace = "2 silent" })
+        hl.exec_cmd("kitty -e btop",     { workspace = "10 silent" })
 end)
 
 hl.env("XCURSOR_SIZE", "32")
@@ -303,4 +305,13 @@ hl.layer_rule({
          namespace = "rofi"
       },
       no_anim = true
+})
+
+-- Fix for flicking corners in waybar.
+hl.layer_rule({
+    match = {
+        namespace = "waybar"
+    },
+    blur         = true,
+    ignore_alpha = 0.4,
 })

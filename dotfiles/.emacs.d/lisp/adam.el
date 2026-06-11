@@ -492,47 +492,47 @@ Moves to the next line and joins it back, trimming whitespace."
               last-end (region-end))))))
 
 (defun adam/paste-below ()
-  "Vim p: paste after cursor (charwise) or below current line (linewise)."
+  "Vim p: paste on the line below the current line.
+If region is active, replace it with the yanked text."
   (interactive)
   (if (null kill-ring)
       (user-error "Kill ring is empty")
-    (let ((text (current-kill 0)))
+    (let* ((text (current-kill 0))
+           (content (if (string-suffix-p "\n" text)
+                        (substring text 0 -1)
+                      text)))
       (cond
        ((use-region-p)
         (let ((beg (region-beginning)))
           (delete-region beg (region-end))
           (insert text)
           (goto-char beg)))
-       ((string-suffix-p "\n" text)
-        (let ((content (substring text 0 -1)))
-          (end-of-line)
-          (newline)
-          (insert content)
-          (back-to-indentation)))
        (t
-        (insert text)
-        (backward-char 1))))))
+        (end-of-line)
+        (newline)
+        (insert content)
+        (back-to-indentation))))))
 
 (defun adam/paste-above ()
-  "Vim P: paste before cursor (charwise) or above current line (linewise)."
+  "Vim P: paste on the line above the current line.
+If region is active, replace it with the yanked text."
   (interactive)
   (if (null kill-ring)
       (user-error "Kill ring is empty")
-    (let ((text (current-kill 0)))
+    (let* ((text (current-kill 0))
+           (content (if (string-suffix-p "\n" text)
+                        (substring text 0 -1)
+                      text)))
       (cond
        ((use-region-p)
         (let ((beg (region-beginning)))
           (delete-region beg (region-end))
           (insert text)
           (goto-char beg)))
-       ((string-suffix-p "\n" text)
-        (let ((content (substring text 0 -1)))
-          (beginning-of-line)
-          (insert content "\n")
-          (back-to-indentation)))
        (t
-        (insert text)
-        (backward-char 1))))))
+        (beginning-of-line)
+        (insert content "\n")
+        (back-to-indentation))))))
 
 (defun adam/display-buffer-other-window (buffer)
   "Display BUFFER in another window, Magit-style.

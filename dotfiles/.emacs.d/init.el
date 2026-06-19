@@ -381,7 +381,8 @@
    '("<" . adam/indent-left)
    '("=" . indent-region)
    '("C-#" . comment-dwim)
-   '("G" . end-of-buffer)))
+   '("G" . end-of-buffer))
+  )
 
 (meow-global-mode 1)
 
@@ -414,8 +415,6 @@
   :config
   (projectile-mode)
   :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
   :init
   (when (file-directory-p "~/work")
     (setq projectile-project-search-path '("~/work")))

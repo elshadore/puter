@@ -586,6 +586,8 @@
   (setq lua-indent-level 4)
   (setq lua-indent-nested-block-content-align nil))
 
+(use-package nix-mode)
+
 (use-package js
   :straight t)
 
@@ -659,6 +661,8 @@
           ("blend" . "blender"))))
 
 (use-package dired-hide-dotfiles)
+
+(use-package sudo-edit)
 
 (defun adam/buffer-grep ()
   "Grep the current buffer."

@@ -158,6 +158,7 @@ in
     bolt-launcher
     steam
     steamcmd
+    networkmanagerapplet
   ];
 
   fonts.packages = with pkgs; [

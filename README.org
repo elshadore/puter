@@ -1,25 +1,17 @@
-* Portable Puter
-Emacs is my Operating System :).
+* 🖩 Portable Puter 🖩
+The is my .dotfiles repo. It is a complete mess and filled with legacy junk I used with previous configs on previous distros. To be honest I don't even use any of this stuff anymore, and the only thing of *actual* value is my [[./dotfiles/.emacs.d/][emacs]] config. Everything is a trash heap of fire 🔥🔥🔥.
+ 
+** 💾 [[./Dotfiles/][Dotfiles]]
+A collection of config files to be symlinked by gnu-stow with the [[./scriptz/puter-linkup][puter-linkup]] script.
 
-** Configs
-- Alacritty
-- Bash
-- Emacs
-- Gdb
-- Git
-- i3 Config
-- i3 Status
-- Kitty
-- Picom
-- Rofi
-- xinitrc
+** 🔥 [[./notfiles][Notfiles]]
+A bunch of current legacy scripts and configs. A quick hack to prevent things that shouldn't be linked or be placed in the path, but that I still want to keep around.
 
-** Additional Items
-- Wallpapers
-- Game Saves
+** 🧻 [[./scriptz/][Scriptz]]
+A bunch of scripts that are added the the path.
 
-** Fonts Used
-- Nerd Fonts
- - iosevka-nerd-font
- - terminess-nerd-font
- - jetbrains-nerd-font
+** 🎨 [[./pape][Wallpapers]]
+All the coolest wallpapers known to man.
+
+** 🎮 [[./saves][Game Saves]]
+Some game saves I want to keep around.

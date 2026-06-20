@@ -5,7 +5,7 @@ The is essentially my *.dotfiles* repo. It is a complete mess and filled with le
 A collection of config files to be symlinked by gnu-stow with the [[./scriptz/puter-linkup][puter-linkup]] script.
 
 ** 🔥 [[./notfiles][Notfiles]]
-A bunch of current legacy scripts and configs. A quick hack to prevent things that shouldn't be linked or be placed in the shell path from being actualized. However I keep this stuff out of nostaglia and to tell myself that fumblig around with some of these esoteric configs for hours was worth it. And it was worth it 🙂.
+A bunch of current legacy scripts and configs. A quick hack to prevent things that shouldn't be linked or be placed in the shell path from being actualized. However I keep this stuff out of nostaglia and to tell myself that fumbling around with some of these esoteric configs for hours and hours was worth it. And it was worth it 🙂.
 
 ** 🧻 [[./scriptz/][Scriptz]]
 A bunch of scripts that are added the shell path. Some of these are definitly [[./notfiles/][notfiles]] worthy.

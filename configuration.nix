@@ -21,7 +21,7 @@ in
     
   imports =
     [
-      ./hardware-configuration.nix
+      /etc/nixos/hardware-configuration.nix
       "${home-manager}/nixos"
     ];
 
@@ -52,7 +52,7 @@ in
   home-manager.useUserPackages = true;
 
   home-manager.users.adam = { pkgs, ... }: {
-    home.stateVersion = "24.11";
+    home.stateVersion = "26.05";
     gtk = {
       enable = true;
       theme = {
@@ -155,6 +155,9 @@ in
     mint-y-icons
     mint-cursor-themes
     lxappearance
+    bolt-launcher
+    steam
+    steamcmd
   ];
 
   fonts.packages = with pkgs; [

@@ -91,6 +91,15 @@
 (require 'adam-window)
 (require 'puter)
 
+(defvar adam/enable-mpd-on-launch t
+  "Control variable to launch `mpd' on emacs statup.")
+
+(defvar adam/enable-xsettings-on-launch t
+  "Control variable to enable run the `./puter/scriptz/xsettings' script on launch.")
+
+(when adam/enable-xsettings-on-launch
+  (puter/xsettings))
+
 ;; Quitting is always an option...
 (global-set-key (kbd "<escape>") #'adam/quitter)
 (global-set-key [remap keyboard-quit] #'adam/quitter)
@@ -98,8 +107,9 @@
 
 (defun adam/set-frame-default-params ()
   "Set all frame params."
-  (adam/set-font "Iosevka Nerd Font Mono" 11)
-  (set-frame-parameter nil 'alpha-background 90))
+  (adam/set-font "IosevkaTerm Nerd Font Mono" 11)
+  ;; (set-frame-parameter nil 'alpha-background 90)
+  )
 
 ;; Emacs daemon-mode doesn't load frame params correctly.
 (if (daemonp)
@@ -702,6 +712,10 @@
        (message "Random: %s" (if (string= new "1") "on" "off"))))
    "random"))
 
+(defun adam/mpd-init ()
+  "Launch MPD and await it's initialization."
+  (start-process-shell-command "mpd" nil "mpd"))
+
 (use-package emms
   :config
   (require 'emms-player-mpd)
@@ -714,10 +728,11 @@
   (setq emms-volume-change-amount 1)
   (setq emms-volume-change-function #'adam/emms-volume-mpd-change)
   (require 'emms-browser)
-  ;; (puter/defservice mpd "mpd")
-  (emms-cache 1)
-  (emms-player-mpd-connect)
-  (emms-player-mpd-update-all-reset-cache)
+  (when adam/enable-mpd-on-launch
+    (adam/mpd-init)
+    (emms-cache 1)
+    (emms-player-mpd-connect)
+    (emms-player-mpd-update-all-reset-cache))
   (emms-mode-line-mode 1)
   (require 'emms-playing-time)
   (emms-playing-time-mode 1))
@@ -743,8 +758,12 @@
 
 (setq doom-ir-black-brighter-comments t)
 (setq doom-ir-black-padded-modeline nil)
-(adam/load-theme 'doom-ir-black)
-;; (adam/load-theme 'modus-vivendi-tinted)
+(setq doom-winter-is-coming-brighter-comments t)
+(setq doom-winter-is-coming-brighter-modeline t)
+;; (adam/load-theme 'doom-winter-is-coming-dark-blue)
+(adam/load-theme 'modus-vivendi-tinted)
+;; (adam/load-theme 'doom-ir-black)
+
 
 (load-file custom-file)
 (setq inhibit-startup-screen t)

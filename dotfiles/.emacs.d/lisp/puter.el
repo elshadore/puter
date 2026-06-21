@@ -90,13 +90,17 @@ Must be :low, :normal, or :critical."
     (_ (error "Invalid severity: %s. Must be :low, :normal, or :critical"
               severity))))
 
+(defvar puter/notify-send-enable nil
+  "A control variable for `puter/notify-send'")
+
 (defun puter/notify-send (message &optional severity)
   "Send Notification to Desktop with optional SEVERITY (:low, :normal, :critical)."
-  (let ((final (adam/stringify message)))
-    (if severity
-        (start-process "dunst-notify" nil "dunstify"
-                       "-u" (puter/notify-severity severity) final)
-      (start-process "dunst-notify" nil "dunstify" final))))
+  (when puter/notify-send-enable
+    (let ((final (adam/stringify message)))
+      (if severity
+          (start-process "dunst-notify" nil "dunstify"
+                         "-u" (puter/notify-severity severity) final)
+        (start-process "dunst-notify" nil "dunstify" final)))))
 
 ;;  TODO: this doesn't work in EXWM due to not having the correct shell ENV for xclip.
 (defun puter/clipboard-command (command)

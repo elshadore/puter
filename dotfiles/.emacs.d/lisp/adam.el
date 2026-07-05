@@ -648,5 +648,31 @@ Returns the selected window."
       (delete-window win)
     (magit-diff-buffer-file)))
 
+(cl-defmacro adam/do-plist ((key value list) &rest body)
+  "Iterate over a property list."
+  (declare (indent 1))
+  `(cl-loop for (,key ,value) on ,list by 'cddr
+            do (progn
+                  ,@body)))
+
+(defun adam/plist->hashtable (plist &optional table)
+  "Create a hashtable or use the one in the optional argument. Then put the values of a property list inside."
+  (let ((hash (or table (make-hash-table))))
+    (adam/do-plist (key value plist)
+      (puthash key value hash))
+    hash))
+
+(defmacro adam/fash (&rest args)
+  "Easy create a hashtable and assign contents."
+  `(adam/plist->hashtable ',args))
+
+(defmacro adam/fash-edit (table &rest args)
+  "Edit an existing hashtable with `adam/fash' style constructor."
+  `(adam/plist->hashtable ',args ,table))
+
+(defmacro adam/anti-mode (mode)
+  "Creates a macro to toggle a mode MODE, but negates the argument to produce the opposite toggle."
+  `(lambda (enable) (funcall ',mode (- enable))))
+
 (provide 'adam)
 ;;; adam.el ends here

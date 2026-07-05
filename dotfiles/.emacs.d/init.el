@@ -107,7 +107,7 @@
 
 (defun adam/set-frame-default-params ()
   "Set all frame params."
-  (adam/set-font "IosevkaTerm Nerd Font Mono" 11)
+  (adam/set-font "Iosevka Nerd Font Mono" 11)
   ;; (set-frame-parameter nil 'alpha-background 90)
   )
 
@@ -193,7 +193,7 @@
   (setq enable-recursive-minibuffers t)
   (setq ivy-height 20)
   (setq ivy-re-builders-alist '((t . adam/fuzzy-re-builder)))
-  ;; Disableing the regex inserts at the start of the prompt => ("^" "^+") ect..
+  ;; Disabling the regex inserts at the start of the prompt => ("^" "^+") ect..
   (setq ivy-initial-inputs-alist nil)
   (ivy-mode 1)
   )
@@ -280,6 +280,7 @@
    '("b x" . (lambda () (interactive) (kill-buffer (current-buffer))))
    '("b l" . (lambda () (interactive) (switch-to-buffer nil)))
    '("b m" . adam/ibuffer)
+   '("M" . writeroom-mode)
    '("w h" . awin/move-left)
    '("w j" . awin/move-down)
    '("w k" . awin/move-up)
@@ -504,9 +505,24 @@
   (setq ispell-program-name "hunspell")
   (setq ispell-dictionary "en_GB"))
 
+(use-package visual-fill-column)
+
+(use-package writeroom-mode
+  :config
+  (setopt writeroom-maximize-window nil)
+  (setopt writeroom-width 120)
+  (setopt writeroom-local-effects (list (adam/anti-mode display-line-numbers-mode)
+                                        (adam/anti-mode git-gutter-mode)))
+  (setopt writeroom-global-effects '(writeroom-set-alpha
+                                     writeroom-set-menu-bar-lines
+                                     writeroom-set-tool-bar-lines
+                                     writeroom-set-vertical-scroll-bars
+                                     writeroom-set-bottom-divider-width)))
+
 (defun adam/markdown-hook ()
   (visual-line-mode)
-  (flyspell-mode))
+  (flyspell-mode)
+  (writeroom-mode))
 
 (use-package markdown-mode
   :straight t
@@ -517,7 +533,8 @@
   "Hook for setting indentation on org-mode."
   (org-indent-mode)
   (visual-line-mode)
-  (flyspell-mode))
+  (flyspell-mode)
+  (writeroom-mode))
 
 (use-package org
   :config
@@ -770,5 +787,6 @@
 (adam/goto-homepage)
 
 (provide 'init)
+
 ;;; init.el ends here
 (put 'list-timers 'disabled nil)

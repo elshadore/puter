@@ -91,9 +91,6 @@
 (require 'adam-window)
 (require 'puter)
 
-(defvar adam/enable-mpd-on-launch t
-  "Control variable to launch `mpd' on emacs statup.")
-
 (defvar adam/enable-xsettings-on-launch t
   "Control variable to enable run the `./puter/scriptz/xsettings' script on launch.")
 
@@ -158,7 +155,9 @@
   :config
   (context-menu-mode t)
   (define-key emacs-lisp-mode-map (kbd "C-c C-c") #'adam/C-c-C-c)
-  (define-key emacs-lisp-mode-map (kbd "C-x C-e") #'adam/C-x-C-e))
+  (define-key emacs-lisp-mode-map (kbd "C-x C-e") #'adam/C-x-C-e)
+  (define-key emacs-lisp-mode-map (kbd "C-c C-a") #'adam/C-c-C-a)
+  )
 
 (use-package counsel
   :config
@@ -252,7 +251,10 @@
   :config
   (setq meow-use-clipboard t)
   (setq meow-select-on-change nil)
+  
   (add-to-list 'meow-mode-state-list '(emms-browser-mode . motion))
+  (add-to-list 'meow-mode-state-list '(mu4e-view-mode . motion))
+  
   (meow-leader-define-key
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -312,8 +314,8 @@
    '("<SPC>" . adam/M-x)
    '("d d" . kill-whole-line)
    '("y y" . adam/yank-line)
-   '("e r" . adam/emms-mpd-repeat)
-   '("e z" . adam/emms-mpd-random)
+   '("e r" . adam/mpd-repeat-toggle)
+   '("e z" . adam/mpd-random-toggle)
    '("e e" . emms-browser)
    '("e n" . emms-next)
    '("e p" . emms-previous)
@@ -326,6 +328,7 @@
    '("e E" . emms-play-url)
    '("e u" . emms-player-mpd-update-all-reset-cache)
    '("A" . mark-whole-buffer)
+   '("L" . mu4e-transient-menu)
    '("_" . query-replace-regexp)
    '(":" . adam/toggle-file-diff))  
   (adam/meow-motion/normal-define-key
@@ -488,7 +491,11 @@
 
 (use-package agent-shell
   :config
-  (add-hook 'agent-shell-mode-hook #'adam/agent-shell-notify-turn-complete))
+  (add-hook 'agent-shell-mode-hook #'adam/agent-shell-notify-turn-complete)
+  (add-hook 'agent-shell-mode-hook
+            (lambda ()
+              ;; Very laggy with `visual-line-mode' enabled.
+              (visual-line-mode 0))))
 
 (use-package i3wm-config-mode)
 (use-package css-mode)
@@ -552,12 +559,36 @@
   :config
   (setq org-bullets-bullet-list '("*")))
 
+;; (use-package mu4e
+;;   :config
+;;   (setq mu4e-change-filenames-when-moving t)
+  
+;;   (setq mu4e-use-fancy-chars t)
+
+;;   (setq mu4e-update-interval (adam/minutes 5))
+;;   (setq mu4e-get-mail-command "mbsync -a")
+;;   (setq mu4e-maildir "~/Mail")
+
+;;   (setq mu4e-drafts-folder "/[Gmail]/Drafts")
+;;   (setq mu4e-sent-folder   "/[Gmail]/Sent Mail")
+;;   (setq mu4e-refile-folder "/[Gmail]/All Mail")
+;;   (setq mu4e-trash-folder  "/[Gmail]/Trash")
+
+;;   (setq mu4e-maildir-shortcuts
+;;       '(("/Inbox"             . ?i)
+;;         ("/[Gmail]/Sent Mail" . ?s)
+;;         ("/[Gmail]/Trash"     . ?t)
+;;         ("/[Gmail]/Drafts"    . ?d)
+;;         ("/[Gmail]/All Mail"  . ?a)))
+  
+;;   (mu4e t))
+
 (use-package sly
   :config
   (setq inferior-lisp-program "ros dynamic-space-size=4Gb -L sbcl -Q -l ~/.sbclrc run"))
 
 ;; EWW Yuck
-(add-to-list 'auto-mode-alist '("\\.yuck\\'" . lisp-mode))
+;; (add-to-list 'auto-mode-alist '("\\.yuck\\'" . lisp-mode))
 
 (use-package clojure-mode)
 (use-package cider)
@@ -691,68 +722,7 @@
 
 (use-package sudo-edit)
 
-(defun adam/buffer-grep ()
-  "Grep the current buffer."
-   (interactive)
-   (counsel-grep))
-
-(defun adam/emms-volume-mpd-change (amount)
-  "Change MPD volume by AMOUNT and display new level."
-  (emms-player-mpd-get-volume
-   amount
-   (lambda (change volume)
-     (let ((new (max 0 (min 100 (+ (string-to-number (or volume "100")) change)))))
-       (emms-player-mpd-send
-        (concat "setvol \"" (number-to-string new) "\"")
-        nil #'ignore)
-       (message "Volume: %d%%" new)))))
-
-(defun adam/emms-mpd-repeat ()
-  "Toggle MPD repeat mode."
-  (interactive)
-  (emms-player-mpd-get-status-part
-   nil
-   (lambda (_closure repeat)
-     (let ((new (if (string= repeat "1") "0" "1")))
-       (emms-player-mpd-send (concat "repeat " new) nil #'ignore)
-       (message "Repeat: %s" (if (string= new "1") "on" "off"))))
-   "repeat"))
-
-(defun adam/emms-mpd-random ()
-  "Toggle MPD random mode."
-  (interactive)
-  (emms-player-mpd-get-status-part
-   nil
-   (lambda (_closure random)
-     (let ((new (if (string= random "1") "0" "1")))
-       (emms-player-mpd-send (concat "random " new) nil #'ignore)
-       (message "Random: %s" (if (string= new "1") "on" "off"))))
-   "random"))
-
-(defun adam/mpd-init ()
-  "Launch MPD and await it's initialization."
-  (start-process-shell-command "mpd" nil "mpd"))
-
-(use-package emms
-  :config
-  (require 'emms-player-mpd)
-  (setq emms-player-list '(emms-player-mpd))
-  (setq emms-info-functions '(emms-info-mpd))
-  (setq emms-source-file-default-directory "~/Music/")
-  (setq emms-player-mpd-server-name "localhost")
-  (setq emms-player-mpd-server-port 6969)
-  (setq emms-player-mpd-music-directory "~/Music/")
-  (setq emms-volume-change-amount 1)
-  (setq emms-volume-change-function #'adam/emms-volume-mpd-change)
-  (require 'emms-browser)
-  (when adam/enable-mpd-on-launch
-    (adam/mpd-init)
-    (emms-cache 1)
-    (emms-player-mpd-connect)
-    (emms-player-mpd-update-all-reset-cache))
-  (emms-mode-line-mode 1)
-  (require 'emms-playing-time)
-  (emms-playing-time-mode 1))
+(require 'adam-music)
 
 ;; Wayland clipboard support
 (when (adam/is-wayland?)

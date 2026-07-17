@@ -102,7 +102,7 @@ Must be :low, :normal, or :critical."
                          "-u" (puter/notify-severity severity) final)
         (start-process "dunst-notify" nil "dunstify" final)))))
 
-;;  TODO: this doesn't work in EXWM due to not having the correct shell ENV for xclip.
+;; NOTE: this doesn't work in EXWM due to not having the correct shell ENV for xclip.
 (defun puter/clipboard-command (command)
   "Run the Command COMMAND, Asynchronosly and Copy the Result the EMACS Clipboard."
   (start-process-shell-command command nil (concat command " | xclip -selection clipboard")))

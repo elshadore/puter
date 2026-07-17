@@ -220,10 +220,19 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (let ((cmd (concat "tar -xvf" " " file-path)))
     (start-process-shell-command cmd nil cmd)))
 
+(defun adam/remove-evil-palantir-shit (url)
+  (interactive "surl: ")
+  (if (string-match "&" url)
+      (substring url 0 (match-beginning 0))
+    url))
+
 (defun adam/yt-music (url)
   "Use commandline util yt-dlp to download a youtube link URL as a mp3 file."
   (interactive "surl: ")
-  (let ((cmd (concat "yt-dlp -f bestaudio -x --audio-format mp3 --audio-quality 330k" " " url)))
+  (let ((cmd (concat
+              "yt-dlp -f bestaudio -x --audio-format mp3 --audio-quality 330k"
+              " "
+              (adam/remove-evil-palantir-shit url))))
     (start-process-shell-command cmd nil cmd)))
 
 (defvar adam/auth-file "~/adam/auth.json")
@@ -244,7 +253,7 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun adam/empty-buffer ()
   "Creates a new empty buffer in the current window."
   (interactive)
-  ;; TODO:
+  
   )
 
 (defun adam/eshell ()
@@ -434,6 +443,11 @@ Moves to the next line and joins it back, trimming whitespace."
       (let ((start (point)))))
     (when (and start end)
       (adam/flash-eval-region start end))))
+
+(defun adam/C-c-C-a ()
+  "Evaluate the entire buffer and give it a flash for good measure."
+  (interactive)
+  (adam/flash-eval-region (point-min) (point-max)))
 
 (defun adam/clipboard-kill-line-or-fold ()
   "Kill line to clipboard. If the line has a folded region, kill the entire fold."
@@ -673,6 +687,32 @@ Returns the selected window."
 (defmacro adam/anti-mode (mode)
   "Creates a macro to toggle a mode MODE, but negates the argument to produce the opposite toggle."
   `(lambda (enable) (funcall ',mode (- enable))))
+
+(defun adam/buffer-grep ()
+  "Grep the current buffer."
+   (interactive)
+   (counsel-grep))
+
+(defun adam/clamp (value min max)
+  "Clamp a value VALUE between MIN and MAX."
+  (max min (min max value)))
+
+(defun adam/negative? (value)
+  "Is the current number VALUE negetive?"
+  (< value 0))
+
+(defun adam/positive? (value)
+  "Is the current number VALUE positive?"
+  (not (adam/negative? value)))
+
+(defun adam/loosy-goosy-string->number (string &optional index)
+  "Take the first numberlike thing from a string STRING and return it. Returns `0' if no number."
+  (string-to-number (and (string-match "[0-9]+" string)
+                         (match-string (or index 0) string))))
+
+(defun adam/minutes (minutes)
+  "Returns the number of minutes MINUTES in seconds."
+  (* minutes 60))
 
 (provide 'adam)
 ;;; adam.el ends here

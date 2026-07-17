@@ -7,4 +7,4 @@
             (mapcar #'kill/ring-element-to-string kill-ring)
             :action (lambda (x) (message x))))
 
-(provide 'kill)
+(provide 'adam-kill)

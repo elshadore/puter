@@ -8,7 +8,7 @@ A collection of config files to be symlinked by gnu-stow with the [[./scriptz/pu
 A bunch of current legacy scripts and configs. A quick hack to prevent things that shouldn't be linked or be placed in the shell path from being actualized. However I keep this stuff out of nostaglia and to tell myself that fumbling around with some of these esoteric configs for hours and hours was worth it. And it was worth it 🙂.
 
 ** 🤖 [[./ASTACK.md][ASTACK: Adam's Full-Stack Agentic Dark-Factory Workflow]]
-Infinite productivity. Escape the permanent underclass nad consume bajillions of tokens with this *powerful* agentic workflow. 🚀🚀🚀
+Infinite productivity. Escape the permanent underclass and consume bajillions of tokens with the world's most *powerful* agentic workflow. 🚀🚀🚀
 
 ** 🧻 [[./scriptz/][Scriptz]]
 A bunch of scripts that are added the shell path. Some of these are definitly [[./notfiles/][notfiles]] worthy.

@@ -7,14 +7,14 @@ Run the following command to initialize.
 ```
 
 Once initialized you can also run the following in emacs.
-```elisp
+```lisp
 (puter/linkup)
 ```
 
 ## 🤖 [ASTACK: Adam's Full-Stack Agentic Dark-Factory Workflow](./ASTACK.md)
 Infinite productivity. Escape the permanent underclass and consume bajillions of tokens with the world's most *powerful* agentic workflow. 🚀🚀🚀
 
-## 💾 [Dotfiles](./Dotfiles/)
+## 💾 [Dotfiles](./dotfiles/)
 A collection of config files to be symlinked by gnu-stow with the [puter-linkup](./scriptz/puter-linkup) script
 
 ## 🔥 [Notfiles](./notfiles)

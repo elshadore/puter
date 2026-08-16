@@ -135,7 +135,9 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun adam/goto-homepage ()
   "Find main EMACS page."
   (interactive)
-  (find-file "~/adam/HOMEPAGE.org"))
+  (haunt-open "~/adam/adam.haunt")
+  ;; (find-file "~/adam/HOMEPAGE.org")
+  )
 
 (defun adam/reload-init-file ()
   "Reload EMACS config."
@@ -312,6 +314,10 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun million (x)
   "Take a given number X, and return X million."
   (* x 1000000))
+
+(defun billion (x)
+  "Take a given number X, and return X billion."
+  (* x 1000000000))
 
 (defun thousand (x)
   "Take a given number X, and return X thousand."
@@ -565,6 +571,9 @@ Returns the selected window."
 (defvar adam/agent-shell-model "opencode/deepseek-v4-flash-free"
   "The default model for agent-shell.")
 
+(defvar adam/agent-shell-start-viewport t
+  "Start the `agent-shell' buffer in `agent-shell-viewport-edit-mode'.")
+
 (defun adam/agent-shell-default ()
   "Open or switch to an agent shell with the opencode provider."
   (interactive)
@@ -580,7 +589,10 @@ Returns the selected window."
         (let ((shell (agent-shell--start :config config
                                         :session-strategy 'new
                                         :no-focus t)))
-          (adam/display-buffer-other-window shell))))))
+          (switch-to-buffer-other-window shell)
+          (when (or agent-shell-prefer-viewport-interaction
+                    adam/agent-shell-start-viewport)
+            (agent-shell-viewport--show-buffer shell)))))))
 
 (defvar-local adam/agent-shell--notify-subscribed nil
   "Whether turn-complete notification has been set up for this buffer.")

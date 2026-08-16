@@ -3,7 +3,7 @@
 ;;: note: on first install call M-x all-the-icons-install-fonts
 ;;; Code:
 
-(server-start)
+;; (server-start)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (scroll-bar-mode -1)
@@ -156,8 +156,11 @@
   (context-menu-mode t)
   (define-key emacs-lisp-mode-map (kbd "C-c C-c") #'adam/C-c-C-c)
   (define-key emacs-lisp-mode-map (kbd "C-x C-e") #'adam/C-x-C-e)
-  (define-key emacs-lisp-mode-map (kbd "C-c C-a") #'adam/C-c-C-a)
-  )
+  (define-key emacs-lisp-mode-map (kbd "C-c C-a") #'adam/C-c-C-a))
+
+(progn
+  (add-to-list 'auto-mode-alist '("\\.sex\\'" . lisp-data-mode))
+  (add-to-list 'auto-mode-alist '("\\.sexp\\'" . lisp-data-mode)))
 
 (use-package counsel
   :config
@@ -270,7 +273,7 @@
    '("." . adam/find-file-new)
    '("," . projectile-find-file)
    '("'" . goto-line)
-   
+   '("p" . counsel-linux-app)
    '("/" . adam/fuzzy-find)
    '("f c" . adam/goto-init-file)
    '("f h" . adam/goto-homepage)
@@ -350,7 +353,7 @@
    '("M--" . emms-volume-lower)
    '("M-+" . emms-volume-raise)
    '("M-=" . emms-volume-raise)
-   '("M-d" . mc/mark-next-lines)
+   '("M-d" . mc/mark-next-like-this)
    '("<escape>" . adam/meow-cancel-or-mc-quit))
   (meow-normal-define-key
    '("0" . meow-expand-0)
@@ -388,8 +391,9 @@
    '("C-j" . adam/join-line)
    '("u" . undo)
    '("U" . undo-redo)
-   '("M-n" . meow-search)
-   '("M-p" . (lambda () (interactive) (meow-search -1)))
+   ;; TODO: rethink these bindings
+   ;; '("M-n" . meow-search)
+   ;; '("M-p" . (lambda () (interactive) (meow-search -1)))
    '("/" . meow-visit)
    '(">" . adam/indent-right)
    '("<" . adam/indent-left)
@@ -491,11 +495,11 @@
 
 (use-package agent-shell
   :config
+  ;; (setq agent-shell-prefer-viewport-interaction t)
   (add-hook 'agent-shell-mode-hook #'adam/agent-shell-notify-turn-complete)
-  (add-hook 'agent-shell-mode-hook
-            (lambda ()
-              ;; Very laggy with `visual-line-mode' enabled.
-              (visual-line-mode 0))))
+  (add-hook 'agent-shell-mode-hook (lambda () (visual-line-mode 0)))
+  (add-hook 'agent-shell-viewport-view-mode-hook (lambda () (visual-line-mode 1)))
+  (add-hook 'agent-shell-viewport-edit-mode-hook (lambda () (visual-line-mode 1))))
 
 (use-package i3wm-config-mode)
 (use-package css-mode)
@@ -529,12 +533,20 @@
 (defun adam/markdown-hook ()
   (visual-line-mode)
   (flyspell-mode)
-  (writeroom-mode))
+  (writeroom-mode)
+  (markdown-indent-mode))
 
 (use-package markdown-mode
   :straight t
   :config
   (add-hook 'markdown-mode-hook 'adam/markdown-hook))
+
+(use-package markdown-indent-mode)
+
+;; Haunt Mode
+(progn
+  (push "/home/adam/work/haunt-mode/" load-path)
+  (require 'haunt-mode))
 
 (defun adam/org-hook ()
   "Hook for setting indentation on org-mode."
@@ -585,7 +597,9 @@
 
 (use-package sly
   :config
-  (setq inferior-lisp-program "ros dynamic-space-size=4Gb -L sbcl -Q -l ~/.sbclrc run"))
+  ;; (setq inferior-lisp-program "ros dynamic-space-size=4Gb -L sbcl -Q -l ~/.sbclrc run")
+  (setq inferior-lisp-program "sbcl")
+  (add-to-list 'auto-mode-alist '(".sbclrc" . lisp-mode)))
 
 ;; EWW Yuck
 ;; (add-to-list 'auto-mode-alist '("\\.yuck\\'" . lisp-mode))
@@ -748,8 +762,8 @@
 (setq doom-winter-is-coming-brighter-comments t)
 (setq doom-winter-is-coming-brighter-modeline t)
 ;; (adam/load-theme 'doom-winter-is-coming-dark-blue)
-(adam/load-theme 'modus-vivendi-tinted)
-;; (adam/load-theme 'doom-ir-black)
+;; (adam/load-theme 'modus-vivendi-tinted)
+(adam/load-theme 'doom-ir-black)
 
 
 (load-file custom-file)

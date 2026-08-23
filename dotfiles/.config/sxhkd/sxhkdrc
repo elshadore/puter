@@ -1,10 +1,10 @@
 super + i
       xcolor | xclip -selection clipboard
 
-super + Print
+super + print
       scrot -s -e 'mv $f ~/Pictures/screenshots/'
 
-super + Colon
+super + semicolon
       rofi -show drun
       
 super + m

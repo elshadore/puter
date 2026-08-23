@@ -1,0 +1,6 @@
+#!/bin/sh
+ev=$(i3-msg -t subscribe -m '[ "shutdown" ]')
+case "$ev" in
+    *restart*) ;;
+    *) seman server-kill ;;
+esac

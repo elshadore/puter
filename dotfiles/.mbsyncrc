@@ -1,7 +1,7 @@
 IMAPAccount gmail
 Host imap.gmail.com
 User aroebuck1999@gmail.com
-PassCmd "cat ~/adam/email.txt"
+PassCmd "cat ~/adam/root/email.txt"
 TLSType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 

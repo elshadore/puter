@@ -242,7 +242,7 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
               (adam/remove-evil-palantir-shit url))))
     (adam/shell cmd)))
 
-(defvar adam/auth-file "~/adam/auth.json")
+(defvar adam/auth-file "~/adam/root/auth.json")
 
 (defun adam/lookup-auth (auth-sym)
   "Fetch a given auth string from the auth-file with a given symbol: AUTH-SYM."

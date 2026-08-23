@@ -3,7 +3,27 @@ font pango:TerminessNerdFontMono 11
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+## SEMAN Server
+#
+# SEMAN Config:
+# ~/.config/seman/.semanrc
 exec --no-startup-id seman server-start
+# Uses the following watchdog script:
+# This makes sure SEMAN server closes when i3 exits.
+# ~/puter/scriptz/seman-watchdog
+exec_always --no-startup-id seman-watchdog
+
+## Workspaces Bound to Monitors
+workspace "0" output HDMI-1
+workspace "1" output HDMI-1
+workspace "9" output HDMI-2
+
+## Startup Applications
+exec --no-startup-id i3-msg 'workspace "0"; exec emacs'
+exec --no-startup-id i3-msg 'workspace "1"; exec firefox'
+exec --no-startup-id i3-msg 'workspace "9"; exec alacritty -e btop'
+exec --no-startup-id i3-msg 'workspace "0"'
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
@@ -13,7 +33,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 tiling_drag modifier titlebar
 
-bindsym $mod+Return exec "kitty"
+bindsym $mod+Return exec "alacritty"
 bindsym $mod+w kill
 
 bindsym $mod+h focus left

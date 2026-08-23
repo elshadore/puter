@@ -1,0 +1,3 @@
+defservice-start dunst dunst
+defservice-start keyboard sxhkd
+defservice-start picom picom

@@ -273,7 +273,7 @@
    '("." . adam/find-file-new)
    '("," . projectile-find-file)
    '("'" . goto-line)
-   '("p" . counsel-linux-app)
+   '("t" . counsel-linux-app)
    '("/" . adam/fuzzy-find)
    '("f c" . adam/goto-init-file)
    '("f h" . adam/goto-homepage)
@@ -303,6 +303,7 @@
    '("w q" . awin/toggle-split)
    '("q q" . window-swap-states)
    '("z e" . adam/eshell)
+   '("z l" . ielm)
    '("z z" . (lambda () (interactive)
                (call-interactively 'compile)))
    '("z n" . (lambda () (interactive)
@@ -432,6 +433,7 @@
 (use-package projectile
   :config
   (projectile-mode)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   :custom ((projectile-completion-system 'ivy))
   :init
   (when (file-directory-p "~/work")
@@ -534,7 +536,8 @@
   (visual-line-mode)
   (flyspell-mode)
   (writeroom-mode)
-  (markdown-indent-mode))
+  ;;(markdown-indent-mode)
+  )
 
 (use-package markdown-mode
   :straight t

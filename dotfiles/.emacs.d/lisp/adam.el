@@ -101,7 +101,7 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 
 (defun adam/qoutize-string (str)
   "Surround a string STR in \"\" qoutes."
-  (concat "\"" str "\""))
+  (format "%S" str))
 
 (defun adam/change-file-suffix (path new-suffix)
   "Change the file path PATHs format suffix to NEW-SUFFIX."
@@ -135,8 +135,9 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun adam/goto-homepage ()
   "Find main EMACS page."
   (interactive)
-  (haunt-open "~/adam/adam.haunt")
+  ;; (haunt-open "~/adam/adam.haunt")
   ;; (find-file "~/adam/HOMEPAGE.org")
+  (find-file "~/adam/HOMEPAGE.md")
   )
 
 (defun adam/reload-init-file ()
@@ -194,6 +195,10 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
          (call-interactively #'lsp-describe-thing-at-point))
         (t (call-interactively #'man))))
 
+(cl-defun adam/shell (cmd &key (custom-name) (buffer))
+  "Run the shell command `cmd'."
+  (start-process-shell-command (or custom-name cmd) buffer cmd))
+
 (defvar adam/fuzzy-find-alist
   '((dired-mode . adam/find-file)
     (eshell-mode . adam/find-file)
@@ -214,13 +219,13 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (interactive "Ftar: ")
   (let* ((output (or output-path (concat "./" (adam/change-file-suffix file-path "tar.gz"))))
          (cmd (concat "tar -cavf" " " output " " file-path)))
-    (start-process-shell-command cmd nil cmd)))
+    (adam/shell cmd)))
 
 (defun adam/untar-file (file-path)
   "Use linux tar util to untar the compressed file FILE-PATH."
   (interactive "Funtar: ")
   (let ((cmd (concat "tar -xvf" " " file-path)))
-    (start-process-shell-command cmd nil cmd)))
+    (adam/shell cmd)))
 
 (defun adam/remove-evil-palantir-shit (url)
   (interactive "surl: ")
@@ -235,7 +240,7 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
               "yt-dlp -f bestaudio -x --audio-format mp3 --audio-quality 330k"
               " "
               (adam/remove-evil-palantir-shit url))))
-    (start-process-shell-command cmd nil cmd)))
+    (adam/shell cmd)))
 
 (defvar adam/auth-file "~/adam/auth.json")
 
@@ -252,11 +257,10 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
            gcs-done))
 (add-hook 'emacs-startup-hook #'adam/display-startup-time)
 
-(defun adam/empty-buffer ()
+(defun adam/empty-buffer (&optional name)
   "Creates a new empty buffer in the current window."
   (interactive)
-  
-  )
+  (display-buffer-same-window (get-buffer-create (or name "*Empty*")) nil))
 
 (defun adam/eshell ()
   "Start eshell mode in the current directory."
@@ -274,7 +278,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   "Launch an Eshell Command in a Eshell Buffer."
   (interactive (list (eshell-read-command)
                      current-prefix-arg))
-  ;; This is a really good use of the `operate' macro.
   (let ((v (operate (x (adam/get-buffer-names))
                     (adam/fap (lambda (y) (adam/string-match "\\*eshell\\*<\\([[:digit:]]+\\)>" y 1)) x)
                     (mapcar #'string-to-number x)
@@ -326,10 +329,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun true? (value)
   "If the VALUE is not NIL return T, else NIL."
   (if value t nil))
-
-(defvar kill-all-buffers-last
-  nil
-  "History for the `Kill-All-Buffers' Command.")
 
 (defun adam/kill-all-buffers-match (match-input buffer)
   "The Matching Function for the `Kill-All-Buffers' Function."
@@ -409,9 +408,8 @@ Moves to the next line and joins it back, trimming whitespace."
                                              collect (abbreviate-file-name (buffer-file-name b)))
                                     :test #'string=)))
       (if saved
-          (puter/notify-send (format "Saved %d file(s):\n%s" (length saved) (string-join saved "\n"))
-                             :normal)
-        (puter/notify-send "No files needed saving" :low)))))
+          (message "Saved %d file(s): %s" (length saved) saved)
+        (message "No files needed saving")))))
 
 (defun adam/flash-region (start end)
   "Flash the region between START and END."
@@ -568,7 +566,7 @@ Returns the selected window."
 (defvar adam/agent-shell-provider 'opencode
   "The default provider for agent-shell.")
 
-(defvar adam/agent-shell-model "opencode/deepseek-v4-flash-free"
+(defvar adam/agent-shell-model "opencode/big-pickle"
   "The default model for agent-shell.")
 
 (defvar adam/agent-shell-start-viewport t

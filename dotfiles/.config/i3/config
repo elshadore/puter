@@ -3,10 +3,7 @@ font pango:TerminessNerdFontMono 11
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-exec --no-startup-id nm-applet
-exec --no-startup-id picom
-exec --no-startup-id dunst
-exec --no-startup-id puter-xsettings
+exec --no-startup-id seman server-start
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
@@ -18,8 +15,6 @@ tiling_drag modifier titlebar
 
 bindsym $mod+Return exec "kitty"
 bindsym $mod+w kill
-bindsym $mod+colon exec "rofi -show drun"
-bindsym $mod+m exec "rofi -show window"
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down

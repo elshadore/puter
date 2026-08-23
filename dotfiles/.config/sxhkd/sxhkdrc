@@ -1,0 +1,11 @@
+super + i
+      xcolor | xclip -selection clipboard
+
+super + Print
+      scrot -s -e 'mv $f ~/Pictures/screenshots/'
+
+super + Colon
+      rofi -show drun
+      
+super + m
+      rofi -show window

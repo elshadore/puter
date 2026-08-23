@@ -1,0 +1,3 @@
+#!/bin/sh
+
+feh --bg-fill --no-fehbg ~/puter/Pictures/pape1.jpg 

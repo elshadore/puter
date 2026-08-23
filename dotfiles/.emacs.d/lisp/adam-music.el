@@ -8,7 +8,7 @@
 (defvar adam/enable-mpd-on-launch t
   "Control variable to launch `mpd' on emacs statup.")
 
-(defvar adam/mpd-volume 0
+(defvar adam/mpd-volume 40
   "A cached variable of the current `mpd' volume.")
 
 (defvar adam/mpd-repeat nil
@@ -91,9 +91,11 @@
    "getvol"
    nil
    (lambda (_closure value)
-     (setq adam/mpd-volume
-           (adam/loosy-goosy-string->number value)))))
-
+     (let ((current-volume (adam/loosy-goosy-string->number value)))
+       (if (>= current-volume 100)
+           (adam/mpd-volume-set adam/mpd-volume)
+         (setq adam/mpd-volume current-volume)))
+     )))
 
 (defun adam/mpd--callback-volume-change (amount)
   "Change MPD volume by AMOUNT and display new level."
@@ -107,23 +109,17 @@
   (emms-cache 1)
   (emms-player-mpd-connect)
   (emms-player-mpd-update-all-reset-cache)
-  (adam/mpd-random t)
-  (adam/mpd-repeat t)
   (adam/mpd-volume-sync)
-
-  (when (>= (adam/mpd-volume-get) 99)
-    (adam/mpd-volume-set 40))
-  
-  ;; (emms-pause)
-  ;; (emms-play-directory adam/music-dir)
-  )
+  (adam/mpd-random t)
+  (adam/mpd-repeat t))
 
 (defun adam/mpd-init ()
   "Launch MPD and await it's initialization."
   (make-process
    :name "mpd init"
    :command '("mpd")
-   :sentinel (lambda (_ _) (funcall 'adam/mpd-on-init-function))))
+   :sentinel (lambda (_ _)
+               (funcall 'adam/mpd-on-init-function))))
 
 (defun adam/mpd-launch ()
   "Launch MPD and initialize some variables."

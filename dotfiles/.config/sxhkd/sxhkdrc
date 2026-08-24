@@ -1,11 +1,17 @@
 super + i
       xcolor | xclip -selection clipboard
 
-super + print
-      scrot -s -e 'mv $f ~/Pictures/screenshots/'
+super + Print
+      scrot -s -e 'mkdir -p ~/Pictures/screenshots; mv $f ~/Pictures/screenshots/'
 
 super + semicolon
       rofi -show drun
       
 super + m
       rofi -show window
+
+super + slash
+      dunstctl close
+      
+super + shift + slash
+      dunstctl close-all

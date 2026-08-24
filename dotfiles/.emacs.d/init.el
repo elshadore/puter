@@ -277,6 +277,7 @@
    '("/" . adam/fuzzy-find)
    '("f c" . adam/goto-init-file)
    '("f h" . adam/goto-homepage)
+   '("f j" . adam/goto-current-project)
    '("f p" . list-processes)
    '("r" . rgrep)
    

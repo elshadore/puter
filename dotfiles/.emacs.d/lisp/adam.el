@@ -135,10 +135,12 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun adam/goto-homepage ()
   "Find main EMACS page."
   (interactive)
-  ;; (haunt-open "~/adam/adam.haunt")
-  ;; (find-file "~/adam/HOMEPAGE.org")
-  (find-file "~/adam/HOMEPAGE.md")
-  )
+  (find-file "~/adam/HOMEPAGE.md"))
+
+(defun adam/goto-current-project ()
+  "Find the current project."
+  (interactive)
+  (find-file "~/adam/root/current-project"))
 
 (defun adam/reload-init-file ()
   "Reload EMACS config."

@@ -477,9 +477,9 @@
   :bind (:map magit-mode-map
               ("L" . magit-log)))
 
-(use-package magit-todos
-  :after magit
-  :config (magit-todos-mode 1))
+;; (use-package magit-todos
+;;   :after magit
+;;   :config (magit-todos-mode 1))
 
 (use-package git-gutter
   :config

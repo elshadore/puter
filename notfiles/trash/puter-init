@@ -1,3 +1,0 @@
-#!/bin/sh
-
-sudo ln -sfn /home/adam/puter/configuration.nix /etc/nixos/configuration.nix

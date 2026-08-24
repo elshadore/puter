@@ -1,6 +1,0 @@
-#!/bin/sh
-
-mpc idleloop player | while read -r event; do
-    song=$(mpc current --format "%artist% - %title%")
-    [ -n "$song" ] && dunstify -a "MPD" -i "audio-headphones" "Now Playing" "$song"
-done

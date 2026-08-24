@@ -5,10 +5,10 @@ super + Print
       scrot -s -e 'mkdir -p ~/Pictures/screenshots; mv $f ~/Pictures/screenshots/'
 
 super + semicolon
-      rofi -show drun
+      rofi -show drun -show-icons
       
 super + m
-      rofi -show window
+      rofi -show window -show-icons
 
 super + slash
       dunstctl close

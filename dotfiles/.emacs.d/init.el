@@ -159,6 +159,8 @@
   (define-key emacs-lisp-mode-map (kbd "C-c C-a") #'adam/C-c-C-a))
 
 (progn
+  (add-to-list 'auto-mode-alist '("\\.rasi\\'" . css-mode))
+  (add-to-list 'auto-mode-alist '(".semanrc" . conf-mode))
   (add-to-list 'auto-mode-alist '("\\.sex\\'" . lisp-data-mode))
   (add-to-list 'auto-mode-alist '("\\.sexp\\'" . lisp-data-mode)))
 

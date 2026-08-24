@@ -2,7 +2,7 @@
 
 * {
     font: "IosevkaNerdFont 11";
-    background-color:   transparent;
+    background-color: transparent;
     adam-bg: #030613;
     adam-bg-alt: #050c26;    
     adam-bg-select: #fefefe;

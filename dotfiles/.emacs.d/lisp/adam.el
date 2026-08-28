@@ -140,7 +140,12 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
 (defun adam/goto-current-project ()
   "Find the current project."
   (interactive)
-  (find-file "~/adam/root/current-project"))
+  (find-file "~/adam/root/current-project.md"))
+
+(defun adam/goto-misc-todos ()
+  "Find the misc todos page."
+  (interactive)
+  (find-file "~/adam/root/misc.md"))
 
 (defun adam/reload-init-file ()
   "Reload EMACS config."

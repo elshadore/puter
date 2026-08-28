@@ -19,6 +19,10 @@ workspace "0" output HDMI-1
 workspace "1" output HDMI-1
 workspace "9" output HDMI-2
 
+## Background Applications
+exec --no-startup-id steam -silent
+exec --no-startup-id qbittorrent
+
 ## Startup Applications
 exec --no-startup-id i3-msg 'workspace "0"; exec emacs'
 exec --no-startup-id i3-msg 'workspace "1"; exec firefox'

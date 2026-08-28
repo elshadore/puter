@@ -280,6 +280,7 @@
    '("f c" . adam/goto-init-file)
    '("f h" . adam/goto-homepage)
    '("f j" . adam/goto-current-project)
+   '("f t" . adam/goto-misc-todos)
    '("f p" . list-processes)
    '("r" . rgrep)
    
@@ -548,11 +549,6 @@
   (add-hook 'markdown-mode-hook 'adam/markdown-hook))
 
 (use-package markdown-indent-mode)
-
-;; Haunt Mode
-(progn
-  (push "/home/adam/work/haunt-mode/" load-path)
-  (require 'haunt-mode))
 
 (defun adam/org-hook ()
   "Hook for setting indentation on org-mode."

@@ -193,15 +193,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (interactive)
   (call-interactively #'rgrep))
 
-(defun adam/lookup ()
-  "Lookup symbol under cursor."
-  (interactive)
-  (cond ((eq major-mode 'emacs-lisp-mode)
-         (call-interactively #'describe-symbol))
-        ((eq lsp-mode t)
-         (call-interactively #'lsp-describe-thing-at-point))
-        (t (call-interactively #'man))))
-
 (cl-defun adam/shell (cmd &key (custom-name) (buffer))
   "Run the shell command `cmd'."
   (start-process-shell-command (or custom-name cmd) buffer cmd))
@@ -559,86 +550,6 @@ If region is active, replace it with the yanked text."
         (insert content "\n")
         (back-to-indentation))))))
 
-(defun adam/display-buffer-other-window (buffer)
-  "Display BUFFER in another window, Magit-style.
-If only one window exists, split it using `split-window-right'.
-If multiple windows exist, reuse another window.
-Returns the selected window."
-  (when (one-window-p)
-    (split-window-right))
-  (select-window (display-buffer buffer '(display-buffer-reuse-window
-                                           display-buffer-use-some-window)
-                                 '((inhibit-same-window . t)))))
-
-(defvar adam/agent-shell-provider 'opencode
-  "The default provider for agent-shell.")
-
-(defvar adam/agent-shell-model "opencode/big-pickle"
-  "The default model for agent-shell.")
-
-(defvar adam/agent-shell-start-viewport t
-  "Start the `agent-shell' buffer in `agent-shell-viewport-edit-mode'.")
-
-(defun adam/agent-shell-default ()
-  "Open or switch to an agent shell with the opencode provider."
-  (interactive)
-  (let ((buffers (agent-shell-buffers)))
-    (if buffers
-        (adam/display-buffer-other-window (car buffers))
-      (let ((config (or (seq-find (lambda (c)
-                                    (eq (map-elt c :identifier) adam/agent-shell-provider))
-                                  agent-shell-agent-configs)
-                        (error "No opencode agent config found"))))
-        (setq config (copy-alist config))
-        (map-put! config :default-model-id (lambda () adam/agent-shell-model))
-        (let ((shell (agent-shell--start :config config
-                                        :session-strategy 'new
-                                        :no-focus t)))
-          (switch-to-buffer-other-window shell)
-          (when (or agent-shell-prefer-viewport-interaction
-                    adam/agent-shell-start-viewport)
-            (agent-shell-viewport--show-buffer shell)))))))
-
-(defvar-local adam/agent-shell--notify-subscribed nil
-  "Whether turn-complete notification has been set up for this buffer.")
-
-(defvar-local adam/agent-shell--last-prompt nil
-  "Last prompt sent to the agent, stored buffer-locally.")
-
-(defun adam/agent-shell--capture-prompt (oldfun &rest args)
-  "Capture the :prompt argument before agent-shell sends it."
-  (let ((prompt (car (cdr (memq :prompt args)))))
-    (when prompt
-      (setq-local adam/agent-shell--last-prompt prompt))
-    (apply oldfun args)))
-
-(defun adam/agent-shell-notify-event (_event)
-  "The function called when the agent-shell turn is complete."
-  (interactive)
-  (let ((input (or (bound-and-true-p adam/agent-shell--last-prompt) "")))
-    (puter/notify-send (format "agent-shell finished!\n> %s" input) :critical)))
-
-(defun adam/agent-shell-notify-turn-complete ()
-  "Send desktop notification when an opencode agent shell turn completes."
-  (when (and (derived-mode-p 'agent-shell-mode)
-             (not adam/agent-shell--notify-subscribed))
-    (let ((config (agent-shell-get-config (current-buffer))))
-      (when (eq (map-elt config :identifier) adam/agent-shell-provider)
-        (agent-shell-subscribe-to
-         :shell-buffer (current-buffer)
-         :event 'turn-complete
-         :on-event 'adam/agent-shell-notify-event)
-        (setq-local adam/agent-shell--notify-subscribed t)))))
-
-(advice-add 'agent-shell--send-command :around
-            #'adam/agent-shell--capture-prompt)
-
-(defun adam/agent-shell (&optional arg)
-  "Like `agent-shell', but does not copy any context to the prompt."
-  (interactive "P")
-  (let ((agent-shell-context-sources '()))
-    (agent-shell arg)))
-
 (defun adam/meow-cancel-or-mc-quit ()
   "Cancel selection or exit multiple-cursors if active."
   (interactive)
@@ -730,6 +641,37 @@ Returns the selected window."
 (defun adam/minutes (minutes)
   "Returns the number of minutes MINUTES in seconds."
   (* minutes 60))
+
+(defvar adam/fixup-list nil
+  "Assocation list of projectile project types and functions to be run on `fixup'.")
+
+(defun adam/add-fixup (project-type func)
+  (push (cons project-type func) adam/fixup-list))
+
+(defun adam/fixup ()
+  (interactive)
+  (if-let* ((proj-type (projectile-project-type))
+            (fixup (assoc proj-type adam/fixup-list)))
+      (progn
+        (message "Fixup: %S" proj-type)
+        (funcall (cdr fixup)))
+    (message "No fixup available for project type: %S" proj-type)))
+
+(defun adam/compile-new ()
+  "Call the `compile' command but with a new prompt."
+  (interactive)
+  (let ((compile-command ""))
+    (call-interactively 'compile)))
+
+(defun adam/page-j ()
+  "Go down a page."
+  (interactive)
+  (adam/j 16))
+
+(defun adam/page-k ()
+  "Go up a page."
+  (interactive)
+  (adam/k 16))
 
 (provide 'adam)
 ;;; adam.el ends here

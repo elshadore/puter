@@ -38,6 +38,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 bindsym $mod+Return exec "alacritty"
+bindsym $mod+e exec "emacs"
 bindsym $mod+w kill
 
 bindsym $mod+h focus left

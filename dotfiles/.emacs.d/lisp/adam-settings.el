@@ -31,7 +31,7 @@
 (global-hl-line-mode)
 ;; (global-visual-line-mode)
 
-(global-flycheck-mode)
+;; (global-flycheck-mode)
 
 (display-line-numbers-mode 1)
 (setq-default display-line-numbers-type 'relative)

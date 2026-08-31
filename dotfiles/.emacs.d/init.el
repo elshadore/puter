@@ -43,7 +43,7 @@
 (require 'adam-menu)
 
 (when (adam/puter-is-xwindows?)
-  (puter/xsettings))
+  (adam/puter-xsettings))
 
 (when (adam/puter-is-wayland?)
 

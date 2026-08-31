@@ -82,5 +82,5 @@
 
 (meow-global-mode 1)
 
-(provide adam-keys)
+(provide 'adam-keys)
 

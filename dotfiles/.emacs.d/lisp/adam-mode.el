@@ -2,9 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'adam)
-(require 'adam-window)
-
 (defvar adam/auth-file "~/adam/root/auth.json")
 
 (defun adam/lookup-auth (auth-sym)

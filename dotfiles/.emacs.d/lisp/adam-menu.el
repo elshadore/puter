@@ -80,6 +80,7 @@
   ("b" adam/ibuffer "buffer")
   ("c" compile "compile")
   ("p" projectile-compile-project "project compile")
+  ("d" flycheck-list-errors "errors")
   ("s" shell "shell")
   ("l" ielm "elisp")
   ("e" adam/eshell "eshell")

@@ -45,6 +45,12 @@
   (when adam/lsp-enabled
     (add-hook hook 'lsp-mode)))
 
+;; (defun adam/find-file-follow-symlinks (orig &rest args)
+;;   "Advice for `find-file', to follow symlinks correctly."
+;;   (apply orig (file-truename (car args)) (cdr args)))
+
+;; (advice-add 'find-file :around #'adam/find-file-follow-symlinks)
+
 (define-minor-mode adam-mode
   "Adam global mode for Adam based sheringans!"
   1

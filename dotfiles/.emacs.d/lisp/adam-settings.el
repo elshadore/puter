@@ -15,6 +15,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq vc-follow-symlinks t)
 
+(setq find-file-visit-truename t)
+
 (global-display-line-numbers-mode 1)
 (set-default 'truncate-lines t)
 (setq global-visual-wrap-prefix-mode t)
@@ -31,7 +33,7 @@
 (global-hl-line-mode)
 ;; (global-visual-line-mode)
 
-;; (global-flycheck-mode)
+(global-flycheck-mode)
 
 (display-line-numbers-mode 1)
 (setq-default display-line-numbers-type 'relative)

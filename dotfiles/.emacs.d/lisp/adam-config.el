@@ -154,8 +154,6 @@
     (setq projectile-project-search-path '("~/work")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package flycheck)
-
 (use-package yasnippet
   :config
   (yas-global-mode 1))
@@ -212,13 +210,17 @@
 (use-package agent-shell
   :config
   (setq agent-shell-prefer-viewport-interaction t)
-  (add-hook 'agent-shell-mode-hook (lambda () (visual-line-mode 0)))
-  (add-hook 'agent-shell-viewport-view-mode-hook (lambda () (visual-line-mode 1)))
-  (add-hook 'agent-shell-viewport-edit-mode-hook (lambda () (visual-line-mode 1)))
+  ;; (add-hook 'agent-shell-mode-hook (lambda () (visual-line-mode 0)))
+  ;; (add-hook 'agent-shell-viewport-view-mode-hook (lambda () (visual-line-mode 1)))
+  ;; (add-hook 'agent-shell-viewport-edit-mode-hook (lambda () (visual-line-mode 1)))
   :bind
+  (:map agent-shell-viewport-edit-mode-map
+        ("R" . agent-shell-viewport-reply))
+        ("M-n" . agent-shell-viewport-next-history)
+        ("M-p" . agent-shell-viewport-previous-history)
   (:map agent-shell-viewport-view-mode-map
         ("M-n" . agent-shell-viewport-next-item)
-        ("N-p" . agent-shell-viewport-previous-item)))
+        ("M-p" . agent-shell-viewport-previous-item)))
 
 (use-package i3wm-config-mode)
 (use-package css-mode)
@@ -253,13 +255,16 @@
   (visual-line-mode)
   (flyspell-mode)
   (writeroom-mode)
-  ;;(markdown-indent-mode)
-  )
+  ;; Markdown Bullets Hide
+  (font-lock-add-keywords nil adam/markdown-hide-hash-keywords 'append))
 
 (use-package markdown-mode
   :straight t
   :config
+  (require 'adam-markdown)
   (add-hook 'markdown-mode-hook 'adam/markdown-hook)
+  (setq-default markdown-hide-markup nil)
+  (setq-default markdown-hide-urls nil)
   :bind
   (:map markdown-mode-map
         ("C-c o" . markdown-follow-thing-at-point)))
@@ -327,9 +332,8 @@
 
 (use-package haskell-mode)
 
-(use-package simpc-mode
-  :straight (simpc-mode :type git :host github :repo "rexim/simpc-mode")
-  :after lsp-mode
+(use-package cc-mode
+  :straight t
   :config
   (c-add-style
    "adam"
@@ -344,13 +348,11 @@
       (brace-list-open . +)
       (case-label . +))))
   (setq c-default-style "adam")
-  (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))
   (adam/add-lsp-hook 'c-mode-hook)
   (adam/add-lsp-hook 'c++-mode-hook)
   (adam/add-lsp-hook 'simpc-mode-hook)
   (when adam/lsp-enabled
-    (setq lsp-clients-clangd-args '("--fallback-style=none" "--clang-tidy=0" "--header-insertion=never"))
-    (add-to-list 'lsp-language-id-configuration '(simpc-mode . "c"))))
+    (setq lsp-clients-clangd-args '("--fallback-style=none" "--clang-tidy=0" "--header-insertion=never"))))
 
 (use-package zig-mode
   :config
@@ -398,6 +400,13 @@
 
 (use-package glsl-mode)
 (use-package wgsl-mode)
+
+(defun adam/flycheck-error-list-hook ()
+  (visual-line-mode 1))
+
+(use-package flycheck
+  :config
+  (add-hook 'flycheck-error-list-mode-hook 'adam/flycheck-error-list-hook))
 
 (use-package lsp-mode
   :init

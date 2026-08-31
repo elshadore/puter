@@ -4,10 +4,6 @@
 
 (require 'json)
 
-(defun adam/is-wayland? ()
-  "Is the current desktop a Wayland session?"
-  (when (getenv "WAYLAND_DISPLAY") t))
-
 (defun adam/quitter ()
   "A Better C-g Quit that works in the Minibuffer.
 I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-quit-smarter"
@@ -630,5 +626,12 @@ If region is active, replace it with the yanked text."
         (goto-char end)
         (push-mark beg nil t)))))
 
-(provide 'adam)
-;;; adam.el ends here
+(defun adam/meow-mode-toggle ()
+  "Toggle `meow' modes `meow-motion-mode' and `meow-normal-mode'"
+  (interactive)
+  (if (meow-motion-mode-p)
+      (meow-normal-mode)
+    (meow-motion-mode)))
+
+(provide 'adam-utils)
+;;; adam-utils.el ends here

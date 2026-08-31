@@ -7,18 +7,15 @@
 
 (defvar adam/auth-file "~/adam/root/auth.json")
 
+(defun adam/lookup-auth (auth-sym)
+  "Fetch a given auth string from the auth-file with a given symbol: AUTH-SYM."
+  (cdr (assoc auth-sym (json-read-file adam/auth-file))))
+
 (defvar adam/fuzzy-find-alist
   '((dired-mode . adam/find-file)
     (eshell-mode . adam/find-file)
     (ibuffer-mode . adam/switch-to-buffer)
     (t . adam/imenu)))
-
-(defvar adam/fixup-list nil
-  "Assocation list of projectile project types and functions to be run on `fixup'.")
-
-(defun adam/lookup-auth (auth-sym)
-  "Fetch a given auth string from the auth-file with a given symbol: AUTH-SYM."
-  (cdr (assoc auth-sym (json-read-file adam/auth-file))))
 
 (defun adam/fuzzy-find ()
   "Fuzzy find based on the contents of the current buffer."
@@ -28,6 +25,9 @@
     (if-let ((b (assoc t adam/fuzzy-find-alist)))
         (call-interactively (cdr b))
       (error "no fallback value found"))))
+
+(defvar adam/fixup-list nil
+  "Assocation list of projectile project types and functions to be run on `fixup'.")
 
 (defun adam/add-fixup (project-type func)
   (push (cons project-type func) adam/fixup-list))
@@ -40,6 +40,13 @@
         (message "Fixup: %S" proj-type)
         (funcall (cdr fixup)))
     (message "No fixup available for project type: %S" proj-type)))
+
+(defvar adam/lsp-enabled t)
+
+(defun adam/add-lsp-hook (hook)
+  "Add a hook HOOK to lsp mode, if lsp mode is enabled."
+  (when adam/lsp-enabled
+    (add-hook hook 'lsp-mode)))
 
 (define-minor-mode adam-mode
   "Adam global mode for Adam based sheringans!"

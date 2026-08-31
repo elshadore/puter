@@ -18,21 +18,34 @@
   (interactive)
   (windmove-down))
 
+(defun awin/swap-with-direction (windmove-fn)
+  "Swap the buffer of the current window with the window in the direction of WINDMOVE-FN."
+  (let* ((this-window (selected-window))
+         (this-buffer (window-buffer this-window)))
+    (condition-case nil
+        (progn
+          (funcall windmove-fn)
+          (let ((other-buffer (window-buffer (selected-window))))
+            (set-window-buffer (selected-window) this-buffer)
+            (set-window-buffer this-window other-buffer)))
+      (error
+       (with-selected-window this-window nil)))))
+
 (defun awin/swap-left ()
   (interactive)
-  (windmove-left))
+  (awin/swap-with-direction #'windmove-left))
 
 (defun awin/swap-right ()
   (interactive)
-  (windmove-right))
+  (awin/swap-with-direction #'windmove-right))
 
 (defun awin/swap-up ()
   (interactive)
-  (windmove-up))
+  (awin/swap-with-direction #'windmove-up))
 
 (defun awin/swap-down ()
   (interactive)
-  (windmove-down))
+  (awin/swap-with-direction #'windmove-down))
 
 (defun awin/kill-window ()
   "Kill the current window."

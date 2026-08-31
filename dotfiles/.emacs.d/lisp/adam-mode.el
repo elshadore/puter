@@ -5,61 +5,49 @@
 (require 'adam)
 (require 'adam-window)
 
+(defvar adam/auth-file "~/adam/root/auth.json")
+
+(defvar adam/fuzzy-find-alist
+  '((dired-mode . adam/find-file)
+    (eshell-mode . adam/find-file)
+    (ibuffer-mode . adam/switch-to-buffer)
+    (t . adam/imenu)))
+
+(defvar adam/fixup-list nil
+  "Assocation list of projectile project types and functions to be run on `fixup'.")
+
+(defun adam/lookup-auth (auth-sym)
+  "Fetch a given auth string from the auth-file with a given symbol: AUTH-SYM."
+  (cdr (assoc auth-sym (json-read-file adam/auth-file))))
+
+(defun adam/fuzzy-find ()
+  "Fuzzy find based on the contents of the current buffer."
+  (interactive)
+  (if-let ((a (assoc major-mode adam/fuzzy-find-alist)))
+      (call-interactively (cdr a))
+    (if-let ((b (assoc t adam/fuzzy-find-alist)))
+        (call-interactively (cdr b))
+      (error "no fallback value found"))))
+
+(defun adam/add-fixup (project-type func)
+  (push (cons project-type func) adam/fixup-list))
+
+(defun adam/fixup ()
+  (interactive)
+  (if-let* ((proj-type (projectile-project-type))
+            (fixup (assoc proj-type adam/fixup-list)))
+      (progn
+        (message "Fixup: %S" proj-type)
+        (funcall (cdr fixup)))
+    (message "No fixup available for project type: %S" proj-type)))
+
 (define-minor-mode adam-mode
   "Adam global mode for Adam based sheringans!"
   1
   :global t
   :group 'adam
   :lighter " adam-mode"
-  :keymap (let ((map (make-sparse-keymap)))
-            ;; (define-key map (kbd "M-x") 'adam/M-x)
-            ;; (define-key map (kbd "C-,") 'adam/move-to-top)
-            ;; (define-key map (kbd "C-x SPC") 'adam/M-x)
-
-            ;; (define-key map (kbd "C-x k") 'kill-buffer)
-            ;; (define-key map (kbd "C-x K") 'kill-buffer-and-window)
-
-            ;; (define-key map (kbd "C-x w 1") 'delete-other-windows)
-            ;; (define-key map (kbd "C-x w n") 'awin/split-down)
-            ;; (define-key map (kbd "C-x w v") 'awin/split-left)
-            ;; (define-key map (kbd "C-x w h") 'awin/move-left)
-            ;; (define-key map (kbd "C-x w j") 'awin/move-down)
-            ;; (define-key map (kbd "C-x w k") 'awin/move-up)
-            ;; (define-key map (kbd "C-x w l") 'awin/move-right)
-
-            ;; (define-key map (kbd "C-c r") 'repeat-complex-command)
-            ;; (define-key map (kbd "C-c C-r") 'repeat-complex-command)
-
-            ;; (define-key map (kbd "M-<left>") 'awin/move-left)
-            ;; (define-key map (kbd "M-<down>") 'awin/move-down)
-            ;; (define-key map (kbd "M-<up>") 'awin/move-up)
-            ;; (define-key map (kbd "M-<right>") 'awin/move-right)
-
-            ;; (define-key map (kbd "M-h") 'awin/move-left)
-            ;; (define-key map (kbd "M-j") 'awin/move-down)
-            ;; (define-key map (kbd "M-k") 'awin/move-up)
-            ;; (define-key map (kbd "M-l") 'awin/move-right)
-
-            ;; (define-key map (kbd "M-H") 'awin/swap-left)
-            ;; (define-key map (kbd "M-J") 'awin/swap-down)
-            ;; (define-key map (kbd "M-K") 'awin/swap-up)
-            ;; (define-key map (kbd "M-L") 'awin/swap-right)
-
-            ;; (define-key map (kbd "C-M-h") 'awin/split-left)
-            ;; (define-key map (kbd "C-M-j") 'awin/split-down)
-            ;; (define-key map (kbd "C-M-k") 'awin/split-up)
-            ;; (define-key map (kbd "C-M-l") 'awin/split-right)
-
-            ;; (define-key map (kbd "M-m") 'awin/maximize)
-
-            ;; (define-key map (kbd "C-x c f")
-            ;;             #'(lambda () (interactive) (kill-new (buffer-file-name))))
-            ;; (define-key map (kbd "C-x c d")
-            ;;             #'(lambda ()
-            ;;                 (interactive)
-            ;;                 (kill-new
-            ;;                  (file-name-directory (buffer-file-name)))))
-            map))
+  :keymap (let ((map (make-sparse-keymap))) map))
 
 (provide 'adam-mode)
 ;;; adam-mode.el ends here

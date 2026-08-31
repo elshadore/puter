@@ -89,12 +89,13 @@
 
 (require 'adam)
 (require 'adam-window)
+(require 'adam-eshell)
 (require 'puter)
 
 (defvar adam/enable-xsettings-on-launch t
   "Control variable to enable run the `./puter/scriptz/xsettings' script on launch.")
 
-(when adam/enable-xsettings-on-launch
+(when (and (eq (window-system) 'x) adam/enable-xsettings-on-launch)
   (puter/xsettings))
 
 ;; Quitting is always an option...
@@ -124,7 +125,8 @@
             matches))
 
 (defvar adam/elisp-regex (adam/elisp-regex-generate
-                          '(("function" . "defun")
+                          '(("hydra" . "defhydra")
+                            ("function" . "defun")
                             ("variable" . "defvar")
                             ("macro" . "defmacro")
                             ("require" . "require")
@@ -141,14 +143,6 @@
   "Add a hook HOOK to lsp mode, if lsp mode is enabled."
   (when adam/lsp-enabled
     (add-hook hook 'lsp-mode)))
-
-(defun adam/prog-hook ()
-  "Hook for running basic PROG-MODE."
-  ;; (flyspell-prog-mode)
-  ;; (whitespace-mode)
-  )
-
-(add-hook 'prog-mode-hook 'adam/prog-hook)
 
 (use-package emacs
   :hook (emacs-lisp-mode . adam/elisp-setup)
@@ -275,6 +269,7 @@
   ("d" emms-play-directory "directory")
   ("-" emms-volume-lower "volume lower")
   ("=" emms-volume-raise "volume raise")
+  ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
 (defhydra adam/window-panel ()
@@ -294,6 +289,7 @@
   ("m" awin/maximize "maximize")
   ("t" awin/toggle-split "toggle split")
   ("c" awin/kill-window "close")
+  ("C" awin/kill-window "close close" :color blue)
   ("s" window-swap-states "swap states")
   ("x" kill-current-buffer "kill buffer")
   ("U" adam/page-k "page up")
@@ -301,12 +297,14 @@
   ("n" next-buffer "buffer next")
   ("p" previous-buffer "buffer previous")
   ("b" adam/switch-buffer "buffer" :color blue)
+  ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
 (defhydra adam/zoomer ()
   "Text scale"
   ("-" text-scale-decrease "decrease")
   ("=" text-scale-increase "increase")
+  ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
 (defhydra adam/lookup-panel (:exit t)
@@ -315,6 +313,7 @@
   ("r" xref-find-references "xref references")
   ("s" describe-symbol "emacs symbol")
   ("l" lsp-describe-thing-at-point "lsp")
+  ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
 (defhydra adam/finder (:exit t)
@@ -327,8 +326,10 @@
   ("f" adam/fuzzy-find "fuzzy find")
   ("/" swiper "swiper")
   ("r" rgrep "rgrep")
+  ("i" adam/internet-search "internet")
   ("_" query-replace-regexp "query replace")
   ("m" man "man")
+  ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
 (defhydra adam/launcher (:exit t)
@@ -339,21 +340,25 @@
   ("s" shell "shell")
   ("l" ielm "elisp")
   ("e" adam/eshell "eshell")
+  ("E" adam/eshell-new "eshell new")
   ("g" magit-status "magit")
   ("G" adam/toggle-file-diff "magit diff")
   ("S" async-shell-command "async shell")
   ("?" meow-cheatsheet "meow cheatsheet")
   ("P" list-processes "processes")
   ("a" agent-shell "agent shell")
+  ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
 (defhydra adam/goto (:exit t)
   "Goto"
   ("i" adam/goto-init-file "init file")
-  ("h" adam/goto-hompage "homepage")
+  ("h" adam/goto-homepage "homepage")
   ("c" adam/goto-current-project "current project")
   ("t" adam/goto-misc-todos "todos")
+  ("p" adam/goto-philosophy "philosophy")
   ("l" goto-line "line")
+  ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
 (defun adam/meow-motion/normal-define-key (&rest args)
@@ -390,6 +395,10 @@
    '("k" . adam/k)
    '("h" . backward-char)
    '("l" . forward-char)
+   '("H" . awin/move-left)
+   '("J" . awin/move-down)
+   '("K" . awin/move-up)
+   '("L" . awin/move-right)
    '("C-f" . adam/meow-right-select)
    '("C-b" . adam/meow-left-select)
    '("w" . forward-word)
@@ -403,7 +412,8 @@
    '("Q" . kmacro-start-macro-or-insert-counter)
    '("@" . kmacro-end-or-call-macro)
    '("s" . adam/text-select/body)
-   '("f" . flash-jump)
+   '("f" . adam/char-jump-fast)
+   '("F" . flash-jump)
    '("p" . adam/paste-below)
    '("P" . adam/paste-above)
    '("c" . meow-change)
@@ -411,6 +421,8 @@
    '("O" . meow-open-above)
    '("?" . adam/lookup-panel/body)
    '("r" . meow-reverse)
+   '("[" . adam/expand-region-char)
+   '("]" . adam/shrink-region-char)
    '("a" . (lambda () (interactive) (adam/sticky-forward-char) (meow-append)))
    '("A" . (lambda () (interactive) (end-of-line) (meow-append)))
    '("x" . adam/kill-char)
@@ -420,7 +432,7 @@
    '(">" . adam/indent-right)
    '("<" . adam/indent-left)
    '("=" . indent-region)
-   '("C-#" . comment-dwim)))
+   '("C-#" . adam/comment)))
 
 (meow-global-mode 1)
 
@@ -518,11 +530,14 @@
 
 (use-package agent-shell
   :config
-  ;; (setq agent-shell-prefer-viewport-interaction t)
-  (add-hook 'agent-shell-mode-hook #'adam/agent-shell-notify-turn-complete)
+  (setq agent-shell-prefer-viewport-interaction t)
   (add-hook 'agent-shell-mode-hook (lambda () (visual-line-mode 0)))
   (add-hook 'agent-shell-viewport-view-mode-hook (lambda () (visual-line-mode 1)))
-  (add-hook 'agent-shell-viewport-edit-mode-hook (lambda () (visual-line-mode 1))))
+  (add-hook 'agent-shell-viewport-edit-mode-hook (lambda () (visual-line-mode 1)))
+  :bind
+  (:map agent-shell-viewport-view-mode-map
+        ("M-n" . agent-shell-viewport-next-item)
+        ("N-p" . agent-shell-viewport-previous-item)))
 
 (use-package i3wm-config-mode)
 (use-package css-mode)
@@ -619,9 +634,6 @@
   ;; (setq inferior-lisp-program "ros dynamic-space-size=4Gb -L sbcl -Q -l ~/.sbclrc run")
   (setq inferior-lisp-program "sbcl")
   (add-to-list 'auto-mode-alist '(".sbclrc" . lisp-mode)))
-
-;; EWW Yuck
-;; (add-to-list 'auto-mode-alist '("\\.yuck\\'" . lisp-mode))
 
 (use-package clojure-mode)
 (use-package cider)
@@ -728,6 +740,7 @@
   (("C-x C-j" . dired-jump)
    :map dired-mode-map
    ("r" . revert-buffer)
+   ("C-c C-o" . dired-find-file-other-window)
    ("DEL" . dired-up-directory))
   :custom
   ((dired-listing-switches "-lah --group-directories-first"))

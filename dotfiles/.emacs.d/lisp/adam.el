@@ -21,7 +21,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
     (abort-recursive-edit))
    (t (keyboard-quit))))
 
-
 (defun adam/selection-reverse (beg end)
   "Reverse characters in the selected region."
   (interactive "r")
@@ -147,6 +146,11 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (interactive)
   (find-file "~/adam/root/misc.md"))
 
+(defun adam/goto-philosophy ()
+  "Find philosophy page."
+  (interactive)
+  (find-file "~/adam/root/philsophy.md"))
+
 (defun adam/reload-init-file ()
   "Reload EMACS config."
   (interactive)
@@ -197,55 +201,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   "Run the shell command `cmd'."
   (start-process-shell-command (or custom-name cmd) buffer cmd))
 
-(defvar adam/fuzzy-find-alist
-  '((dired-mode . adam/find-file)
-    (eshell-mode . adam/find-file)
-    (ibuffer-mode . adam/switch-to-buffer)
-    (t . adam/imenu)))
-
-(defun adam/fuzzy-find ()
-  "Fuzzy find based on the contents of the current buffer."
-  (interactive)
-  (if-let ((a (assoc major-mode adam/fuzzy-find-alist)))
-      (call-interactively (cdr a))
-    (if-let ((b (assoc t adam/fuzzy-find-alist)))
-        (call-interactively (cdr b))
-      (error "no fallback value found"))))
-
-(defun adam/tar-file (file-path &optional output-path)
-  "Use linux tar util to tar a file FILE-PATH and output to OUTPUT-PATH."
-  (interactive "Ftar: ")
-  (let* ((output (or output-path (concat "./" (adam/change-file-suffix file-path "tar.gz"))))
-         (cmd (concat "tar -cavf" " " output " " file-path)))
-    (adam/shell cmd)))
-
-(defun adam/untar-file (file-path)
-  "Use linux tar util to untar the compressed file FILE-PATH."
-  (interactive "Funtar: ")
-  (let ((cmd (concat "tar -xvf" " " file-path)))
-    (adam/shell cmd)))
-
-(defun adam/remove-evil-palantir-shit (url)
-  (interactive "surl: ")
-  (if (string-match "&" url)
-      (substring url 0 (match-beginning 0))
-    url))
-
-(defun adam/yt-music (url)
-  "Use commandline util yt-dlp to download a youtube link URL as a mp3 file."
-  (interactive "surl: ")
-  (let ((cmd (concat
-              "yt-dlp -f bestaudio -x --audio-format mp3 --audio-quality 330k"
-              " "
-              (adam/remove-evil-palantir-shit url))))
-    (adam/shell cmd)))
-
-(defvar adam/auth-file "~/adam/root/auth.json")
-
-(defun adam/lookup-auth (auth-sym)
-  "Fetch a given auth string from the auth-file with a given symbol: AUTH-SYM."
-  (cdr (assoc auth-sym (json-read-file adam/auth-file))))
-
 (defun adam/display-startup-time ()
   "Display EMACS starting time."
   (message "EMACS loaded in: %s, gc collects: %d."
@@ -259,32 +214,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   "Creates a new empty buffer in the current window."
   (interactive)
   (display-buffer-same-window (get-buffer-create (or name "*Empty*")) nil))
-
-(defun adam/eshell ()
-  "Start eshell mode in the current directory."
-  (interactive)
-  (let ((cached-cwd default-directory)
-        (eshell-buf (get-buffer "*eshell*")))
-    (when eshell-buf
-      (let ((kill-buf (not (with-current-buffer eshell-buf
-                             (equal cached-cwd default-directory)))))
-        (when kill-buf
-          (kill-buffer eshell-buf))))
-    (eshell)))
-
-(defun adam/eshell-command (cmd &optional to-current-buffer)
-  "Launch an Eshell Command in a Eshell Buffer."
-  (interactive (list (eshell-read-command)
-                     current-prefix-arg))
-  (let ((v (operate (x (adam/get-buffer-names))
-                    (adam/fap (lambda (y) (adam/string-match "\\*eshell\\*<\\([[:digit:]]+\\)>" y 1)) x)
-                    (mapcar #'string-to-number x)
-                    (sort x #'>)
-                    (car x)
-                    (if x (1+ x) 0))))
-    (eshell v))
-  (insert cmd)
-  (eshell-send-input))
 
 (defun adam/get-buffer-names ()
   "Return all Currently open buffers and Strings."
@@ -597,21 +526,6 @@ If region is active, replace it with the yanked text."
             do (progn
                   ,@body)))
 
-(defun adam/plist->hashtable (plist &optional table)
-  "Create a hashtable or use the one in the optional argument. Then put the values of a property list inside."
-  (let ((hash (or table (make-hash-table))))
-    (adam/do-plist (key value plist)
-      (puthash key value hash))
-    hash))
-
-(defmacro adam/fash (&rest args)
-  "Easy create a hashtable and assign contents."
-  `(adam/plist->hashtable ',args))
-
-(defmacro adam/fash-edit (table &rest args)
-  "Edit an existing hashtable with `adam/fash' style constructor."
-  `(adam/plist->hashtable ',args ,table))
-
 (defmacro adam/anti-mode (mode)
   "Creates a macro to toggle a mode MODE, but negates the argument to produce the opposite toggle."
   `(lambda (enable) (funcall ',mode (- enable))))
@@ -642,21 +556,6 @@ If region is active, replace it with the yanked text."
   "Returns the number of minutes MINUTES in seconds."
   (* minutes 60))
 
-(defvar adam/fixup-list nil
-  "Assocation list of projectile project types and functions to be run on `fixup'.")
-
-(defun adam/add-fixup (project-type func)
-  (push (cons project-type func) adam/fixup-list))
-
-(defun adam/fixup ()
-  (interactive)
-  (if-let* ((proj-type (projectile-project-type))
-            (fixup (assoc proj-type adam/fixup-list)))
-      (progn
-        (message "Fixup: %S" proj-type)
-        (funcall (cdr fixup)))
-    (message "No fixup available for project type: %S" proj-type)))
-
 (defun adam/compile-new ()
   "Call the `compile' command but with a new prompt."
   (interactive)
@@ -666,12 +565,70 @@ If region is active, replace it with the yanked text."
 (defun adam/page-j ()
   "Go down a page."
   (interactive)
-  (adam/j 16))
+  (adam/j 16)
+  (recenter))
 
 (defun adam/page-k ()
   "Go up a page."
   (interactive)
-  (adam/k 16))
+  (adam/k 16)
+  (recenter))
+
+(defun adam/get-all-buffers-of-major-mode (major-mode-query)
+  "Get all buffers of `major-mode' MAJOR-MODE-QUERY."
+  (seq-filter
+   (lambda (x) (with-current-buffer x (eq major-mode major-mode-query)))
+   (buffer-list)))
+
+(defun adam/internet-search (query)
+  "Search the internet using the query QUERY."
+  (interactive "sBrowse: ")
+  (browse-url (concat "https://duckduckgo.com/?q="
+                      (url-hexify-string query))))
+
+(defun adam/comment ()
+  "Basically `comment-dwim', but if no region is selected. It comments the current line."
+  (interactive)
+  (if (use-region-p)
+      (comment-dwim nil)
+    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
+
+(defun adam/char-jump (char)
+  (interactive "cJump: ")
+  (let ((end (line-end-position))
+        (start (point)))
+    (goto-char (min end (1+ start)))
+    (if (search-forward (string char) end t)
+        (backward-char 1)
+      (goto-char start))))
+
+(defun adam/char-jump-fast ()
+  (interactive)
+  (let ((char (read-char "Jump: " t t)))
+    (unless (<= 32 char 126)
+      (error "Quit"))
+    (adam/char-jump char)))
+
+(defun adam/expand-region-char ()
+  "Expand the selection by one char in both directions."
+  (interactive)
+  (unless (use-region-p)
+    (push-mark (point) nil t))
+  (let ((beg (max (point-min) (1- (region-beginning))))
+        (end (min (point-max) (1+ (region-end)))))
+    (goto-char end)
+    (push-mark beg nil t)))
+
+(defun adam/shrink-region-char ()
+  "Shrink the selection by one char in both directions."
+  (interactive)
+  (when (use-region-p)
+    (let* ((len (- (region-end) (region-beginning)))
+           (beg (1+ (region-beginning)))
+           (end (1- (region-end))))
+      (when (> len 2)
+        (goto-char end)
+        (push-mark beg nil t)))))
 
 (provide 'adam)
 ;;; adam.el ends here

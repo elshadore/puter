@@ -20,6 +20,7 @@
    '("M" . adam/music-panel/body)
    '("w" . adam/window-panel/body)
    '("s" . adam/text-select/body)
+   '("Z" . adam/zoomer/body)
    '("f" . adam/finder/body)
    '("l" . adam/launcher/body)
    '("z" . adam/goto/body)

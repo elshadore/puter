@@ -224,10 +224,10 @@
   (:map agent-shell-mode-map
         ("C-c C-k" . agent-shell-clear-buffer))
   (:map agent-shell-viewport-edit-mode-map
-        ("R" . agent-shell-viewport-reply)
         ("M-n" . agent-shell-viewport-next-history)
         ("M-p" . agent-shell-viewport-previous-history))
   (:map agent-shell-viewport-view-mode-map
+        ("R" . agent-shell-viewport-reply)
         ("M-n" . agent-shell-viewport-next-item)
         ("M-p" . agent-shell-viewport-previous-item)))
 

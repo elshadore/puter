@@ -103,25 +103,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (interactive)
   (concat (car (string-split (car (last (string-split path "/"))) "\\.")) "." new-suffix))
 
-(defun adam/set-font (font-name font-size)
-  "Set frame font FONT-NAME and size FONT-SIZE."
-  (let ((font-height (* font-size 10)))
-    (set-face-attribute
-     'default nil
-     :font font-name :height font-height)
-    (set-face-attribute
-     'variable-pitch nil
-     :font font-name :height font-height)
-    (set-face-attribute
-     'fixed-pitch nil
-     :font font-name :height font-height))
-  (let
-      ((font-frame (concat font-name "-" (number-to-string font-size))))
-    (add-to-list
-     'default-frame-alist
-     `(font . ,font-frame))))
-
-
 (defun adam/goto-init-file ()
   "Open init file."
   (interactive)

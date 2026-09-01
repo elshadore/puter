@@ -38,6 +38,7 @@
 (require 'adam-eshell)
 (require 'adam-music)
 (require 'adam-puter)
+(require 'adam-font)
 (require 'adam-keys)
 (require 'adam-config)
 (require 'adam-menu)
@@ -63,9 +64,7 @@
 
 (defun adam/set-frame-default-params ()
   "Set all frame params."
-  (adam/set-font "Iosevka Nerd Font Mono" 11)
-  ;; (set-frame-parameter nil 'alpha-background 90)
-  )
+  (adam/font-init))
 
 ;; Emacs daemon-mode doesn't load frame params correctly.
 (if (daemonp)

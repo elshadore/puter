@@ -55,10 +55,20 @@ _u_: update        _c_: pause         _+_: volume raise
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
-(defhydra adam/zoomer ()
-  "Text scale"
-  ("-" text-scale-decrease "decrease")
-  ("=" text-scale-increase "increase")
+(defhydra adam/zoomer (:hint nil)
+  "
+Font Size: %(adam/font-size)
+-------------
+_+_: increase
+_-_: decrease
+_d_: default: % `adam/font-size-default
+
+"
+  ("-" adam/font-size-decrease)
+  ("=" adam/font-size-increase)
+  ("_" adam/font-size-decrease)
+  ("+" adam/font-size-increase)
+  ("d" adam/font-size-default)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 

@@ -12,6 +12,10 @@
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 
+(setq scroll-step 1)
+(setq scroll-margin 4)
+(setq scroll-conservatively 9999)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq vc-follow-symlinks t)
 
@@ -33,9 +37,6 @@
 (setq scroll-preserve-screen-position t)
 (setq redisplay-skip-fontification-on-input t)
 (global-hl-line-mode)
-;; (global-visual-line-mode)
-
-(global-flycheck-mode)
 
 (display-line-numbers-mode 1)
 (setq-default display-line-numbers-type 'relative)

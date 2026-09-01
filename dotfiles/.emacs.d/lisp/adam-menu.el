@@ -1,17 +1,29 @@
-(defhydra adam/music-panel ()
-  "Music panel"
-  ("b" emms-browser "browse" :color blue)
-  ("n" emms-next "next")
-  ("p" emms-previous "previous")
-  ("u" emms-player-mpd-update-all-reset-cache "update cache")
-  ("S" emms-stop "stop")
-  ("s" emms-start "start")
-  ("c" emms-pause "pause")
-  ("r" adam/mpd-repeat-toggle "repeat")
-  ("z" adam/mpd-random-toggle "random")
-  ("d" emms-play-directory "directory")
-  ("-" emms-volume-lower "volume lower")
-  ("=" emms-volume-raise "volume raise")
+(defhydra adam/music-panel (:hint nil)
+  "
+Music
+--------------------------------------------------
+_b_: browse        _s_: start         _r_: repeat: % `adam/mpd-repeat
+_d_: directory     _S_: stop          _z_: random: % `adam/mpd-random
+_u_: update        _c_: pause         _+_: volume raise
+^ ^                _n_: next          _-_: volume lower
+^ ^                _p_: previous      Volume: % `adam/mpd-volume
+
+"
+  
+  ("b" emms-browser :color blue)
+  ("n" emms-next)
+  ("p" emms-previous)
+  ("u" emms-player-mpd-update-all-reset-cache)
+  ("S" emms-stop)
+  ("s" emms-start)
+  ("c" emms-pause)
+  ("r" adam/mpd-repeat-toggle)
+  ("z" adam/mpd-random-toggle)
+  ("d" emms-play-directory)
+  ("_" adam/mpd-volume-lower)
+  ("-" adam/mpd-volume-lower)
+  ("=" adam/mpd-volume-raise)
+  ("+" adam/mpd-volume-raise)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 

@@ -81,14 +81,27 @@
 (defconst adam/markdown-hide-link-keywords
   '((adam/markdown--fontify-hide-links)))
 
+(defun adam/markdown-add-managed-props ()
+  "Add `display' to `font-lock-extra-managed-props'."
+  (unless (memq 'display font-lock-extra-managed-props)
+    (setq font-lock-extra-managed-props
+          (cons 'display font-lock-extra-managed-props))))
+
+(defun adam/markdown-remove-managed-props ()
+  "Remove `display' from `font-lock-extra-managed-props'."
+  (setq font-lock-extra-managed-props
+        (remove 'display font-lock-extra-managed-props)))
+
 ;;;###autoload
 (define-minor-mode adam-markdown-tools-mode
   "Minor mode for some custom tools and additions to the default `markdown-mode' experiance."
   :lighter " adam-markdown-tools"
   (if adam-markdown-tools-mode
       (progn
+        (adam/markdown-add-managed-props)
         (font-lock-add-keywords nil adam/markdown-hide-hash-keywords 'append)
         (font-lock-add-keywords nil adam/markdown-hide-link-keywords 'append))
+    (adam/markdown-remove-managed-props)
     (font-lock-remove-keywords nil adam/markdown-hide-hash-keywords)
     (font-lock-remove-keywords nil adam/markdown-hide-link-keywords))
   (when (derived-mode-p 'markdown-mode)

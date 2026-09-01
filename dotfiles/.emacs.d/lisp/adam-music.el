@@ -37,6 +37,7 @@
 
 (defun adam/mpd-random (set)
   (interactive)
+  (setq adam/mpd-random set)
   (emms-player-mpd-get-status-part
    set
    (lambda (value current)
@@ -56,6 +57,7 @@
 
 (defun adam/mpd-repeat (set)
   (interactive)
+  (setq adam/mpd-repeat set)
   (emms-player-mpd-get-status-part
    set
    (lambda (value current)
@@ -73,17 +75,28 @@
   (interactive)
   (adam/mpd-repeat (not (adam/mpd-repeat?))))
 
+(defun adam/mpd-volume-clamp (value)
+  (adam/clamp value 0 100))
+
 (defun adam/mpd-volume-set (value)
-  (let ((new (adam/clamp value 0 100)))
+  (let ((new (adam/mpd-volume-clamp value)))
+    (setq adam/mpd-volume new)
     (emms-player-mpd-send
      (concat "setvol \"" (number-to-string new) "\"")
      nil #'ignore)
-    (message "Volume: %d%%" new)
-    (setq adam/mpd-volume new)))
+    (message "Volume: %d%%" new)))
 
 (defun adam/mpd-volume-get ()
   "Get the current `mpd' volume. Returns the cached variable `adam/mpd-volume'."
   adam/mpd-volume)
+
+(defun adam/mpd-volume-raise ()
+  (interactive)
+  (adam/mpd-volume-set (1+ adam/mpd-volume)))
+
+(defun adam/mpd-volume-lower ()
+  (interactive)
+  (adam/mpd-volume-set (1- adam/mpd-volume)))
 
 (defun adam/mpd-volume-sync ()
   "Sync the current `mpd' volume value `adam/mpd-volume'."

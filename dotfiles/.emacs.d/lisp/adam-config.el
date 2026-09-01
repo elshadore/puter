@@ -210,9 +210,8 @@
 (use-package agent-shell
   :config
   (setq agent-shell-prefer-viewport-interaction t)
-  ;; (add-hook 'agent-shell-mode-hook (lambda () (visual-line-mode 0)))
-  ;; (add-hook 'agent-shell-viewport-view-mode-hook (lambda () (visual-line-mode 1)))
-  ;; (add-hook 'agent-shell-viewport-edit-mode-hook (lambda () (visual-line-mode 1)))
+  (add-hook 'agent-shell-viewport-view-mode-hook (lambda () (adam-markdown-tools-mode -1)))
+  (add-hook 'agent-shell-viewport-edit-mode-hook (lambda () (adam-markdown-tools-mode -1)))
   :bind
   (:map agent-shell-viewport-edit-mode-map
         ("R" . agent-shell-viewport-reply))
@@ -255,19 +254,17 @@
   (visual-line-mode)
   (flyspell-mode)
   (writeroom-mode)
-  ;; Markdown Bullets Hide
-  (font-lock-add-keywords nil adam/markdown-hide-hash-keywords 'append))
+  (adam-markdown-tools-mode 1))
 
 (use-package markdown-mode
   :straight t
   :config
-  (require 'adam-markdown)
+  (require 'adam-markdown-tools)
   (add-hook 'markdown-mode-hook 'adam/markdown-hook)
-  (setq-default markdown-hide-markup nil)
-  (setq-default markdown-hide-urls nil)
   :bind
   (:map markdown-mode-map
-        ("C-c o" . markdown-follow-thing-at-point)))
+        ("C-c o" . markdown-follow-thing-at-point)
+        ("C-c m" . adam-markdown-tools-mode)))
 
 (use-package markdown-indent-mode)
 

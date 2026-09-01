@@ -41,7 +41,7 @@
 (require 'adam-keys)
 (require 'adam-config)
 (require 'adam-menu)
-(require 'adam-markdown)
+(require 'adam-markdown-tools)
 
 (when (adam/puter-is-xwindows?)
   (adam/puter-xsettings))

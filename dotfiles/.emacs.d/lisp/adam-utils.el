@@ -627,11 +627,30 @@ If region is active, replace it with the yanked text."
         (push-mark beg nil t)))))
 
 (defun adam/meow-mode-toggle ()
-  "Toggle `meow' modes `meow-motion-mode' and `meow-normal-mode'"
+  "Toggle `meow' modes `meow-motion-mode' and `meow-normal-mode'."
   (interactive)
   (if (meow-motion-mode-p)
       (meow-normal-mode)
     (meow-motion-mode)))
+
+(defun adam/zombie-command (cmd)
+  "Run a command CMD like `async-shell-command', but spawn it as a zombie process.
+Does not kill the process when `emacs' closes."
+  (interactive (list (read-shell-command "Zombie: ")))
+  (start-process-shell-command
+   (format "zombie: %s" cmd)
+   nil
+   (format "setsid nohup sh -c '%s' > /tmp/zombie.log 2>&1 < /dev/null &" cmd)))
+
+(defun adam/zombie-command (cmd)
+  "Run a command CMD like `async-shell-command', but spawn it as a zombie process.
+Does not kill the process when `emacs' closes."
+  (interactive (list (read-shell-command "Zombie shell: ")))
+  (let* ((detached-session-origin 'shell-command)
+         (detached-session-action detached-shell-command-session-action)
+         (detached-session-mode 'detached)
+         (session (detached-create-session cmd)))
+    (detached-start-session session)))
 
 (provide 'adam-utils)
 ;;; adam-utils.el ends here

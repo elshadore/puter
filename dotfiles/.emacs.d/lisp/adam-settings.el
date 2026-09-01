@@ -17,6 +17,8 @@
 
 (setq find-file-visit-truename t)
 
+(setq ibuffer-human-readable-size t)
+
 (global-display-line-numbers-mode 1)
 (set-default 'truncate-lines t)
 (setq global-visual-wrap-prefix-mode t)

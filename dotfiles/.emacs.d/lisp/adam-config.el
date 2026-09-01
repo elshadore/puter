@@ -207,12 +207,22 @@
           :key (adam/lookup-auth 'deepseek)
           :models '(deepseek-chat deepseek-coder))))
 
+(defun adam/agent-shell-viewport-hook ()
+  (visual-line-mode))
+
+(defun adam/agent-shell-hook ()
+  (visual-line-mode -1)
+  (adam-markdown-tools-mode -1))
+
 (use-package agent-shell
   :config
   (setq agent-shell-prefer-viewport-interaction t)
-  (add-hook 'agent-shell-viewport-view-mode-hook (lambda () (adam-markdown-tools-mode -1)))
-  (add-hook 'agent-shell-viewport-edit-mode-hook (lambda () (adam-markdown-tools-mode -1)))
+  (add-hook 'agent-shell-mode-hook 'adam/agent-shell-hook)
+  (add-hook 'agent-shell-viewport-view-mode-hook 'adam/agent-shell-viewport-hook)
+  (add-hook 'agent-shell-viewport-edit-mode-hook 'adam/agent-shell-viewport-hook)
   :bind
+  (:map agent-shell-mode-map
+        ("C-c C-k" . agent-shell-clear-buffer))
   (:map agent-shell-viewport-edit-mode-map
         ("R" . agent-shell-viewport-reply))
         ("M-n" . agent-shell-viewport-next-history)
@@ -252,9 +262,9 @@
 
 (defun adam/markdown-hook ()
   (visual-line-mode)
-  (flyspell-mode)
+  ;; (flyspell-mode)
   (writeroom-mode)
-  (adam-markdown-tools-mode 1))
+  (adam-markdown-tools-mode))
 
 (use-package markdown-mode
   :straight t
@@ -462,5 +472,9 @@
 (use-package dired-hide-dotfiles)
 
 (use-package sudo-edit)
+
+(use-package detached
+  :init
+  (detached-init))
 
 (provide 'adam-config)

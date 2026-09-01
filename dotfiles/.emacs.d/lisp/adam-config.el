@@ -271,6 +271,7 @@
   :config
   (require 'adam-markdown-tools)
   (add-hook 'markdown-mode-hook 'adam/markdown-hook)
+  (setq-default markdown-hide-markup)
   :bind
   (:map markdown-mode-map
         ("C-c o" . markdown-follow-thing-at-point)

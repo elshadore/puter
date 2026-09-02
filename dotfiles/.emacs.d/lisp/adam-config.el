@@ -29,6 +29,7 @@
 (progn
   (add-to-list 'auto-mode-alist '("\\.rasi\\'" . css-mode))
   (add-to-list 'auto-mode-alist '(".semanrc" . conf-mode))
+  (add-to-list 'auto-mode-alist '("dunstrc" . conf-mode))
   (add-to-list 'auto-mode-alist '("\\.sex\\'" . lisp-data-mode))
   (add-to-list 'auto-mode-alist '("\\.sexp\\'" . lisp-data-mode)))
 
@@ -87,6 +88,10 @@
 
 (use-package colorful-mode
   :config
+  (add-to-list 'global-colorful-modes 'helpful-mode)
+  (add-to-list 'global-colorful-modes 'text-mode)
+  (add-to-list 'global-colorful-modes 'conf-mode)
+  (add-to-list 'global-colorful-modes 'i3wm-config-mode)
   (global-colorful-mode 1))
 
 (use-package which-key

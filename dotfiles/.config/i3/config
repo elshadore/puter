@@ -1,5 +1,6 @@
 set $mod Mod4
-font pango:TerminessNerdFontMono 11
+# font pango:TerminessNerdFontMono 11
+font pango:IosevkaNerdFontMono 11
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -20,8 +21,8 @@ workspace "1" output HDMI-1
 workspace "9" output HDMI-2
 
 ## Background Applications
-exec --no-startup-id steam -silent
-exec --no-startup-id qbittorrent
+# exec --no-startup-id steam -silent
+# exec --no-startup-id qbittorrent
 
 ## Startup Applications
 exec --no-startup-id i3-msg 'workspace "0"; exec emacs'
@@ -83,13 +84,13 @@ bindsym $mod+d focus child
 
 for_window [all] border normal 2
 
-client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
-client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.focused          #32974d #10411e #f1f7f2 #91e6a8   #10411e
+client.focused_inactive #333333 #5f676a #f1f7f2 #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #060d08   #222222
+client.urgent           #060d08 #a72f28 #f1f7f2 #a72f28   #a72f28
+client.placeholder      #000000 #0c0c0c #f1f7f2 #000000   #0c0c0c
 
-client.background       #ffffff
+client.background       #f1f7f2
 
 set $ws1 "0"
 set $ws2 "1"
@@ -149,4 +150,15 @@ bindsym $mod+r mode "resize"
 bar {
     status_command i3status
     tray_output HDMI-1
+    colors {
+        background #000000
+        statusline #f1f7f2
+        separator #666666
+
+        focused_workspace  #32974d #10411e #f1f7f2
+        active_workspace   #333333 #5f676a #f1f7f2
+        inactive_workspace #333333 #222222 #888888
+        urgent_workspace   #060d08 #a72f28 #f1f7f2
+        binding_mode       #060d08 #a72f28 #f1f7f2
+    }
 }

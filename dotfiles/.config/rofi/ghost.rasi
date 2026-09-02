@@ -1,17 +1,17 @@
 /* use command: rofi -dump-theme, to see all the variables */
 
 * {
-    font: "IosevkaNerdFont 12";
+    font: "IosevkaNerdFont 11";
     background-color: transparent;
-    adam-bg: #060d08;
-    adam-bg-alt: #0c2212;
-    adam-bg-select: #f1f7f2;
-    adam-fg: #f1f7f2;
-    adam-fg-select: #060d08;
-    adam-border: #5cbb4a;
-    adam-green: #5cbb4a;
-    adam-highlight: #32974d;
-    adam-highlight-select: #32974d;
+    adam-bg: #030613;
+    adam-bg-alt: #050c26;    
+    adam-bg-select: #fefefe;
+    adam-fg: #fefefe;
+    adam-fg-select: #050c26;
+    adam-border: #f734c0;
+    adam-green: #e8366d;
+    adam-highlight: #f734c0;
+    adam-highlight-select: #f734c0;
 }
 
 window {
@@ -40,7 +40,7 @@ textbox {
 }
 
 listview {
-    lines: 24;
+    lines: 32;
     columns: 1;
     border-color: @adam-green;
 }

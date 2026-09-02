@@ -1,13 +1,13 @@
 (defun adam/puter-linkup ()
   "Linked Up! Sneed it or Keep it?"
   (interactive)
-  (shell-command "puter-linkup")
+  (start-process-shell-command "linkup!" nil "puter-linkup")
   (message "Linked Up! Sneed it or Keep it?"))
 
 (defun adam/puter-xsettings ()
-  "Apply XSettings"
+  "Apply XSettings."
   (interactive)
-  (shell-command "puter-xsettings")
+  (start-process-shell-command "xsettings" nil "puter-xsettings")
   (message "XSettings Applied!"))
 
 (defun adam/puter-spawn-app ()

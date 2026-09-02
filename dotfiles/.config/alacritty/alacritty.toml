@@ -1,29 +1,26 @@
 [window]
 dynamic_title = true
+opacity = 0.8
 
 [env]
 WINIT_X11_SCALE_FACTOR = "1"
 
 [font]
-size = 11.0
+size = 12.0
 
 [font.bold]
-# family = "JetBrainsMono Nerd Font Mono"
 family = "Iosevka Nerd Font Mono"
 style = "Bold"
 
 [font.bold_italic]
-# family = "JetBrainsMono Nerd Font Mono"
 family = "Iosevka Nerd Font Mono"
 style = "Bold Italic"
 
 [font.italic]
-# family = "JetBrainsMono Nerd Font Mono"
 family = "Iosevka Nerd Font Mono"
 style = "Italic"
 
 [font.normal]
-# family = "JetBrainsMono Nerd Font Mono"
 family = "Iosevka Nerd Font Mono"
 style = "Regular"
 

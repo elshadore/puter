@@ -4,9 +4,8 @@
     width = (300, 300)
     height = (0, 800)
 
-    offset = (6, 34)
+    offset = (2, 8)
 
-    origin = bottom-right
     follow = mouse
     monitor = 1
 
@@ -24,24 +23,24 @@
     vertical_alignment = center
 
 [urgency_low]
-    background = "#060d08"
-    foreground = "#f1f7f2"
-    frame_color = "#32974d"
+    background = "#050c26"
+    foreground = "#fefefe"
+    frame_color = "#efc8f4"
     timeout = 10
     default_icon = dialog-information
 
 [urgency_normal]
-    background = "#060d08"
-    foreground = "#f1f7f2"
-    frame_color = "#5cbb4a"
+    background = "#050c26"
+    foreground = "#fefefe"
+    frame_color = "#91f4fe"
     timeout = 10
     override_pause_level = 30
     default_icon = dialog-information
 
 [urgency_critical]
-    background = "#060d08"
-    foreground = "#f1f7f2"
-    frame_color = "#e5534b"
+    background = "#050c26"
+    foreground = "#fefefe"
+    frame_color = "#e8366d"
     timeout = 0
     override_pause_level = 60
     default_icon = dialog-warning

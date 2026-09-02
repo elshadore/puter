@@ -2,7 +2,10 @@
 
 # set -xve
 
-var=`xinput list --id-only "UGTABLET 10 inch PenTablet stylus"`
+## The name of the tablet pen seems inconsistent from install to install.
+## I really don't understand why...
+# var=`xinput list --id-only "UGTABLET 10 inch PenTablet stylus"`
+var=`xinput list --id-only "UGTABLET 10 inch PenTablet Pen Pen (0)"`
 if [ -n "$var" ]; then
     xinput map-to-output ${var} HDMI-1
 fi

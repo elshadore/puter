@@ -19,7 +19,7 @@
    '("?" . adam/lookup-panel/body)
    '("M" . adam/music-panel/body)
    '("w" . adam/window-panel/body)
-   '("s" . adam/text-select/body)
+   '("s" . adam/shellder/body)
    '("Z" . adam/zoomer/body)
    '("f" . adam/finder/body)
    '("l" . adam/launcher/body)

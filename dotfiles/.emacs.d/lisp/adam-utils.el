@@ -103,31 +103,6 @@ I Stole this from: https://emacsredux.com/blog/2025/06/01/let-s-make-keyboard-qu
   (interactive)
   (concat (car (string-split (car (last (string-split path "/"))) "\\.")) "." new-suffix))
 
-(defun adam/goto-init-file ()
-  "Open init file."
-  (interactive)
-  (find-file user-init-file))
-
-(defun adam/goto-homepage ()
-  "Find main EMACS page."
-  (interactive)
-  (find-file "~/adam/HOMEPAGE.md"))
-
-(defun adam/goto-current-project ()
-  "Find the current project."
-  (interactive)
-  (find-file "~/adam/root/current-project.md"))
-
-(defun adam/goto-misc-todos ()
-  "Find the misc todos page."
-  (interactive)
-  (find-file "~/adam/root/misc.md"))
-
-(defun adam/goto-philosophy ()
-  "Find philosophy page."
-  (interactive)
-  (find-file "~/adam/root/philsophy.md"))
-
 (defun adam/reload-init-file ()
   "Reload EMACS config."
   (interactive)

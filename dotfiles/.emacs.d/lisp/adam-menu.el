@@ -27,30 +27,38 @@ _u_: update        _c_: pause         _+_: volume raise
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
-(defhydra adam/window-panel ()
-  "Window panel"
-  ("h" awin/move-left "move left")
-  ("j" awin/move-down "move down")
-  ("k" awin/move-up "move up")
-  ("l" awin/move-right "right")
-  ("H" awin/swap-left "swap left")
-  ("J" awin/swap-down "swap down")
-  ("K" awin/swap-up "swap up")
-  ("L" awin/swap-right "swap right")
-  ("C-h" awin/split-left "split left")
-  ("C-j" awin/split-down "split down")
-  ("C-k" awin/split-up "split up")
-  ("C-l" awin/split-right "split right")
-  ("m" awin/maximize "maximize")
-  ("t" awin/toggle-split "toggle split")
-  ("c" awin/kill-window "close")
+(defhydra adam/window-panel (:hint nil)
+  "
+Window
+---------------------------------------------------------------------------------------------
+_h_: move left     _H_: swap left       _C-h_: split left       _m_: maximize           _U_: page up
+_j_: move down     _J_: swap down       _C-j_: split down       _t_: toggle split       _D_: page down
+_k_: move up       _K_: swap up         _C-k_: split up         _c_: close              _n_: buffer next
+_l_: move right    _L_: swap right      _C-l_: split right      _x_: kill buffer        _p_: buffer previous
+
+"
+  ("h" awin/move-left)
+  ("j" awin/move-down)
+  ("k" awin/move-up)
+  ("l" awin/move-right)
+  ("H" awin/swap-left)
+  ("J" awin/swap-down)
+  ("K" awin/swap-up)
+  ("L" awin/swap-right)
+  ("C-h" awin/split-left)
+  ("C-j" awin/split-down)
+  ("C-k" awin/split-up)
+  ("C-l" awin/split-right)
+  ("m" awin/maximize)
+  ("t" awin/toggle-split)
+  ("c" awin/kill-window)
   ("C" awin/kill-window "close close" :color blue)
-  ("s" window-swap-states "swap states")
-  ("x" kill-current-buffer "kill buffer")
-  ("U" adam/page-k "page up")
-  ("D" adam/page-j "page down")
-  ("n" next-buffer "buffer next")
-  ("p" previous-buffer "buffer previous")
+  ("s" window-swap-states)
+  ("x" kill-current-buffer)
+  ("U" adam/page-k)
+  ("D" adam/page-j)
+  ("n" next-buffer)
+  ("p" previous-buffer)
   ("b" adam/switch-buffer "buffer" :color blue)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
@@ -72,59 +80,129 @@ _d_: default: % `adam/font-size-default
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
-(defhydra adam/lookup-panel (:exit t)
-  "Lookup"
-  ("x" xref-find-definitions "xref definitions")
-  ("r" xref-find-references "xref references")
-  ("s" describe-symbol "emacs symbol")
-  ("l" lsp-describe-thing-at-point "lsp")
+(defhydra adam/lookup-panel (:hint nil :exit t)
+  "
+Lookup
+-------------------
+_?_: lsp
+_x_: xref definitions
+_r_: xref references
+_s_: emacs symbol
+_v_: emacs variable
+_f_: emacs function
+
+"
+  ("?" lsp-describe-thing-at-point)
+  ("x" xref-find-definitions)
+  ("r" xref-find-references)
+  ("s" describe-symbol)
+  ("v" describe-variable)
+  ("f" describe-function)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
-(defhydra adam/finder (:exit t)
-  "Find"
-  ("b" adam/switch-buffer "buffer")
-  ("x" adam/M-x "meta x")
-  ("a" counsel-linux-app "app")
-  ("." adam/find-file-new "find file")
-  ("," projectile-find-file "project find file")
-  ("f" adam/fuzzy-find "fuzzy find")
-  ("/" swiper "swiper")
-  ("r" rgrep "rgrep")
-  ("i" adam/internet-search "internet")
-  ("_" query-replace-regexp "query replace")
-  ("m" man "man")
+(defhydra adam/finder (:hint nil :exit t)
+  "
+Finder
+----------
+_f_: fuzzy
+_/_: swiper
+_._: file
+_,_: project file
+_b_: buffer
+_x_: M-x
+_a_: app
+_i_: internet
+_r_: grep
+___: regex
+_m_: man
+
+"
+  ("b" adam/switch-buffer)
+  ("x" adam/M-x)
+  ("a" counsel-linux-app)
+  ("." adam/find-file-new)
+  ("," projectile-find-file)
+  ("f" adam/fuzzy-find)
+  ("/" swiper)
+  ("r" rgrep)
+  ("i" adam/internet-search)
+  ("_" query-replace-regexp)
+  ("m" man)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
-(defhydra adam/launcher (:exit t)
-  "Launch"
-  ("b" adam/ibuffer "buffer")
-  ("c" compile "compile")
-  ("p" projectile-compile-project "project compile")
-  ("d" flycheck-list-errors "errors")
-  ("l" ielm "elisp")
-  ("e" adam/eshell "eshell")
-  ("E" adam/eshell-new "eshell new")
-  ("g" magit-status "magit")
-  ("G" adam/toggle-file-diff "magit diff")
-  ("s" shell-command "shell")
-  ("S" async-shell-command "async shell")
-  ("z" adam/zombie-command "zombie shell")
-  ("?" meow-cheatsheet "meow cheatsheet")
-  ("P" list-processes "processes")
-  ("a" agent-shell "agent shell")
+(defhydra adam/shellder (:hint nil :exit t)
+  "
+Shellder
+-----------
+_c_ compile
+_p_ project compile
+_s_ shell
+_a_ async shell
+_z_ zombie shell
+
+"
+  ("c" compile)
+  ("p" projectile-compile-project)
+  ("s" shell-command)
+  ("a" async-shell-command)
+  ("z" adam/zombie-command)
+  ("RET" nil "quit" :color blue)
+  ("q" nil "quit" :color blue))
+
+(defhydra adam/launcher (:hint nil :exit t)
+  "
+Launcher
+-------------
+_s_: symbols
+_b_: buffer
+_p_: processes
+_d_: diagnostics
+_a_: agent shell
+_e_: eshell
+_E_: eshell new
+_l_: elisp shell
+_g_: git status
+_G_: git diff
+_?_: cheatsheet
+
+"
+  ("s" lsp-treemacs-symbols)
+  ("b" adam/ibuffer)
+  ("d" flycheck-list-errors)
+  ("l" ielm)
+  ("e" adam/eshell)
+  ("E" adam/eshell-new)
+  ("g" magit-status)
+  ("G" adam/toggle-file-diff)
+  ("?" meow-cheatsheet)
+  ("p" list-processes)
+  ("a" agent-shell)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
 (defhydra adam/goto (:exit t)
-  "Goto"
-  ("i" adam/goto-init-file "init file")
-  ("h" adam/goto-homepage "homepage")
-  ("c" adam/goto-current-project "current project")
-  ("t" adam/goto-misc-todos "todos")
-  ("p" adam/goto-philosophy "philosophy")
-  ("l" goto-line "line")
+  "
+Goto
+-------------
+_i_: init file
+_h_: homepage
+_p_: current project
+_c_: castle
+_t_: misc todos
+_P_: philsophy
+_l_: line
+
+"
+  
+  ("i" adam/goto-init-file)
+  ("h" adam/goto-homepage)
+  ("p" adam/goto-current-project)
+  ("c" adam/goto-castle)
+  ("t" adam/goto-misc-todos)
+  ("P" adam/goto-philosophy)
+  ("l" goto-line)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 

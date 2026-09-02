@@ -436,6 +436,8 @@
 
 (use-package lsp-ivy)
 
+(use-package lsp-treemacs)
+
 (use-package dired
   :straight nil
   :commands (dired dired-jump)
@@ -479,5 +481,16 @@
 (use-package detached
   :init
   (detached-init))
+
+(use-package xclip
+  :config
+  (setq xclip-select-enable-clipboard t)
+  (setq select-enable-primary nil)
+  (setq select-enable-clipboard t)
+  (when (adam/puter-is-wayland?)
+    (setq xclip-program "wl-copy")
+    (setq xclip-method 'wl-copy)))
+
+(xclip-mode)
 
 (provide 'adam-config)

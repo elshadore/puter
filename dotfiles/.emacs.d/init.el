@@ -43,24 +43,10 @@
 (require 'adam-config)
 (require 'adam-menu)
 (require 'adam-markdown-tools)
+(require 'adam-goto)
 
 (when (adam/puter-is-xwindows?)
   (adam/puter-xsettings))
-
-(when (adam/puter-is-wayland?)
-
-  (setq select-enable-primary nil)
-  (setq select-enable-clipboard t)
-  (setq x-select-enable-primary nil)
-  (setq x-select-enable-clipboard t)
-
-  (use-package xclip
-    :config
-    (setq xclip-program "wl-copy")
-    (setq xclip-select-enable-clipboard t)
-    (setq xclip-mode t)
-    (setq xclip-method 'wl-copy)
-    (setq xclip-select-enable-clipboard t)))
 
 (defun adam/set-frame-default-params ()
   "Set all frame params."

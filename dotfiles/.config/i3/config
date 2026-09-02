@@ -61,8 +61,10 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-bindsym $mod+> move workspace to output right
-bindsym $mod+< move workspace to output left
+bindsym $mod+period focus output right
+bindsym $mod+comma focus output left
+bindsym $mod+greater move workspace to output right
+bindsym $mod+less move workspace to output left
 
 workspace_layout tabbed
 

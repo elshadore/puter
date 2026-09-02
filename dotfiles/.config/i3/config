@@ -82,9 +82,9 @@ bindsym $mod+tab focus mode_toggle
 bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
-for_window [all] border normal 2
+for_window [all] border normal 1
 
-client.focused          #32974d #10411e #f1f7f2 #91e6a8   #10411e
+client.focused          #5cbb4a #060d08 #f1f7f2 #5cbb4a   #5cbb4a
 client.focused_inactive #333333 #5f676a #f1f7f2 #484e50   #5f676a
 client.unfocused        #333333 #222222 #888888 #060d08   #222222
 client.urgent           #060d08 #a72f28 #f1f7f2 #a72f28   #a72f28
@@ -155,7 +155,7 @@ bar {
         statusline #f1f7f2
         separator #666666
 
-        focused_workspace  #32974d #10411e #f1f7f2
+        focused_workspace  #5cbb4a #0c2212 #f1f7f2
         active_workspace   #333333 #5f676a #f1f7f2
         inactive_workspace #333333 #222222 #888888
         urgent_workspace   #060d08 #a72f28 #f1f7f2

@@ -50,7 +50,8 @@
 
 (defun adam/set-frame-default-params ()
   "Set all frame params."
-  (adam/font-init))
+  (adam/font-init)
+  (set-frame-parameter nil 'alpha-background 95))
 
 ;; Emacs daemon-mode doesn't load frame params correctly.
 (if (daemonp)

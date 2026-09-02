@@ -31,24 +31,24 @@ _u_: update        _c_: pause         _+_: volume raise
   "
 Window
 ---------------------------------------------------------------------------------------------
-_h_: move left     _H_: swap left       _C-h_: split left       _m_: maximize           _U_: page up
-_j_: move down     _J_: swap down       _C-j_: split down       _t_: toggle split       _D_: page down
-_k_: move up       _K_: swap up         _C-k_: split up         _c_: close              _n_: buffer next
-_l_: move right    _L_: swap right      _C-l_: split right      _x_: kill buffer        _p_: buffer previous
+_h_: split left     _H_: move left       _C-h_: swap left       _m_: maximize           _U_: page up
+_j_: split down     _J_: move down       _C-j_: swap down       _t_: toggle split       _D_: page down
+_k_: split up       _K_: move up         _C-k_: swap up         _c_: close              _n_: buffer next
+_l_: split right    _L_: move right      _C-l_: swap right      _x_: kill buffer        _p_: buffer previous
 
 "
-  ("h" awin/move-left)
-  ("j" awin/move-down)
-  ("k" awin/move-up)
-  ("l" awin/move-right)
-  ("H" awin/swap-left)
-  ("J" awin/swap-down)
-  ("K" awin/swap-up)
-  ("L" awin/swap-right)
-  ("C-h" awin/split-left)
-  ("C-j" awin/split-down)
-  ("C-k" awin/split-up)
-  ("C-l" awin/split-right)
+  ("h" awin/split-left)
+  ("j" awin/split-down)
+  ("k" awin/split-up)
+  ("l" awin/split-right)
+  ("H" awin/move-left)
+  ("J" awin/move-down)
+  ("K" awin/move-up)
+  ("L" awin/move-right)
+  ("C-h" awin/swap-left)
+  ("C-j" awin/swap-down)
+  ("C-k" awin/swap-up)
+  ("C-l" awin/swap-right)
   ("m" awin/maximize)
   ("t" awin/toggle-split)
   ("c" awin/kill-window)

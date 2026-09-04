@@ -91,11 +91,11 @@ for_window [all] border normal 1
 # default_floating_border pixel 1
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #010004 #010007 #fcbcff #010004 #010004
-client.focused_inactive #010004 #010007 #9d969e #010004 #010004
-client.unfocused        #010004 #010007 #9d969e #010004 #010004
-client.urgent           #010004 #010007 #ff2d39 #010004 #010004
-client.placeholder      #000000 #010007 #9d969e #000000 #000000
+client.focused          #010004 #010007 #9990ca #010004 #010004
+client.focused_inactive #010004 #010007 #4e3353 #010004 #010004
+client.unfocused        #010004 #010007 #4e3353 #010004 #010004
+client.urgent           #010004 #010007 #ff505a #010004 #010004
+client.placeholder      #000000 #010007 #4e3353 #000000 #000000
 
 client.background       #ffffff
 
@@ -166,7 +166,7 @@ bar {
         focused_workspace  #0c0723 #18132d #fcbcff
         active_workspace   #0c0723 #18132d #9d969e
         inactive_workspace #0c0723 #18132d #9d969e
-        urgent_workspace   #0c0723 #18132d #ff2d39
+        urgent_workspace   #0c0723 #18132d #ff505a
         binding_mode       #98ff8a #18132d #98ff8a
     }
 }

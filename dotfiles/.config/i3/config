@@ -87,8 +87,6 @@ bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
 for_window [all] border normal 1
-# default_border pixel 1
-# default_floating_border pixel 1
 
 # class                 border  backgr. text    indicator child_border
 client.focused          #010004 #010007 #9990ca #010004 #010004

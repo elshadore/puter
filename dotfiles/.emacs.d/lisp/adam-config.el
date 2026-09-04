@@ -483,9 +483,7 @@
 
 (use-package sudo-edit)
 
-(use-package detached
-  :init
-  (detached-init))
+(use-package detached)
 
 (use-package xclip
   :config

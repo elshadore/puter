@@ -1,3 +1,7 @@
+;;; package --- Summary -*- lexical-binding: nil -*-
+;;; Commentary:
+;;; Code:
+
 (setq custom-file "~/.emacs.d/custom.el")
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -63,3 +67,4 @@
 (setq gc-cons-threshold (* 100 1024 1024))
 
 (provide 'adam-settings)
+;;; adam-settings.el ends here

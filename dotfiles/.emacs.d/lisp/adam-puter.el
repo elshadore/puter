@@ -1,3 +1,7 @@
+;;; package --- Summary -*- lexical-binding: nil -*-
+;;; Commentary:
+;;; Code:
+
 (defun adam/puter-linkup ()
   "Linked Up! Sneed it or Keep it?"
   (interactive)
@@ -24,3 +28,4 @@
   (eq (window-system) 'x))
 
 (provide 'adam-puter)
+;;; adam-puter.el ends here

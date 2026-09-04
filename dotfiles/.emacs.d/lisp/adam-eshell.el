@@ -1,3 +1,7 @@
+;;; package --- Summary -*- lexical-binding: nil -*-
+;;; Commentary:
+;;; Code:
+
 (defun adam/eshell-find-replacement-buffers ()
   "Find `eshell' buffers that can be reused."
   (let ((cached-cwd default-directory))
@@ -36,3 +40,4 @@
                       (adam/eshell-buffer-silent (adam/eshell-buffer-next-number)))))
 
 (provide 'adam-eshell)
+;;; adam-eshell.el ends here

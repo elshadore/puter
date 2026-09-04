@@ -1,5 +1,9 @@
+;;; package --- Summary -*- lexical-binding: nil -*-
+;;; Commentary:
+;;; Code:
+
 (defun adam/meow-motion/normal-define-key (&rest args)
-  "Defines both `motion' and `normal' keybinds for `meow.el'."
+  "Defines both `motion' and `normal' keybinds for `meow.el' using args ARGS."
   (apply 'meow-motion-define-key args)
   (apply 'meow-normal-define-key args))
 
@@ -84,4 +88,4 @@
 (meow-global-mode 1)
 
 (provide 'adam-keys)
-
+;;; adam-keys.el ends here

@@ -1,3 +1,7 @@
+;;; package --- Summary -*- lexical-binding: nil -*-
+;;; Commentary:
+;;; Code:
+
 (defvar adam/font-size-default 12
   "The default size of the font.")
 

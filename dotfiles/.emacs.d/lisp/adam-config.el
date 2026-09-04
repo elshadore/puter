@@ -1,3 +1,7 @@
+;;; package --- Summary -*- lexical-binding: nil -*-
+;;; Commentary:
+;;; Code:
+
 (defvar adam/emacs-symbol-regex "\\(?:\\sw\\|\\s_\\|\\\\.\\)+\\(?:\\sw\\|\\s_\\|\\\\.\\|[0-9]\\)*")
 
 (defun adam/elisp-regex-generate (matches)
@@ -500,3 +504,4 @@
 (xclip-mode)
 
 (provide 'adam-config)
+;;; adam-config.el ends here

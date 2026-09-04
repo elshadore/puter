@@ -1,4 +1,4 @@
-;;; package --- Summary
+;;; package --- Summary -*- lexical-binding: nil -*-
 ;;; Commentary:
 ;;: note: on first install call M-x all-the-icons-install-fonts
 ;;; Code:
@@ -74,6 +74,4 @@
 (adam/goto-homepage)
 
 (provide 'init)
-
 ;;; init.el ends here
-(put 'list-timers 'disabled nil)

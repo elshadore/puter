@@ -1,3 +1,7 @@
+;;; package --- Summary -*- lexical-binding: nil -*-
+;;; Commentary:
+;;; Code:
+
 (defhydra adam/music-panel (:hint nil)
   "
 Music
@@ -207,3 +211,4 @@ _l_: line
   ("q" nil "quit" :color blue))
 
 (provide 'adam-menu)
+;;; adam-menu.el ends here

@@ -1,4 +1,7 @@
+;;; package --- Summary -*- lexical-binding: nil -*-
+;;; Commentary:
 ;;; Some of this code *might* be vide coded slop!
+;;; Code:
 
 (require 'markdown-mode)
 

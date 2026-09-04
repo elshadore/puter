@@ -1,3 +1,7 @@
+;;; package --- Summary -*- lexical-binding: nil -*-
+;;; Commentary:
+;;; Code:
+
 (defun adam/goto-init-file ()
   "Open init file."
   (interactive)
@@ -29,3 +33,4 @@
   (find-file "~/adam/castle/philsophy.md"))
 
 (provide 'adam-goto)
+;;; adam-goto.el ends here

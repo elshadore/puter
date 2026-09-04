@@ -84,13 +84,15 @@ bindsym $mod+d focus child
 
 for_window [all] border normal 1
 
-client.focused          #5cbb4a #060d08 #f1f7f2 #5cbb4a   #5cbb4a
-client.focused_inactive #333333 #5f676a #f1f7f2 #484e50   #5f676a
-client.unfocused        #333333 #222222 #888888 #060d08   #222222
-client.urgent           #060d08 #a72f28 #f1f7f2 #a72f28   #a72f28
-client.placeholder      #000000 #0c0c0c #f1f7f2 #000000   #0c0c0c
+# class                 border  backgr. text    indicator child_border
+client.focused          #5cbb4a #060d08 #eee7f0 #5cbb4a   #5cbb4a
+client.focused_inactive #333333 #5f676a #eee7f0 #484e50   #5f676a
+client.focused_tab_tile #333333 #5f676a #eee7f0 #484e50   #5f676a
+client.unfocused        #333333 #222222 #eee7f0 #060d08   #222222
+client.urgent           #060d08 #a72f28 #eee7f0 #a72f28   #a72f28
+client.placeholder      #000000 #0c0c0c #eee7f0 #000000   #000000
 
-client.background       #f1f7f2
+client.background       #ffffff
 
 set $ws1 "0"
 set $ws2 "1"

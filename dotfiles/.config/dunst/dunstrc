@@ -10,8 +10,8 @@
     follow = mouse
     monitor = 1
 
-    padding = 8
-    horizontal_padding = 8
+    padding = 12
+    horizontal_padding = 12
 
     frame_width = 1
 
@@ -24,14 +24,14 @@
     vertical_alignment = center
 
 [urgency_low]
-    background = "#050311"
+    background = "#010007"
     foreground = "#eee7f0"
-    frame_color = "#010007"
+    frame_color = "#18132d"
     timeout = 10
     default_icon = dialog-information
 
 [urgency_normal]
-    background = "#050311"
+    background = "#010007"
     foreground = "#eee7f0"
     frame_color = "#a871c1"
     timeout = 10
@@ -39,7 +39,7 @@
     default_icon = dialog-information
 
 [urgency_critical]
-    background = "#050311"
+    background = "#010007"
     foreground = "#eee7f0"
     frame_color = "#f55b64"
     timeout = 0

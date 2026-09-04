@@ -8,7 +8,7 @@
     adam-bg-select: #241a52;
     adam-fg: #eee7f0;
     adam-fg-select: #eee7f0;
-    adam-border: #fd72cd;
+    adam-border: #010004;
     adam-red: #f55b64;
     adam-green: #2b1a78;
     adam-highlight: #fa7bff;
@@ -19,7 +19,7 @@ window {
     background-color: @adam-bg;
     border-color: @adam-border;
     location: center;
-    border: 1px;
+    border: 4px;
 }
 
 scrollbar {

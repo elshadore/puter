@@ -89,11 +89,11 @@ bindsym $mod+d focus child
 for_window [all] border normal 1
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #010004 #010007 #9990ca #010004 #010004
-client.focused_inactive #010004 #010007 #4e3353 #010004 #010004
-client.unfocused        #010004 #010007 #4e3353 #010004 #010004
-client.urgent           #010004 #010007 #ff505a #010004 #010004
-client.placeholder      #000000 #010007 #4e3353 #000000 #000000
+client.focused          #010007 #050311 #9990ca #010007 #010007
+client.focused_inactive #010007 #050311 #4e3353 #010007 #010007
+client.unfocused        #010007 #050311 #4e3353 #010007 #010007
+client.urgent           #010007 #050311 #ff505a #010007 #010007
+client.placeholder      #000000 #050311 #4e3353 #000000 #000000
 
 client.background       #ffffff
 

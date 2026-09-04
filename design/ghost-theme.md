@@ -22,6 +22,7 @@ WOOOO Spooky ghost theme. This isn't completed yet but WOOOO spooky 👻👻👻
 - Goblin Green: #98ff8a
 - Red: #f55b64
 - Dark Red: ##ff505a
+- RED: #ff2733
 - Light Red: #ff8a91
 - Yellow: #fdfb7b
 - Light Yellow: #fffec1

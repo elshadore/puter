@@ -5,12 +5,12 @@
     background-color: transparent;
     adam-bg: #010007;
     adam-bg-alt: #050311;    
-    adam-bg-select: #241a52;
+    adam-bg-select: #363052;
     adam-fg: #eee7f0;
     adam-fg-select: #eee7f0;
     adam-border: #010004;
     adam-red: #f55b64;
-    adam-green: #2b1a78;
+    adam-green: #9990ca;
     adam-highlight: #fa7bff;
     adam-highlight-select: #fa7bff;
 }

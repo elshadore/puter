@@ -12,7 +12,7 @@ WOOOO Spooky ghost theme. This isn't completed yet but WOOOO spooky 👻👻👻
 - Blue Black 4: #18132d
 
 ## Highlights
-- Light Ice: #d9f9ff
+- Slush: #d9f9ff
 - Ice: #91e7f7
 - Sharp Pink: #fd72cd
 - Baby Pink: #fcbcff
@@ -20,23 +20,24 @@ WOOOO Spooky ghost theme. This isn't completed yet but WOOOO spooky 👻👻👻
 - Flesh Pink: #ffbce8
 - Goblin Green: #98ff8a
 - Red: #f55b64
+- Dark Red: #ff2d39
 - Light Red: #ff8a91
 - Yellow: #fdfb7b
 - Light Yellow: #fffec1
+
+## Vibrant Purples
 - Purple: #a871c1
-
-## Cool Purples
-- Ghost Purple: #9990ca
-- Dark Ghost Purple: #585080
-- Blue Grey: #363052
-- Vibrant Dark Blue: #241a52
+- Light Purple: #9978b1
+- Ghost Purple 0: #9990ca
+- Ghost Purple 1: #585080
+- Ghost Purple 2: #363052
 - Vibrant Blue: #2b1a78
+- Dark Vibrant Blue: #241a52
 
-## Warm Purples
+## Pale Colours
 - Pale Purple: #cbade1
 - Charcoal Black: #1e1323
 - Charcoal Purple: #28142b
-- Light Purple: #9978b1
 - Deep Warm Purple: #4e3353
 - Light Warm Purple: #6d5771
 - Mid Warm Purple: #5c486b

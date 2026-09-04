@@ -1,6 +1,6 @@
 [window]
 dynamic_title = true
-opacity = 0.8
+opacity = 0.90
 
 [env]
 WINIT_X11_SCALE_FACTOR = "1"

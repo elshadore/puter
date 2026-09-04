@@ -236,7 +236,10 @@
         ("M-n" . agent-shell-viewport-next-item)
         ("M-p" . agent-shell-viewport-previous-item)))
 
-(use-package i3wm-config-mode)
+(use-package i3wm-config-mode
+  :config
+  (add-hook 'i3wm-config-mode-hook #'(lambda () (setq-local colorful-highlight-in-comments t))))
+
 (use-package css-mode)
 (use-package yaml-mode)
 (use-package js2-mode

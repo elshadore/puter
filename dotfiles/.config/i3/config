@@ -1,5 +1,4 @@
 set $mod Mod4
-# font pango:TerminessNerdFontMono 11
 font pango:IosevkaNerdFontMono 11
 
 exec --no-startup-id dex --autostart --environment i3
@@ -36,7 +35,12 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 floating_modifier $mod
+
+title_align center
 tiling_drag modifier titlebar
+
+gaps inner 4
+gaps outer 2
 
 bindsym $mod+Return exec "alacritty"
 bindsym $mod+e exec "emacs"
@@ -67,7 +71,7 @@ bindsym $mod+comma focus output left
 bindsym $mod+greater move workspace to output right
 bindsym $mod+less move workspace to output left
 
-workspace_layout tabbed
+workspace_layout default
 
 bindsym $mod+n split h
 bindsym $mod+v split v
@@ -83,14 +87,15 @@ bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
 for_window [all] border normal 1
+# default_border pixel 1
+# default_floating_border pixel 1
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #5cbb4a #060d08 #eee7f0 #5cbb4a   #5cbb4a
-client.focused_inactive #333333 #5f676a #eee7f0 #484e50   #5f676a
-client.focused_tab_tile #333333 #5f676a #eee7f0 #484e50   #5f676a
-client.unfocused        #333333 #222222 #eee7f0 #060d08   #222222
-client.urgent           #060d08 #a72f28 #eee7f0 #a72f28   #a72f28
-client.placeholder      #000000 #0c0c0c #eee7f0 #000000   #000000
+client.focused          #010004 #010007 #91e7f7 #010004 #010004
+client.focused_inactive #010004 #010007 #9d969e #010004 #010004
+client.unfocused        #010004 #010007 #9d969e #010004 #010004
+client.urgent           #010004 #010007 #ff2d39 #010004 #010004
+client.placeholder      #000000 #010007 #9d969e #000000 #000000
 
 client.background       #ffffff
 
@@ -152,15 +157,16 @@ bindsym $mod+r mode "resize"
 bar {
     status_command i3status
     tray_output HDMI-1
+    separator_symbol " | "
     colors {
-        background #000000
-        statusline #f1f7f2
-        separator #666666
+        background #050311
+        statusline #eee7f0
+        separator #fa7bff
 
-        focused_workspace  #5cbb4a #0c2212 #f1f7f2
-        active_workspace   #333333 #5f676a #f1f7f2
-        inactive_workspace #333333 #222222 #888888
-        urgent_workspace   #060d08 #a72f28 #f1f7f2
-        binding_mode       #060d08 #a72f28 #f1f7f2
+        focused_workspace  #0c0723 #18132d #fcbcff
+        active_workspace   #0c0723 #18132d #9d969e
+        inactive_workspace #0c0723 #18132d #9d969e
+        urgent_workspace   #0c0723 #18132d #ff2d39
+        binding_mode       #98ff8a #18132d #98ff8a
     }
 }

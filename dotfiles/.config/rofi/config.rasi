@@ -3,15 +3,16 @@
 * {
     font: "IosevkaNerdFont 12";
     background-color: transparent;
-    adam-bg: #060d08;
-    adam-bg-alt: #0c2212;
-    adam-bg-select: #f1f7f2;
-    adam-fg: #f1f7f2;
-    adam-fg-select: #060d08;
-    adam-border: #5cbb4a;
-    adam-green: #5cbb4a;
-    adam-highlight: #32974d;
-    adam-highlight-select: #32974d;
+    adam-bg: #010007;
+    adam-bg-alt: #050311;    
+    adam-bg-select: #241a52;
+    adam-fg: #eee7f0;
+    adam-fg-select: #eee7f0;
+    adam-border: #fd72cd;
+    adam-red: #f55b64;
+    adam-green: #2b1a78;
+    adam-highlight: #fa7bff;
+    adam-highlight-select: #fa7bff;
 }
 
 window {
@@ -22,7 +23,7 @@ window {
 }
 
 scrollbar {
-    handle-color: @adam-green;
+    handle-color: @adam-red;
 }
 
 inputbar,

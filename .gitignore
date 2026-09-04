@@ -1,3 +1,4 @@
 /.agent-shell/
 /.opencode/
 *.kra~
+*-autosave.kra

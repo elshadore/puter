@@ -19,7 +19,10 @@ White Pink: #eee7f0
 Goblin Green: #98ff8a
 Ghost Purple: #9990ca
 Dark Ghost Purple: #585080
-Blue Black: #0c0723
+Blue Black 0: #010007
+Blue Black 1: #050311
+Blue Black 2: #0c0723
+Blue Black 3: #18132d
 Blue Grey: #363052
 Vibrant Dark Blue: #241a52
 Vibrant Blue: #2b1a78

@@ -89,11 +89,11 @@ bindsym $mod+d focus child
 for_window [all] border normal 2
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #0c0723 #18132d #9990ca #0c0723 #0c0723
-client.focused_inactive #0c0723 #18132d #363052 #0c0723 #0c0723
-client.unfocused        #0c0723 #18132d #363052 #0c0723 #0c0723
-client.urgent           #0c0723 #18132d #ff505a #0c0723 #0c0723
-client.placeholder      #000000 #18132d #363052 #000000 #000000
+client.focused          #010004 #010004 #9990ca #010004 #010004
+client.focused_inactive #010004 #010004 #4e3353 #010004 #010004
+client.unfocused        #010004 #010004 #4e3353 #010004 #010004
+client.urgent           #010004 #010004 #ff505a #010004 #010004
+client.placeholder      #000000 #010004 #4e3353 #000000 #000000
 
 client.background       #ffffff
 
@@ -135,15 +135,15 @@ bindsym $mod+Shift+c restart
 bindsym $mod+Shift+q exec i3-msg exit 
 
 mode "resize" {
-    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym h resize grow width 10 px or 10 ppt
     bindsym j resize grow height 10 px or 10 ppt
-    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
     bindsym l resize grow width 10 px or 10 ppt
-
-    bindsym Left resize shrink width 10 px or 10 ppt
-    bindsym Down resize grow height 10 px or 10 ppt
-    bindsym Up resize shrink height 10 px or 10 ppt
-    bindsym Right resize grow width 10 px or 10 ppt
+    
+    bindsym Shift+h resize shrink width 10 px or 10 ppt
+    bindsym Shift+j resize shrink height 10 px or 10 ppt
+    bindsym Shift+k resize shrink height 10 px or 10 ppt
+    bindsym Shift+l resize shrink width 10 px or 10 ppt
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -155,16 +155,16 @@ bindsym $mod+r mode "resize"
 bar {
     status_command i3status
     tray_output HDMI-1
-    separator_symbol " | "
+    separator_symbol "|"
     colors {
-        background #010007
+        background #050311
         statusline #eee7f0
         separator #fa7bff
 
-        focused_workspace  #010007 #010007 #fcbcff
-        active_workspace   #010007 #010007 #9d969e
-        inactive_workspace #010007 #010007 #9d969e
+        focused_workspace  #0c0723 #18132d #fcbcff
+        active_workspace   #0c0723 #18132d #9d969e
+        inactive_workspace #0c0723 #18132d #9d969e
         urgent_workspace   #ff2733 #ff505a #eee7f0
-        binding_mode       #98ff8a #010007 #98ff8a
+        binding_mode       #98ff8a #18132d #98ff8a
     }
 }

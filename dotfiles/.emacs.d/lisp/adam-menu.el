@@ -117,6 +117,7 @@ _b_: buffer
 _x_: M-x
 _a_: app
 _i_: internet
+_e_: emoji
 _r_: grep
 ___: regex
 _m_: man
@@ -128,6 +129,7 @@ _m_: man
   ("." adam/find-file-new)
   ("," projectile-find-file)
   ("f" adam/fuzzy-find)
+  ("e" emoji-search)
   ("/" swiper)
   ("r" rgrep)
   ("i" adam/internet-search)
@@ -166,6 +168,7 @@ _d_: diagnostics
 _a_: agent shell
 _e_: eshell
 _E_: eshell new
+_P_: python repl
 _l_: elisp shell
 _g_: git status
 _G_: git diff
@@ -182,6 +185,7 @@ _?_: cheatsheet
   ("G" adam/toggle-file-diff)
   ("?" meow-cheatsheet)
   ("p" list-processes)
+  ("P" run-python)
   ("a" agent-shell)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
@@ -194,6 +198,7 @@ _i_: init file
 _h_: homepage
 _p_: current project
 _c_: castle
+_r_: ruletine
 _t_: misc todos
 _P_: philsophy
 _l_: line
@@ -204,6 +209,7 @@ _l_: line
   ("h" adam/goto-homepage)
   ("p" adam/goto-current-project)
   ("c" adam/goto-castle)
+  ("r" adam/goto-ruletine)
   ("t" adam/goto-misc-todos)
   ("P" adam/goto-philosophy)
   ("l" goto-line)

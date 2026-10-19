@@ -23,14 +23,19 @@
   (find-file "~/adam/castle/misc.md"))
 
 (defun adam/goto-castle ()
-  "Find the misc todos page."
+  "Find the castle directory."
   (interactive)
   (find-file "~/adam/castle/"))
+
+(defun adam/goto-ruletine ()
+  "Find the ruletine page."
+  (interactive)
+  (find-file "~/adam/castle/ruletine.md"))
 
 (defun adam/goto-philosophy ()
   "Find philosophy page."
   (interactive)
-  (find-file "~/adam/castle/philsophy.md"))
+  (find-file "~/adam/castle/philosophy.md"))
 
 (provide 'adam-goto)
 ;;; adam-goto.el ends here

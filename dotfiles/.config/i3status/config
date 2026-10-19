@@ -19,7 +19,7 @@ cpu_usage {
 }
 
 memory {
-    format = "💽: %used / %total"
+    format = "💿: %used / %total"
     threshold_degraded = "1G"
 }
 
@@ -39,5 +39,5 @@ volume master {
 }
 
 tztime local {
-    format = "%A %d-%m-%Y %H:%M:%S"
+    format = "🕑: %A %d-%m-%Y %H:%M:%S"
 }

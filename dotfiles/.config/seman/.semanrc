@@ -2,3 +2,5 @@ defservice-start dunst dunst
 defservice-start keyboard sxhkd
 defservice-start picom picom
 defservice-start nm-applet nm-applet
+defservice-start xbanish xbanish
+defservice redshift redshift

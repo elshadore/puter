@@ -67,6 +67,3 @@ alias grep='grep --color=auto'
 alias tmux="tmux -2"
 
 ## Shit added by other clowns.
-
-# opencode
-export PATH=/home/adam/.opencode/bin:$PATH

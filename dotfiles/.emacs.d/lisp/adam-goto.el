@@ -12,25 +12,20 @@
   (interactive)
   (find-file "~/adam/HOMEPAGE.md"))
 
-(defun adam/goto-current-project ()
-  "Find the current project."
-  (interactive)
-  (find-file "~/adam/castle/current-project.md"))
-
-(defun adam/goto-misc-todos ()
+(defun adam/goto-todos ()
   "Find the misc todos page."
   (interactive)
-  (find-file "~/adam/castle/misc.md"))
+  (find-file "~/adam/castle/todo.md"))
 
 (defun adam/goto-castle ()
   "Find the castle directory."
   (interactive)
   (find-file "~/adam/castle/"))
 
-(defun adam/goto-ruletine ()
-  "Find the ruletine page."
+(defun adam/goto-dailies ()
+  "Find the dailies page."
   (interactive)
-  (find-file "~/adam/castle/ruletine.md"))
+  (find-file "~/adam/castle/dailies.md"))
 
 (defun adam/goto-philosophy ()
   "Find philosophy page."

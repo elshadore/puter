@@ -168,6 +168,7 @@ _d_: diagnostics
 _a_: agent shell
 _e_: eshell
 _E_: eshell new
+_c_: eshell projectile
 _P_: python repl
 _l_: elisp shell
 _g_: git status
@@ -181,6 +182,7 @@ _?_: cheatsheet
   ("l" ielm)
   ("e" adam/eshell)
   ("E" adam/eshell-new)
+  ("c" projectile-run-eshell)
   ("g" magit-status)
   ("G" adam/toggle-file-diff)
   ("?" meow-cheatsheet)
@@ -196,22 +198,23 @@ Goto
 -------------
 _i_: init file
 _h_: homepage
-_p_: current project
+_t_: todos
 _c_: castle
-_r_: ruletine
+_d_: dailies
+_z_: misc todos
 _t_: misc todos
-_P_: philsophy
+_p_: philsophy
 _l_: line
 
 "
   
   ("i" adam/goto-init-file)
   ("h" adam/goto-homepage)
-  ("p" adam/goto-current-project)
+  ("z" adam/goto-todos)
+  ("t" adam/goto-todos)
   ("c" adam/goto-castle)
-  ("r" adam/goto-ruletine)
-  ("t" adam/goto-misc-todos)
-  ("P" adam/goto-philosophy)
+  ("d" adam/goto-dailies)
+  ("p" adam/goto-philosophy)
   ("l" goto-line)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))

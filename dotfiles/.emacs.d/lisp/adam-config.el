@@ -478,5 +478,29 @@
 
 (xclip-mode)
 
+(use-package mu4e
+  :config
+  (setq mu4e-change-filenames-when-moving t)
+  
+  (setq mu4e-use-fancy-chars t)
+
+  (setq mu4e-update-interval (adam/minutes 5))
+  (setq mu4e-get-mail-command "mbsync -a")
+  (setq mu4e-maildir "~/Mail")
+
+  (setq mu4e-drafts-folder "/Drafts")
+  (setq mu4e-sent-folder   "/Sent Mail")
+  (setq mu4e-refile-folder "/All Mail")
+  (setq mu4e-trash-folder  "/Trash")
+
+  (setq mu4e-maildir-shortcuts
+      '(("/Inbox"             . ?i)
+        ("/Sent Mail" . ?s)
+        ("/Trash"     . ?t)
+        ("/Drafts"    . ?d)
+        ("/All Mail"  . ?a)))
+  
+  (mu4e t))
+
 (provide 'adam-config)
 ;;; adam-config.el ends here

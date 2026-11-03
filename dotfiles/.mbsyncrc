@@ -1,0 +1,21 @@
+IMAPAccount cock
+Host mail.cock.li
+User elshadore@cock.li
+PassCmd "cat ~/adam/castle/email.txt"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore cock-local
+Account cock
+
+MaildirStore cock-local
+Subfolders Verbatim
+Path ~/Mail/
+Inbox ~/Mail/Inbox
+
+Channel cock
+Far :cock-remote:
+Near :cock-local:
+Patterns *
+Create Both
+SyncState *

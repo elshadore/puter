@@ -13,6 +13,7 @@
 ;;; Code:
 
 (require 'agent-shell)
+(require 'adam-puter)
 
 (defgroup adam/agent-shell nil
   "agent-shell helpers."
@@ -42,11 +43,6 @@ agent-shell buffer is displayed in some window."
   :group 'adam/agent-shell
   :type 'string)
 
-(defcustom adam/agent-shell-notify-urgency nil
-  "Urgency for agent-shell notifications (`low', `normal' or `critical')."
-  :group 'adam/agent-shell
-  :type 'symbol)
-
 (defvar adam/agent-shell-notify-subscriptions nil
   "List of subscription tokens, buffer-locally set.")
 
@@ -58,20 +54,6 @@ agent-shell buffer is displayed in some window."
     ("max_turn_requests" . "Hit the request limit")
     ("other" . "Prompt ended"))
   "Alist mapping ACP stop reasons to human-readable messages.")
-
-(defun adam/agent-shell--notify (title &optional body)
-  "Send a desktop notification with TITLE and BODY.
-Uses D-Bus (`notifications') when available, falls back to
-`notify-send'."
-  (ignore-errors
-    (require 'notifications nil t)
-    (if (fboundp 'notifications-notify)
-        (apply #'notifications-notify
-               (append (list :title title :body (or body ""))
-                       (when adam/agent-shell-notify-urgency
-                         (list :urgency adam/agent-shell-notify-urgency))))
-      (start-process "adam-agent-shell-notify" nil "notify-send"
-                     title (or body "")))))
 
 (defun adam/agent-shell--stop-reason-message (stop-reason)
   "Return a human-readable string for STOP-REASON."
@@ -91,7 +73,7 @@ Uses D-Bus (`notifications') when available, falls back to
            (stop-reason (map-elt data :stop-reason))
            (visible (get-buffer-window (current-buffer) t)))
       (when (or adam/agent-shell-notify-when-visible (not visible))
-        (adam/agent-shell--notify
+        (adam/puter-notify
          adam/agent-shell-notify-title
          (format "%s (%s)"
                  (adam/agent-shell--stop-reason-message stop-reason)
@@ -103,11 +85,12 @@ Uses D-Bus (`notifications') when available, falls back to
     (let ((data (map-elt event :data))
           (visible (get-buffer-window (current-buffer) t)))
       (unless (and visible (not adam/agent-shell-notify-when-visible))
-        (adam/agent-shell--notify
+        (adam/puter-notify
          adam/agent-shell-notify-title
          (format "Agent error %s: %s"
                  (or (map-elt data :code) "?")
-                 (or (map-elt data :message) "unknown")))))))
+                 (or (map-elt data :message) "unknown"))
+         :urgency 'critical)))))
 
 (defun adam/agent-shell-viewport-hook ()
   "Visual viewport configurations for `agent-shell'."

@@ -54,5 +54,14 @@
         (adam/eshell))
     (message "not currently in a projectile project")))
 
+(defun adam/eshell-clear ()
+  "Clear the eshell buffer like a terminal reset, then show a fresh prompt."
+  (interactive)
+  (when (derived-mode-p 'eshell-mode)
+    (let ((inhibit-read-only t))
+      (erase-buffer))
+    (eshell-emit-prompt)
+    (goto-char (point-max))))
+
 (provide 'adam-eshell)
 ;;; adam-eshell.el ends here

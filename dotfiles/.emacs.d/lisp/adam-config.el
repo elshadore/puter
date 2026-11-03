@@ -170,6 +170,7 @@
 (use-package eshell
   :config
   (setq eshell-banner-message "")
+  (define-key eshell-mode-map (kbd "C-l") #'adam/eshell-clear)
   (mapc (lambda (alias) (defalias (car alias) (cdr alias)))
         '((ll . (lambda () (eshell/ls '-lah)))
           (dir . dired))))

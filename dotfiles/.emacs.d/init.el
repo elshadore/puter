@@ -43,6 +43,7 @@
 (require 'adam-config)
 (require 'adam-menu)
 (require 'adam-markdown-tools)
+(require 'adam-agent-shell)
 (require 'adam-goto)
 
 (when (adam/puter-is-xwindows?)

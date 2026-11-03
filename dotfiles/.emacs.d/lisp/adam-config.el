@@ -216,16 +216,10 @@
           :key (adam/lookup-auth 'deepseek)
           :models '(deepseek-chat deepseek-coder))))
 
-(defun adam/agent-shell-viewport-hook ()
-  (visual-line-mode))
-
-(defun adam/agent-shell-hook ()
-  (visual-line-mode -1)
-  (adam-markdown-tools-mode -1))
-
 (use-package agent-shell
   :config
   (setq agent-shell-prefer-viewport-interaction t)
+  (add-hook 'agent-shell-mode-hook 'adam/agent-shell-setup)
   (add-hook 'agent-shell-mode-hook 'adam/agent-shell-hook)
   (add-hook 'agent-shell-viewport-view-mode-hook 'adam/agent-shell-viewport-hook)
   (add-hook 'agent-shell-viewport-edit-mode-hook 'adam/agent-shell-viewport-hook)

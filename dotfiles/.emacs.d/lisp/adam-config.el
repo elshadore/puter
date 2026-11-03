@@ -249,6 +249,8 @@
 (use-package flyspell
   :straight t
   :config
+  ;; with hunspell we also need to install the correct dictionary
+  ;; yay -S hunspell-en_GB
   (setq ispell-program-name "hunspell")
   (setq ispell-dictionary "en_GB"))
 

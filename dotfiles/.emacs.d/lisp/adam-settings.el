@@ -66,5 +66,8 @@
 (setq read-process-output-max (* 1024 1024))
 (setq gc-cons-threshold (* 100 1024 1024))
 
+;; When yoinking text delete all the text propeties.
+(setq filter-buffer-substring-function #'adam/filter-buffer-substring-plain)
+
 (provide 'adam-settings)
 ;;; adam-settings.el ends here

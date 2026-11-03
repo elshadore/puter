@@ -608,5 +608,11 @@ Does not kill the process when `emacs' closes."
          (session (detached-create-session cmd)))
     (detached-start-session session)))
 
+(defun adam/filter-buffer-substring-plain (beg end &optional delete)
+  "Strips all text of properties.
+From BEG to END,
+with and option for DELETE."
+  (substring-no-properties (buffer-substring--filter beg end delete)))
+
 (provide 'adam-utils)
 ;;; adam-utils.el ends here

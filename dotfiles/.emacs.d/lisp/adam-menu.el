@@ -168,6 +168,7 @@ _d_: diagnostics
 _a_: agent shell
 _e_: eshell
 _E_: eshell new
+_h_: eshell home
 _c_: eshell projectile
 _P_: python repl
 _l_: elisp shell
@@ -182,7 +183,8 @@ _?_: cheatsheet
   ("l" ielm)
   ("e" adam/eshell)
   ("E" adam/eshell-new)
-  ("c" projectile-run-eshell)
+  ("h" adam/eshell-home)
+  ("c" adam/eshell-projectile)
   ("g" magit-status)
   ("G" adam/toggle-file-diff)
   ("?" meow-cheatsheet)

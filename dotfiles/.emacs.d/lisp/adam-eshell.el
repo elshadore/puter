@@ -39,5 +39,20 @@
                         (car buffers)
                       (adam/eshell-buffer-silent (adam/eshell-buffer-next-number)))))
 
+(defun adam/eshell-home ()
+  "Start `eshell' mode at the home directory."
+  (interactive)
+  (find-file "~")
+  (adam/eshell))
+
+(defun adam/eshell-projectile ()
+  "Start `eshell' mode in the current project root."
+  (interactive)
+  (if (projectile-project-p)
+      (progn
+        (find-file (projectile-project-root))
+        (adam/eshell))
+    (message "not currently in a projectile project")))
+
 (provide 'adam-eshell)
 ;;; adam-eshell.el ends here

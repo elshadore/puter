@@ -489,16 +489,16 @@
   (setq mu4e-maildir "~/Mail")
 
   (setq mu4e-drafts-folder "/Drafts")
-  (setq mu4e-sent-folder   "/Sent Mail")
+  (setq mu4e-sent-folder "/Sent Mail")
   (setq mu4e-refile-folder "/All Mail")
-  (setq mu4e-trash-folder  "/Trash")
+  (setq mu4e-trash-folder "/Trash")
 
   (setq mu4e-maildir-shortcuts
-      '(("/Inbox"             . ?i)
+      '(("/Inbox" . i)
         ("/Sent Mail" . ?s)
-        ("/Trash"     . ?t)
-        ("/Drafts"    . ?d)
-        ("/All Mail"  . ?a)))
+        ("/Trash" . ?t)
+        ("/Drafts" . ?d)
+        ("/All Mail" . ?a)))
   
   (mu4e t))
 

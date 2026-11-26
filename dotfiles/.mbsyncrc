@@ -2,10 +2,10 @@ IMAPAccount cock
 Host mail.cock.li
 User elshadore@cock.li
 PassCmd "cat ~/adam/castle/email.txt"
-SSLType IMAPS
+TLSType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
-IMAPStore cock-local
+IMAPStore cock-remote
 Account cock
 
 MaildirStore cock-local

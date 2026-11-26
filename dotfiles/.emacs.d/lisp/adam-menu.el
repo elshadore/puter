@@ -174,6 +174,7 @@ _P_: python repl
 _l_: elisp shell
 _g_: git status
 _G_: git diff
+_m_: email
 _?_: cheatsheet
 
 "
@@ -191,6 +192,7 @@ _?_: cheatsheet
   ("p" list-processes)
   ("P" run-python)
   ("a" agent-shell)
+  ("m" mu4e)
   ("RET" nil "quit" :color blue)
   ("q" nil "quit" :color blue))
 
